@@ -9,7 +9,7 @@ public class DesktopFrame {
 	private JFrame frame;
 	
 	private static final int WIDTH = 1200;
-	private static final int HEIGHT = 800;
+	private static final int HEIGHT = 700;
 	private static final String TITLE = "Level Editor (Alpha)";
 	
 	public DesktopFrame() {
