@@ -11,7 +11,6 @@ public class LevelRenderer extends Canvas{
 	public LevelRenderer(int width, int height) {
 		super();
 		this.setSize(new Dimension(width, height));
-		this.setBackground(Color.GRAY);
 	}
 	
 	@Override
