@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 @SuppressWarnings("serial")
-public class PanelManager extends JPanel{
+public abstract class PanelManager extends JPanel{
 
 	public PanelManager(String title) {
 		super();
