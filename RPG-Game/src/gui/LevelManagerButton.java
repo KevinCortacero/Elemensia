@@ -11,8 +11,10 @@ import javax.swing.JButton;
 public class LevelManagerButton extends JButton implements ActionListener{
 
 	public LevelManagerButton(Icon background) {
-		super();
+		super(background);
 		this.setPreferredSize(new Dimension (80, 80));
+		this.setBackground(null);
+		this.setBorder(null);
 		this.addActionListener(this);
 	}
 
