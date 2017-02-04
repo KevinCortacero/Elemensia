@@ -3,6 +3,8 @@ package gui;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class DesktopFrame {
 	
@@ -13,6 +15,13 @@ public class DesktopFrame {
 	private static final String TITLE = "Level Editor (Alpha)";
 	
 	public DesktopFrame() {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.frame = new JFrame(TITLE);
 		this.frame.setSize(WIDTH, HEIGHT);
 		this.frame.setResizable(false);
