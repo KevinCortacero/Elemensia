@@ -4,7 +4,6 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class DesktopFrame {
 	
@@ -13,13 +12,12 @@ public class DesktopFrame {
 	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 900;
 	private static final String TITLE = "Level Editor (Alpha)";
+	private static final String LOOK_AND_FEEL = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
 	
 	public DesktopFrame() {
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
+			UIManager.setLookAndFeel(LOOK_AND_FEEL);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		this.frame = new JFrame(TITLE);
