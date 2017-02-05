@@ -26,7 +26,7 @@ public class DesktopFrame {
 		this.frame.setLocationRelativeTo(null);
 		this.frame.setLayout(new FlowLayout());
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.frame.add(new LevelRenderer(WIDTH, (HEIGHT * 3) / 4));
+		this.frame.add(new LevelRenderer(WIDTH, (HEIGHT * 3) / 4) );
 		this.frame.add(new Toolbox(WIDTH, (HEIGHT * 1) / 4));
 		this.frame.setVisible(true);
 	}
