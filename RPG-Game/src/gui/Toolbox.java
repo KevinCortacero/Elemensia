@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
+import gui.tile_manager.TileManager;
+
 @SuppressWarnings("serial")
 public class Toolbox extends JPanel{
 	
