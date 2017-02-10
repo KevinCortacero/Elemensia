@@ -1,4 +1,4 @@
-package gui;
+package level_editor.gui;
 
 import javax.swing.JButton;
 

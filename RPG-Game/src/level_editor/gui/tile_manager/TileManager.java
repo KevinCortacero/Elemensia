@@ -1,10 +1,10 @@
-package gui.tile_manager;
+package level_editor.gui.tile_manager;
 
 import java.awt.GridLayout;
 
 import javax.swing.JTabbedPane;
 
-import gui.PanelManager;
+import level_editor.gui.PanelManager;
 
 @SuppressWarnings("serial")
 public class TileManager extends PanelManager{

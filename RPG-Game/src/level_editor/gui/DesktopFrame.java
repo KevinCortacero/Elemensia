@@ -1,4 +1,4 @@
-package gui;
+package level_editor.gui;
 
 import java.awt.FlowLayout;
 
@@ -10,7 +10,7 @@ public class DesktopFrame {
 	private JFrame frame;
 	
 	private static final int WIDTH = 1200;
-	private static final int HEIGHT = 900;
+	private static final int HEIGHT = 700;
 	private static final String TITLE = "Level Editor (Alpha)";
 	private static final String LOOK_AND_FEEL = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
 	
