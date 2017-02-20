@@ -1,4 +1,4 @@
-package gui.tile_manager;
+package view.tile_manager;
 
 public class MonsterManager {
 	

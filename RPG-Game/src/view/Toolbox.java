@@ -1,11 +1,11 @@
-package gui;
+package view;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
-import gui.tile_manager.TileManager;
+import view.tile_manager.TileManager;
 
 @SuppressWarnings("serial")
 public class Toolbox extends JPanel{

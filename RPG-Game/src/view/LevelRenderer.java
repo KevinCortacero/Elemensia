@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import java.awt.Canvas;
 import java.awt.Color;
