@@ -1,4 +1,4 @@
-package level_editor.gui;
+package level_editor.view;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;

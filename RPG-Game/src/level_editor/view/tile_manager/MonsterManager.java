@@ -1,4 +1,4 @@
-package level_editor.gui.tile_manager;
+package level_editor.view.tile_manager;
 
 public class MonsterManager {
 	

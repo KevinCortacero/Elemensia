@@ -1,4 +1,4 @@
-package level_editor.gui;
+package level_editor.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

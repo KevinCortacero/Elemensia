@@ -1,4 +1,4 @@
-package level_editor.gui;
+package level_editor.view;
 
 import java.awt.Canvas;
 import java.awt.Color;
