@@ -1,4 +1,4 @@
-package view;
+package level_editor.gui;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;

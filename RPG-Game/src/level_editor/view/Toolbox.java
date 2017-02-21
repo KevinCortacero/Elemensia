@@ -1,11 +1,11 @@
-package view;
+package level_editor.gui;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
-import view.tile_manager.TileManager;
+import level_editor.gui.tile_manager.TileManager;
 
 @SuppressWarnings("serial")
 public class Toolbox extends JPanel{
