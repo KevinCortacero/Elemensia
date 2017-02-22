@@ -1,6 +1,6 @@
 package level_editor;
 
-import gui.DesktopFrame;
+import level_editor.view.DesktopFrame;
 
 public class LevelEditor {
 	
