@@ -15,9 +15,11 @@ public class World implements Disposable{
 	private ArrayList<Solid> solids;
 	private ArrayList<Solid> ladders;
 	private Texture background;
+	private Texture foreground;
 
 	public World() {
-		this.background = new Texture("village.png");
+		this.background = new Texture("village_back.png");
+		this.foreground = new Texture("village_front.png");
 		this.solids = new ArrayList<Solid>();
 		this.solids.add(new Solid(0, 0, 2000, 140));
 		this.solids.add(new Solid(0, 140, 20, 1000));
@@ -40,6 +42,7 @@ public class World implements Disposable{
 	public void draw(SpriteBatch sb){
 		sb.draw(this.background, 0, 0);
 		this.hero.draw(sb);
+		sb.draw(this.foreground, 0, 0);
 	}
 
 	public void draw(ShapeRenderer sr){

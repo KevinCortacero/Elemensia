@@ -67,6 +67,7 @@ public class Hero extends DynamicGameObject {
 			if (this.canClimb) {
 				this.climb();
 			}
+			this.climb();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			this.moveRight(Gdx.graphics.getDeltaTime());
