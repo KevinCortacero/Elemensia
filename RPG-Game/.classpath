@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="button_icon/" kind="src" path="assets"/>
+	<classpathentry excluding="button_icon/|sprites/" kind="src" path="assets"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="lib/gdx.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="https://libgdx.badlogicgames.com/nightlies/docs/api/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/RPG-Game/lib/gdx-backend-gwt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/RPG-Game/lib/gdx-backend-headless.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/RPG-Game/lib/gdx-backend-jglfw.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/RPG-Game/lib/gdx-backend-jglfw-natives.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/RPG-Game/lib/gdx-backend-lwjgl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/RPG-Game/lib/gdx-backend-lwjgl3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/RPG-Game/lib/gdx-backend-lwjgl-natives.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/RPG-Game/lib/gdx-natives.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
