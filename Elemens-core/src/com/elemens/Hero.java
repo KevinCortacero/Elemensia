@@ -5,12 +5,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 public class Hero extends DynamicGameObject {
 
 	public CollideBox center, bottom, top, left, right;
 	boolean canClimbUp;
 	boolean canClimbDown;
+	public boolean isOnWater;
+	public boolean isUnderWater;
 
 	public Hero(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -21,16 +24,23 @@ public class Hero extends DynamicGameObject {
 		this.center = new CollideBox(x, 20, y, 10, width - 40, height - 20);
 		this.canClimbUp = false;
 		this.canClimbDown = false;
+		this.isOnWater = false;
+		this.isUnderWater = false;
 	}
-	
-	public void update(float delta){
-		if (!this.canClimbUp){
-			this.velocityY -= (25*delta);
+
+	public void update(float delta, Vector2 gravity){
+		if (!this.canClimbUp && !this.isOnWater){
+			this.velocityY += (gravity.y*delta*2.5);
 		}
+		else if (this.isOnWater){
+			this.velocityY += (gravity.y*delta*0.5);
+		}
+		if (this.isUnderWater)
+			this.velocityY -= (gravity.y*delta*2);
 		this.body.y += this.velocityY;
 		this.setPosition(body.x, body.y);
 	}
-	
+
 	public Hitbox isCollidingH(Rectangle r) {
 		if (this.left.overlaps(r) && !this.right.overlaps(r) && !this.center.overlaps(r)){
 			return Hitbox.LEFT;
@@ -104,6 +114,14 @@ public class Hero extends DynamicGameObject {
 
 	public float getCenterY() {
 		return this.body.y + this.body.height / 2;
+	}
+
+	public boolean isOnWater(Rectangle water) {
+		return (this.body.overlaps(water));
+	}
+
+	public boolean isUnderWater(Rectangle water) {
+		return (this.top.overlaps(water));
 	}
 
 }

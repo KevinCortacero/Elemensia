@@ -21,7 +21,7 @@ public class ElemensGame extends ApplicationAdapter {
 		this.camera.setToOrtho(false, 1600, 900);
 		this.batch = new SpriteBatch();
 		this.sr = new ShapeRenderer();
-		this.world = new World();
+		this.world = new World(0.0f, -9.8f);
 		Gdx.app.debug(this.getClass().getName(), "Elemens Game created");
 		
 	}

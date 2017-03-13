@@ -16,16 +16,25 @@ public class World implements Disposable {
 	private Hero hero;
 	private ArrayList<Solid> solids;
 	private ArrayList<Ladder> ladders;
+	private ArrayList<Solid> water;
 	private Texture background;
 	private Texture foreground;
+	private Vector2 gravity;
 
-	public World() {
+	public World(float x, float y) {
+		this.gravity = new Vector2(x, y);
 		this.background = new Texture("village_back.png");
 		this.foreground = new Texture("village_front.png");
 		this.solids = new ArrayList<Solid>();
 		this.solids.add(new Solid(0, 0, 2000, 140));
 		this.solids.add(new Solid(0, 140, 20, 1000));
 		this.solids.add(new Solid(50, 200, 200, 50));
+		this.solids.add(new Solid(600, 140, 40, 400));
+		this.solids.add(new Solid(2000, 140, 40, 400));
+		
+		// Water zone
+		this.water = new ArrayList<Solid>();
+		this.water.add(new Solid(640, 140, 1360, 380));
 
 		// Ladder
 		this.ladders = new ArrayList<Ladder>();
@@ -33,11 +42,11 @@ public class World implements Disposable {
 
 		this.solids.add(this.ladders.get(0).top);
 
-		// Steps
+		/* Steps
 		for (int i = 0; i < 1000; i++) {
 			this.solids.add(new Solid(800 + i * 20, 140 + i * 10, 20, 1));
-		}
-		this.hero = new Hero(600, 200, 74, 107);
+		}*/
+		this.hero = new Hero(200, 200, 74, 107);
 	}
 
 	public void draw(SpriteBatch sb) {
@@ -50,14 +59,18 @@ public class World implements Disposable {
 		this.hero.draw(sr);
 		for (Solid s : this.solids)
 			s.draw(sr, Color.RED);
+		for (Solid s : this.water)
+			s.draw(sr, Color.BLUE);
 		for (Ladder s : this.ladders)
 			s.draw(sr);
 	}
 
 	public void update() {
-		this.hero.update(Gdx.graphics.getDeltaTime());
+		this.hero.update(Gdx.graphics.getDeltaTime(), this.gravity);
 		this.hero.canClimbDown = false;
 		this.hero.canClimbUp = false;
+		this.hero.isOnWater = false;
+		this.hero.isUnderWater = false;
 		if (Gdx.input.isKeyPressed(Input.Keys.Z)){
 			for (Ladder l : this.ladders) {
 				if (this.hero.center.overlaps(l.climbZone)) {
@@ -74,6 +87,14 @@ public class World implements Disposable {
 				}
 			}
 
+		}
+		for (Solid w : this.water) {
+			if (this.hero.isOnWater(w.body)){
+				this.hero.isOnWater = true;
+			}
+			if (this.hero.isUnderWater(w.body)){
+				this.hero.isUnderWater = true;
+			}
 		}
 		for (Solid s : this.solids) {
 
@@ -92,7 +113,7 @@ public class World implements Disposable {
 
 			switch (this.hero.isCollidingV(s.body)) {
 			case CENTER:
-				break;// this.hero.stopV(s.body.y + s.body.height);
+				break;
 			case BOTTOM:
 				if (!this.hero.canClimbDown) {
 					this.hero.resetJump();
