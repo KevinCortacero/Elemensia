@@ -22,7 +22,15 @@ public class Hero extends DynamicGameObject {
 		this.canClimbUp = false;
 		this.canClimbDown = false;
 	}
-
+	
+	public void update(float delta){
+		if (!this.canClimbUp){
+			this.velocityY -= (25*delta);
+		}
+		this.body.y += this.velocityY;
+		this.setPosition(body.x, body.y);
+	}
+	
 	public Hitbox isCollidingH(Rectangle r) {
 		if (this.left.overlaps(r) && !this.right.overlaps(r) && !this.center.overlaps(r)){
 			return Hitbox.LEFT;

@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Disposable;
 public abstract class DynamicGameObject extends GameObject implements Disposable{
 	
 	protected Sprite sprite;
-	private float velocityY;
+	protected float velocityY;
 	private int jumpCount;
 	
 	public DynamicGameObject(int x, int y, int width, int height) {
@@ -22,6 +22,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	public boolean isMovingUp(){
 		return (this.velocityY > 0);
 	}
+	
 	public void stopV(float height){
 		this.velocityY = 0;
 		this.setPosition(this.body.x, height);
@@ -51,12 +52,6 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	
 	public void climbDown(){
 		this.velocityY = -5;
-	}
-	
-	public void update(float delta){
-		this.velocityY -= (25*delta);
-		this.body.y += this.velocityY;
-		this.setPosition(body.x, body.y);
 	}
 	
 	public void jump(){

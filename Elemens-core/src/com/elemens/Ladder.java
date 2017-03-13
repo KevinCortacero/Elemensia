@@ -14,7 +14,7 @@ public class Ladder extends GameObject{
 		super(x, y, width, height);
 		this.top = new Solid(x - 20, y + height -4, width + 40, 4);
 		this.climbZone = new Rectangle(x + 20, y, width - 40, height - 10);
-		this.climbZoneDown = new Rectangle(x + 20, y + height - 20, width - 40, 40);
+		this.climbZoneDown = new Rectangle(x + 20, y + 120, width - 40, height -100);
 	}
 	
 	public void draw(ShapeRenderer sr) {
