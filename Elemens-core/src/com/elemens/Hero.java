@@ -8,45 +8,55 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Hero extends DynamicGameObject {
 
-	private Rectangle bottom, top, left, right;
-	Rectangle center;
-	boolean canClimb;
+	public CollideBox center, bottom, top, left, right;
+	boolean canClimbUp;
+	boolean canClimbDown;
 
 	public Hero(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		this.bottom = new Rectangle(x + 10, y, width - 20, 10);
-		this.top = new Rectangle(x + 10, y + height - 10, width - 20, 10);
-		this.left = new Rectangle(x, y + 20, 10, height - 40);
-		this.right = new Rectangle(x + width - 10, y + 20, 10, height - 40);
-		this.center = new Rectangle(x + 10, y + 20, width - 20, height - 30);
-		this.canClimb = false;
+		this.bottom = new CollideBox(x, 10, y, 0, width - 20, 10);
+		this.top = new CollideBox(x, 10, y, height - 10, width - 20, 10);
+		this.left = new CollideBox(x, 0,  y, 10, 10, height - 20);
+		this.right = new CollideBox(x, width - 10, y ,10, 10, height - 20);
+		this.center = new CollideBox(x, 20, y, 10, width - 40, height - 20);
+		this.canClimbUp = false;
+		this.canClimbDown = false;
 	}
 
-	public Hitbox isColliding(Rectangle r) {
-		if (this.center.overlaps(r))
+	public Hitbox isCollidingH(Rectangle r) {
+		if (this.left.overlaps(r) && !this.right.overlaps(r) && !this.center.overlaps(r)){
+			return Hitbox.LEFT;
+		}
+		if (this.right.overlaps(r) && !this.left.overlaps(r) && !this.center.overlaps(r)){
+			return Hitbox.RIGHT;
+		}
+		if (this.center.overlaps(r)){
 			return Hitbox.CENTER;
-		if (this.bottom.overlaps(r)) {
-			this.resetJump();
+		}
+		return Hitbox.NONE;
+	}
+
+	public Hitbox isCollidingV(Rectangle r) {
+		if (this.bottom.overlaps(r) && (!this.top.overlaps(r) || this.center.overlaps(r))){
 			return Hitbox.BOTTOM;
 		}
-		if (this.left.overlaps(r))
-			return Hitbox.LEFT;
-		if (this.right.overlaps(r))
-			return Hitbox.RIGHT;
-		if (this.top.overlaps(r))
+		if (this.top.overlaps(r) && !this.bottom.overlaps(r) && this.isMovingUp()){
 			return Hitbox.TOP;
-
+		}
+		if (this.center.overlaps(r)){
+			return Hitbox.CENTER;
+		}
 		return Hitbox.NONE;
 	}
 
 	@Override
 	public void setPosition(float x, float y) {
 		super.setPosition(x, y);
-		this.bottom.setPosition(x + 10, y);
-		this.top.setPosition(x + 10, y + this.body.height - 10);
-		this.left.setPosition(x, y + 20);
-		this.right.setPosition(x + this.body.width - 10, y + 20);
-		this.center.setPosition(x + 10, y + 20);
+		this.bottom.setPosition(x, y);
+		this.top.setPosition(x, y);
+		this.left.setPosition(x, y);
+		this.right.setPosition(x, y);
+		this.center.setPosition(x, y);
 	}
 
 	public void draw(ShapeRenderer sr) {
@@ -63,11 +73,11 @@ public class Hero extends DynamicGameObject {
 	}
 
 	public void updateInput() {
-		if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
-			if (this.canClimb) {
-				this.climb();
-			}
-			this.climb();
+		if (this.canClimbUp) {
+			this.climbUp();
+		}
+		if (this.canClimbDown) {
+			this.climbDown();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			this.moveRight(Gdx.graphics.getDeltaTime());
