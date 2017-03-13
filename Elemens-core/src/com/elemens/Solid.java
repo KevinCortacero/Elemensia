@@ -9,8 +9,8 @@ public class Solid extends GameObject {
 		super(x, y, width, height);
 	}
 
-	public void draw(ShapeRenderer sr) {
-		sr.rect(this.body.x, this.body.y, this.body.width, this.body.height, Color.RED, Color.RED, Color.RED, Color.RED);
+	public void draw(ShapeRenderer sr, Color c) {
+		sr.rect(this.body.x, this.body.y, this.body.width, this.body.height, c, c, c, c);
 	}
 
 }

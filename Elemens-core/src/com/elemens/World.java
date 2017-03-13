@@ -1,8 +1,9 @@
-package com.elemens;
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								package com.elemens;
 
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -13,7 +14,7 @@ public class World implements Disposable{
 
 	private Hero hero;
 	private ArrayList<Solid> solids;
-	private ArrayList<Solid> ladders;
+	private ArrayList<Ladder> ladders;
 	private Texture background;
 	private Texture foreground;
 
@@ -24,18 +25,17 @@ public class World implements Disposable{
 		this.solids.add(new Solid(0, 0, 2000, 140));
 		this.solids.add(new Solid(0, 140, 20, 1000));
 		this.solids.add(new Solid(50, 200, 200, 50));
-		
+
 		// Ladder
-		this.solids.add(new Solid(372, 396, 70, 4));
-		this.solids.add(new Solid(302, 140, 70, 260));
-		this.solids.add(new Solid(442, 380, 70, 20));
-		this.ladders = new ArrayList<Solid>();
-		this.ladders.add(new Solid(372, 140, 70, 260));
+		this.ladders = new ArrayList<Ladder>();
+		this.ladders.add(new Ladder(372, 140, 80, 350));
+		
+		this.solids.add(this.ladders.get(0).top);
 		
 		// Steps
-		/*for (int i = 0; i < 1000; i++){
-			this.solids.add(new Solid(800+i*2, 150+i, 2, 1));
-		}*/
+		for (int i = 0; i < 1000; i++){
+			this.solids.add(new Solid(800+i*40, 140 + i*10, 40, 1));
+		}
 		this.hero = new Hero(600, 200, 74, 107);
 	}
 
@@ -48,46 +48,54 @@ public class World implements Disposable{
 	public void draw(ShapeRenderer sr){
 		this.hero.draw(sr);
 		for (Solid s : this.solids)
-			s.draw(sr);
-		for (Solid s : this.ladders)
+			s.draw(sr, Color.RED);
+		for (Ladder s : this.ladders)
 			s.draw(sr);
 	}
 
 	public void update(){
 		this.hero.update(Gdx.graphics.getDeltaTime());
 		this.hero.canClimb = false;
-		for (Solid l : this.ladders){
-			if (this.hero.center.overlaps(l.body)){
+		for (Ladder l : this.ladders){
+			if (this.hero.center.overlaps(l.climbZone)){
 				this.hero.canClimb = true;
 				break;
 			}
 		}
 		for (Solid s : this.solids){
-			switch(this.hero.isColliding(s.body)){
-			case NONE:
-				break;
+
+			switch(this.hero.isCollidingH(s.body)){
 			case CENTER:
 				break;
-			case BOTTOM:
-				this.hero.stopV(s.body.y + s.body.height);
-				break;
 			case LEFT:
-				if (!this.hero.canClimb)
-					this.hero.stopH(s.body.x + s.body.width +1);
+				this.hero.stopH(s.body.x + s.body.width +1);
 				break;
 			case RIGHT:
-				if (!this.hero.canClimb)
-					this.hero.stopH(s.body.x - this.hero.body.width -1);
+				this.hero.stopH(s.body.x - this.hero.body.width -1);
+				break;
+			default:
+				break;
+			}
+
+			switch(this.hero.isCollidingV(s.body)){
+			case CENTER:
+				break;//this.hero.stopV(s.body.y + s.body.height);
+			case BOTTOM:
+				this.hero.resetJump();
+				this.hero.stopV(s.body.y + s.body.height);
 				break;
 			case TOP:
-				if (!this.hero.canClimb)
+				if (!this.hero.canClimb){
 					this.hero.stopV(s.body.y - this.hero.body.height);
+				}
+				break;
+			default:
 				break;
 			}
 		}
 
 		this.hero.updateInput();
-		
+
 		if (this.hero.body.y < -100){
 			this.hero.setPosition(600, 200);
 		}
