@@ -9,7 +9,8 @@ import com.badlogic.gdx.math.Rectangle;
 public class Hero extends DynamicGameObject {
 
 	public CollideBox center, bottom, top, left, right;
-	boolean canClimb;
+	boolean canClimbUp;
+	boolean canClimbDown;
 
 	public Hero(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -18,7 +19,8 @@ public class Hero extends DynamicGameObject {
 		this.left = new CollideBox(x, 0,  y, 10, 10, height - 20);
 		this.right = new CollideBox(x, width - 10, y ,10, 10, height - 20);
 		this.center = new CollideBox(x, 20, y, 10, width - 40, height - 20);
-		this.canClimb = false;
+		this.canClimbUp = false;
+		this.canClimbDown = false;
 	}
 
 	public Hitbox isCollidingH(Rectangle r) {
@@ -33,12 +35,12 @@ public class Hero extends DynamicGameObject {
 		}
 		return Hitbox.NONE;
 	}
-	
+
 	public Hitbox isCollidingV(Rectangle r) {
 		if (this.bottom.overlaps(r) && (!this.top.overlaps(r) || this.center.overlaps(r))){
 			return Hitbox.BOTTOM;
 		}
-		if (this.top.overlaps(r) && !this.bottom.overlaps(r)){
+		if (this.top.overlaps(r) && !this.bottom.overlaps(r) && this.isMovingUp()){
 			return Hitbox.TOP;
 		}
 		if (this.center.overlaps(r)){
@@ -71,10 +73,11 @@ public class Hero extends DynamicGameObject {
 	}
 
 	public void updateInput() {
-		if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
-			if (this.canClimb) {
-				this.climb();
-			}
+		if (this.canClimbUp) {
+			this.climbUp();
+		}
+		if (this.canClimbDown) {
+			this.climbDown();
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			this.moveRight(Gdx.graphics.getDeltaTime());

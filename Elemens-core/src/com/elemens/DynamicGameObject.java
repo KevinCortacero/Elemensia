@@ -19,6 +19,9 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.sprite.setPosition(x, y);
 	}
 	
+	public boolean isMovingUp(){
+		return (this.velocityY > 0);
+	}
 	public void stopV(float height){
 		this.velocityY = 0;
 		this.setPosition(this.body.x, height);
@@ -42,8 +45,12 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.body.x -= (250 * delta);
 	}
 	
-	public void climb(){
+	public void climbUp(){
 		this.velocityY = 5;
+	}
+	
+	public void climbDown(){
+		this.velocityY = -5;
 	}
 	
 	public void update(float delta){
