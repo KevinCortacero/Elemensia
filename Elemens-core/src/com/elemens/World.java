@@ -35,7 +35,7 @@ public class World implements Disposable {
 
 		// Steps
 		for (int i = 0; i < 1000; i++) {
-			this.solids.add(new Solid(800 + i * 40, 140 + i * 10, 40, 1));
+			this.solids.add(new Solid(800 + i * 20, 140 + i * 10, 20, 1));
 		}
 		this.hero = new Hero(600, 200, 74, 107);
 	}
