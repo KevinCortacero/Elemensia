@@ -66,7 +66,7 @@ public class World implements Disposable {
 	}
 
 	public void update() {
-		this.hero.update(Gdx.graphics.getDeltaTime(), this.gravity);
+		this.hero.update((float)Math.min(Gdx.graphics.getDeltaTime(), 0.035), this.gravity);
 		this.hero.canClimbDown = false;
 		this.hero.canClimbUp = false;
 		this.hero.isOnWater = false;
@@ -91,10 +91,15 @@ public class World implements Disposable {
 		for (Solid w : this.water) {
 			if (this.hero.isOnWater(w.body)){
 				this.hero.isOnWater = true;
+				if (this.hero.isUnderWater(w.body)){
+					this.hero.isUnderWater = true;
+					
+				}
+				else if (this.hero.velocityY < 0.1 && this.hero.velocityY > -0.1){
+					this.hero.velocityY = 0;
+				}
 			}
-			if (this.hero.isUnderWater(w.body)){
-				this.hero.isUnderWater = true;
-			}
+			
 		}
 		for (Solid s : this.solids) {
 

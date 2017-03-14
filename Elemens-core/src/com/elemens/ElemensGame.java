@@ -23,7 +23,6 @@ public class ElemensGame extends ApplicationAdapter {
 		this.sr = new ShapeRenderer();
 		this.world = new World(0.0f, -9.8f);
 		Gdx.app.debug(this.getClass().getName(), "Elemens Game created");
-		
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class ElemensGame extends ApplicationAdapter {
 		this.batch.end();
 		this.sr.begin(ShapeType.Line);
 		this.sr.setProjectionMatrix(camera.combined);
-		this.world.draw(sr);
+		//this.world.draw(sr);
 		this.sr.end();
 		
 		this.world.update();

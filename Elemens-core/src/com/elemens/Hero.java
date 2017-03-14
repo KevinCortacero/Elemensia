@@ -14,6 +14,7 @@ public class Hero extends DynamicGameObject {
 	boolean canClimbDown;
 	public boolean isOnWater;
 	public boolean isUnderWater;
+	public CollideBox waterBox;
 
 	public Hero(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -22,6 +23,7 @@ public class Hero extends DynamicGameObject {
 		this.left = new CollideBox(x, 0,  y, 10, 10, height - 20);
 		this.right = new CollideBox(x, width - 10, y ,10, 10, height - 20);
 		this.center = new CollideBox(x, 20, y, 10, width - 40, height - 20);
+		this.waterBox = new CollideBox(x, 0, y , height*2/3, width, 20);
 		this.canClimbUp = false;
 		this.canClimbDown = false;
 		this.isOnWater = false;
@@ -29,14 +31,20 @@ public class Hero extends DynamicGameObject {
 	}
 
 	public void update(float delta, Vector2 gravity){
-		if (!this.canClimbUp && !this.isOnWater){
+		if (!this.canClimbUp && !this.isUnderWater){
 			this.velocityY += (gravity.y*delta*2.5);
 		}
-		else if (this.isOnWater){
-			this.velocityY += (gravity.y*delta*0.5);
+		if (this.isUnderWater){
+			this.velocityY *= 0.95;
+			if (this.velocityY < 0.5 && this.velocityY > -0.5){
+				this.resetJump();
+			}
 		}
-		if (this.isUnderWater)
-			this.velocityY -= (gravity.y*delta*2);
+
+		if (this.isOnWater){
+			this.velocityY -= (gravity.y*delta);			
+		}
+
 		this.body.y += this.velocityY;
 		this.setPosition(body.x, body.y);
 	}
@@ -75,6 +83,7 @@ public class Hero extends DynamicGameObject {
 		this.left.setPosition(x, y);
 		this.right.setPosition(x, y);
 		this.center.setPosition(x, y);
+		this.waterBox.setPosition(x,y);
 	}
 
 	public void draw(ShapeRenderer sr) {
@@ -84,6 +93,7 @@ public class Hero extends DynamicGameObject {
 		this.drawHitBox(sr, this.bottom, Color.BLUE);
 		this.drawHitBox(sr, this.top, Color.BLUE);
 		this.drawHitBox(sr, this.center, Color.RED);
+		this.drawHitBox(sr, this.waterBox, Color.ORANGE);
 	}
 
 	private void drawHitBox(ShapeRenderer sr, Rectangle r, Color c) {
@@ -121,7 +131,7 @@ public class Hero extends DynamicGameObject {
 	}
 
 	public boolean isUnderWater(Rectangle water) {
-		return (this.top.overlaps(water));
+		return (this.waterBox.overlaps(water));
 	}
 
 }
