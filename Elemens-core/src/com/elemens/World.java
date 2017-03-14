@@ -46,7 +46,8 @@ public class World implements Disposable {
 		for (int i = 0; i < 1000; i++) {
 			this.solids.add(new Solid(800 + i * 20, 140 + i * 10, 20, 1));
 		}*/
-		this.hero = new Hero(200, 200, 74, 107);
+		//this.hero = new Hero(200, 200, 74, 107);
+		this.hero = new Hero(200, 200, 50, 50);
 	}
 
 	public void draw(SpriteBatch sb) {
@@ -67,40 +68,12 @@ public class World implements Disposable {
 
 	public void update() {
 		this.hero.update((float)Math.min(Gdx.graphics.getDeltaTime(), 0.035), this.gravity);
-		this.hero.canClimbDown = false;
-		this.hero.canClimbUp = false;
-		this.hero.isOnWater = false;
-		this.hero.isUnderWater = false;
-		if (Gdx.input.isKeyPressed(Input.Keys.Z)){
-			for (Ladder l : this.ladders) {
-				if (this.hero.center.overlaps(l.climbZone)) {
-					this.hero.canClimbUp = true;
-					break;
-				}
-			}
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.S)){
-			for (Ladder l : this.ladders) {
-				if (this.hero.center.overlaps(l.climbZoneDown)) {
-					this.hero.canClimbDown = true;
-					break;
-				}
-			}
-
-		}
-		for (Solid w : this.water) {
-			if (this.hero.isOnWater(w.body)){
-				this.hero.isOnWater = true;
-				if (this.hero.isUnderWater(w.body)){
-					this.hero.isUnderWater = true;
-					
-				}
-				else if (this.hero.velocityY < 0.1 && this.hero.velocityY > -0.1){
-					this.hero.velocityY = 0;
-				}
-			}
-			
-		}
+		this.hero.canClimbDown = this.isClimbingDown();
+		this.hero.canClimbUp = this.isClimbingUp();
+		this.hero.isOnWater = isOnWater();
+		this.hero.isUnderWater = isUnderWater();
+		
+		
 		for (Solid s : this.solids) {
 
 			switch (this.hero.isCollidingH(s.body)) {
@@ -137,9 +110,53 @@ public class World implements Disposable {
 
 		this.hero.updateInput();
 
+		// DEATH
 		if (this.hero.body.y < -100) {
 			this.hero.setPosition(600, 200);
 		}
+	}
+
+	private boolean isOnWater() {
+		for (Solid w : this.water) {
+			if (this.hero.isOnWater(w.body)){
+				return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	private boolean isUnderWater() {
+		for (Solid w : this.water) {
+			if (this.hero.isUnderWater(w.body)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+
+	private boolean isClimbingUp(){
+		if (!Gdx.input.isKeyPressed(Input.Keys.Z))
+			return false;
+		for (Ladder l : this.ladders) {
+			if (this.hero.center.overlaps(l.climbZone)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean isClimbingDown(){
+		if (!Gdx.input.isKeyPressed(Input.Keys.S))
+			return false;
+		for (Ladder l : this.ladders) {
+			if (this.hero.center.overlaps(l.climbZoneDown)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -150,10 +167,8 @@ public class World implements Disposable {
 
 	public Vector2 getCameraPosition() {
 		float heroX, heroY, camX, camY;
-		heroX = this.hero.getCenterX(); // this.hero.body.x +
-		// this.hero.body.width/2
-		heroY = this.hero.getCenterY(); // this.hero.body.y +
-		// this.hero.body.height/2
+		heroX = this.hero.getCenterX(); 
+		heroY = this.hero.getCenterY(); 
 		if (heroX <= 800) {
 			camX = 800;
 		} else if (heroX >= 6880) {

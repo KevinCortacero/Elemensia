@@ -13,7 +13,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	
 	public DynamicGameObject(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		this.sprite = new Sprite(new Texture("papyrus.png"));
+		this.sprite = new Sprite(new Texture("BlizzIdleRight.png"));
 		this.velocityY = 0;
 		this.jumpCount = 1;
 		this.sprite.setPosition(x, y);

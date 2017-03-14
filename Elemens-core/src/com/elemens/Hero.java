@@ -42,7 +42,7 @@ public class Hero extends DynamicGameObject {
 		}
 
 		if (this.isOnWater){
-			this.velocityY -= (gravity.y*delta);			
+			this.velocityY -= (gravity.y*delta*1.25);			
 		}
 
 		this.body.y += this.velocityY;
@@ -87,17 +87,13 @@ public class Hero extends DynamicGameObject {
 	}
 
 	public void draw(ShapeRenderer sr) {
-		// this.drawHitBox(sr, this.body, Color.GOLD);
-		this.drawHitBox(sr, this.left, Color.GREEN);
-		this.drawHitBox(sr, this.right, Color.GREEN);
-		this.drawHitBox(sr, this.bottom, Color.BLUE);
-		this.drawHitBox(sr, this.top, Color.BLUE);
-		this.drawHitBox(sr, this.center, Color.RED);
-		this.drawHitBox(sr, this.waterBox, Color.ORANGE);
-	}
-
-	private void drawHitBox(ShapeRenderer sr, Rectangle r, Color c) {
-		sr.rect(r.x, r.y, r.width, r.height, c, c, c, c);
+		this.body.draw(sr, Color.GOLD);
+		this.left.draw(sr, Color.GREEN); 
+		this.right.draw(sr, Color.GREEN);
+		this.bottom.draw(sr, Color.BLUE);
+		this.top.draw(sr, Color.BLUE);
+		this.center.draw(sr, Color.RED);
+		this.waterBox.draw(sr, Color.ORANGE);
 	}
 
 	public void updateInput() {

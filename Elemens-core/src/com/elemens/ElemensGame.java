@@ -38,7 +38,7 @@ public class ElemensGame extends ApplicationAdapter {
 		this.batch.end();
 		this.sr.begin(ShapeType.Line);
 		this.sr.setProjectionMatrix(camera.combined);
-		//this.world.draw(sr);
+		this.world.draw(sr);
 		this.sr.end();
 		
 		this.world.update();
