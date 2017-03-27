@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class ElemensGame extends ApplicationAdapter {
 	
+	private static final boolean DEBUG = true;
 	private SpriteBatch batch;
 	private ShapeRenderer sr;
 	private OrthographicCamera camera;
@@ -34,11 +35,12 @@ public class ElemensGame extends ApplicationAdapter {
 		
 		this.batch.setProjectionMatrix(camera.combined);
 		this.batch.begin();
-		this.world.draw(this.batch);
+		this.world.draw(this.batch, Gdx.graphics.getDeltaTime());
 		this.batch.end();
 		this.sr.begin(ShapeType.Line);
 		this.sr.setProjectionMatrix(camera.combined);
-		this.world.draw(sr);
+		if(DEBUG)
+			this.world.draw(sr);
 		this.sr.end();
 		
 		this.world.update();

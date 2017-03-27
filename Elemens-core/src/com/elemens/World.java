@@ -50,9 +50,9 @@ public class World implements Disposable {
 		this.hero = new Hero(200, 200, 50, 50);
 	}
 
-	public void draw(SpriteBatch sb) {
+	public void draw(SpriteBatch sb, float delta) {
 		sb.draw(this.background, 0, 0);
-		this.hero.draw(sb);
+		this.hero.draw(sb, delta);
 		sb.draw(this.foreground, 0, 0);
 	}
 

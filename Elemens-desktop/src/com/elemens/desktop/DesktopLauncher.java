@@ -10,7 +10,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Elemens";
-		config.useGL30 = false;
+		//config.useGL30 = false;
 		config.width = 1600;
 		config.height = 900;
 		Application app = new LwjglApplication(new ElemensGame(), config);

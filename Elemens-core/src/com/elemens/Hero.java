@@ -115,11 +115,11 @@ public class Hero extends DynamicGameObject {
 	}
 
 	public float getCenterX() {
-		return this.body.x + this.body.width / 2;
+		return this.center.x + this.center.width / 2;
 	}
 
 	public float getCenterY() {
-		return this.body.y + this.body.height / 2;
+		return this.center.y + this.center.height / 2;
 	}
 
 	public boolean isOnWater(Rectangle water) {
@@ -129,5 +129,4 @@ public class Hero extends DynamicGameObject {
 	public boolean isUnderWater(Rectangle water) {
 		return (this.waterBox.overlaps(water));
 	}
-
 }
