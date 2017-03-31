@@ -1,49 +1,54 @@
 package com.elemens;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Disposable;
 
 public abstract class DynamicGameObject extends GameObject implements Disposable {
-
-	private static final String[] STATES = {"IDLE_RIGHT", "IDLE_LEFT", "WALK_RIGHT", "WALK_LEFT", 
-											"JUMP_RIGHT", "JUMP_LEFT", "SWIM_RIGHT", "SWIM_LEFT", "CLIMB"};
-	private Map<String, Animation<TextureRegion>> animations;
-	protected Texture sprite;
+	
+	private WaterAbility waterAbility;
+	protected CollideManager collideManager;
 	protected float velocityY;
 	private int jumpCount;
-	private float timer;
 	private String state;
+	private SpriteAnimation sprite;
 
-	public DynamicGameObject(int x, int y, int width, int height) {
+	public DynamicGameObject(int x, int y, int width, int height, String[] states, String spritePath) {
 		super(x, y, width, height);
-		this.sprite = new Texture("Blizz.png");
-		this.state = STATES[0];
-		// new Sprite(new TextureRegion(, 50, 0, 50, 50));
+		this.sprite = new SpriteAnimation(width, height, states,spritePath);
+		this.state = states[0];
+		this.setState(0);
 		this.velocityY = 0;
 		this.jumpCount = 1;
-		this.timer = 0;
-
+		this.collideManager = new CollideManager(x, y, width, height);
+		this.waterAbility = new WaterAbility(x, y, width, height);
+	}
+	
+	public void update(){
+		this.waterAbility.update();
 		
-		TextureRegion[][] tmp = TextureRegion.split(this.sprite, width, height);
-
-		this.animations = new HashMap<String, Animation<TextureRegion>>();
-		for (int j = 0; j < STATES.length; j++){
-			TextureRegion[] animation = new TextureRegion[6];
-			for (int i = 0; i < 6; i++) {
-				animation[i] = tmp[j][i];
-			}
-			this.animations.put(STATES[j], new Animation<TextureRegion>(0.15f, animation));
+	}
+	
+	public void draw(ShapeRenderer sr) {
+		this.body.draw(sr, Color.GOLD);
+		this.collideManager.draw(sr);
+		this.waterAbility.draw(sr);
+	}
+	
+	public void updateAnimation(float delta){
+		this.sprite.update(delta);
+	}
+	
+	private void setState(int i) {
+		if (!this.state.equals(Hero.STATES[i])){
+			this.state = Hero.STATES[i];
+			this.sprite.reset();
 		}
 	}
 
 	public boolean isMovingUp() {
-		return (this.velocityY > 0);
+		return (this.velocityY > 0); 
 	}
 
 	public void stopV(float height) {
@@ -58,32 +63,35 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	public void setPosition(float x, float y) {
 		this.body.x = x;
 		this.body.y = y;
+		this.collideManager.setPosition(x, y);
+		this.waterAbility.setPosition(x, y);
 	}
 
 	public void moveRight(float delta) {
 		this.body.x += (250 * delta);
-		this.state = STATES[2];
+		this.setState(2);
 	}
 
 	public void moveLeft(float delta) {
 		this.body.x -= (250 * delta);
-		this.state = STATES[3];
+		this.setState(3);
 	}
 
 	public void climbUp() {
 		this.velocityY = 5;
-		this.state = STATES[8];
+		this.setState(8);
 	}
 
 	public void climbDown() {
 		this.velocityY = -5;
-		this.state = STATES[8];
+		this.setState(8);
 	}
 
 	public void jump() {
 		if (this.jumpCount > 0) {
 			this.velocityY = 10;
 			this.jumpCount--;
+			this.setState(4);
 		}
 	}
 
@@ -92,8 +100,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	}
 
 	public void draw(SpriteBatch batch, float delta) {
-		this.timer += delta;
-		batch.draw(this.animations.get(this.state).getKeyFrame(this.timer, true), this.body.x, this.body.y);
+		batch.draw(this.sprite.getCurrentAnimation(this.state), this.body.x, this.body.y);
 	}
 
 	@Override

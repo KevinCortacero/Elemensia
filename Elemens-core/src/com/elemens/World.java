@@ -68,15 +68,12 @@ public class World implements Disposable {
 
 	public void update() {
 		this.hero.update((float)Math.min(Gdx.graphics.getDeltaTime(), 0.035), this.gravity);
-		this.hero.canClimbDown = this.isClimbingDown();
-		this.hero.canClimbUp = this.isClimbingUp();
-		this.hero.isOnWater = isOnWater();
-		this.hero.isUnderWater = isUnderWater();
+		
 		
 		
 		for (Solid s : this.solids) {
 
-			switch (this.hero.isCollidingH(s.body)) {
+			switch (this.hero.isCollidingHorizontal(s.body)) {
 			case CENTER:
 				break;
 			case LEFT:
@@ -89,7 +86,7 @@ public class World implements Disposable {
 				break;
 			}
 
-			switch (this.hero.isCollidingV(s.body)) {
+			switch (this.hero.isCollidingVertical(s.body)) {
 			case CENTER:
 				break;
 			case BOTTOM:
@@ -114,49 +111,6 @@ public class World implements Disposable {
 		if (this.hero.body.y < -100) {
 			this.hero.setPosition(600, 200);
 		}
-	}
-
-	private boolean isOnWater() {
-		for (Solid w : this.water) {
-			if (this.hero.isOnWater(w.body)){
-				return true;
-			}
-			
-		}
-		return false;
-	}
-	
-	private boolean isUnderWater() {
-		for (Solid w : this.water) {
-			if (this.hero.isUnderWater(w.body)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	
-
-	private boolean isClimbingUp(){
-		if (!Gdx.input.isKeyPressed(Input.Keys.Z))
-			return false;
-		for (Ladder l : this.ladders) {
-			if (this.hero.center.overlaps(l.climbZone)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean isClimbingDown(){
-		if (!Gdx.input.isKeyPressed(Input.Keys.S))
-			return false;
-		for (Ladder l : this.ladders) {
-			if (this.hero.center.overlaps(l.climbZoneDown)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.elemens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -7,94 +9,59 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class Hero extends DynamicGameObject {
+public class Hero extends AliveGameObject {
 
-	public CollideBox center, bottom, top, left, right;
+	public static final String[] STATES = {"IDLE_RIGHT", "IDLE_LEFT", "WALK_RIGHT", "WALK_LEFT", 
+			"JUMP_RIGHT", "JUMP_LEFT", "SWIM_RIGHT", "SWIM_LEFT", "CLIMB"};
+
 	boolean canClimbUp;
 	boolean canClimbDown;
-	public boolean isOnWater;
-	public boolean isUnderWater;
-	public CollideBox waterBox;
 
-	public Hero(int x, int y, int width, int height) {
-		super(x, y, width, height);
-		this.bottom = new CollideBox(x, 10, y, 0, width - 20, 10);
-		this.top = new CollideBox(x, 10, y, height - 10, width - 20, 10);
-		this.left = new CollideBox(x, 0,  y, 10, 10, height - 20);
-		this.right = new CollideBox(x, width - 10, y ,10, 10, height - 20);
-		this.center = new CollideBox(x, 20, y, 10, width - 40, height - 20);
-		this.waterBox = new CollideBox(x, 0, y , height*2/3, width, 20);
+	public Hero(int x, int y, int width, int height) {               
+		super(x, y, width, height, STATES, "Blizz.png", 100);
 		this.canClimbUp = false;
 		this.canClimbDown = false;
-		this.isOnWater = false;
-		this.isUnderWater = false;
 	}
 
 	public void update(float delta, Vector2 gravity){
-		if (!this.canClimbUp && !this.isUnderWater){
+		super.update();
+		
+		if (!this.canClimbUp && !this.isUnderWater()){
 			this.velocityY += (gravity.y*delta*2.5);
 		}
-		if (this.isUnderWater){
+		
+		if (this.isUnderWater()){
 			this.velocityY *= 0.95;
 			if (this.velocityY < 0.5 && this.velocityY > -0.5){
 				this.resetJump();
 			}
 		}
 
-		if (this.isOnWater){
+		if (this.isOnWater()){
 			this.velocityY -= (gravity.y*delta*1.25);			
 		}
-
+		
+		//  ANIMATION
+		this.updateAnimation(delta);
+		
+		// GRAVITY
 		this.body.y += this.velocityY;
 		this.setPosition(body.x, body.y);
+		
+		// CLIMB
+		this.canClimbDown = this.isClimbingDown();
+		this.canClimbUp = this.isClimbingUp(null);
 	}
 
-	public Hitbox isCollidingH(Rectangle r) {
-		if (this.left.overlaps(r) && !this.right.overlaps(r) && !this.center.overlaps(r)){
-			return Hitbox.LEFT;
-		}
-		if (this.right.overlaps(r) && !this.left.overlaps(r) && !this.center.overlaps(r)){
-			return Hitbox.RIGHT;
-		}
-		if (this.center.overlaps(r)){
-			return Hitbox.CENTER;
-		}
-		return Hitbox.NONE;
+	public Hitbox isCollidingHorizontal(Rectangle r) {
+		return this.collideManager.isCollidingHorizontal(r);
 	}
 
-	public Hitbox isCollidingV(Rectangle r) {
-		if (this.bottom.overlaps(r) && (!this.top.overlaps(r) || this.center.overlaps(r))){
-			return Hitbox.BOTTOM;
-		}
-		if (this.top.overlaps(r) && !this.bottom.overlaps(r) && this.isMovingUp()){
-			return Hitbox.TOP;
-		}
-		if (this.center.overlaps(r)){
-			return Hitbox.CENTER;
-		}
-		return Hitbox.NONE;
+	public Hitbox isCollidingVertical(Rectangle r) {
+		return this.collideManager.isCollidingVertical(r, this.isMovingUp());
 	}
 
-	@Override
-	public void setPosition(float x, float y) {
-		super.setPosition(x, y);
-		this.bottom.setPosition(x, y);
-		this.top.setPosition(x, y);
-		this.left.setPosition(x, y);
-		this.right.setPosition(x, y);
-		this.center.setPosition(x, y);
-		this.waterBox.setPosition(x,y);
-	}
 
-	public void draw(ShapeRenderer sr) {
-		this.body.draw(sr, Color.GOLD);
-		this.left.draw(sr, Color.GREEN); 
-		this.right.draw(sr, Color.GREEN);
-		this.bottom.draw(sr, Color.BLUE);
-		this.top.draw(sr, Color.BLUE);
-		this.center.draw(sr, Color.RED);
-		this.waterBox.draw(sr, Color.ORANGE);
-	}
 
 	public void updateInput() {
 		if (this.canClimbUp) {
@@ -114,19 +81,60 @@ public class Hero extends DynamicGameObject {
 		}
 	}
 
-	public float getCenterX() {
-		return this.center.x + this.center.width / 2;
-	}
-
-	public float getCenterY() {
-		return this.center.y + this.center.height / 2;
-	}
-
 	public boolean isOnWater(Rectangle water) {
 		return (this.body.overlaps(water));
 	}
 
 	public boolean isUnderWater(Rectangle water) {
 		return (this.waterBox.overlaps(water));
+	}
+
+	private boolean isOnWater() {
+		for (Solid w : this.water) {
+			if (this.hero.isOnWater(w.body)){
+				return true;
+			}
+
+		}
+		return false;
+	}
+
+	private boolean isUnderWater() {
+		for (Solid w : this.water) {
+			if (this.hero.isUnderWater(w.body)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isClimbingUp(ArrayList<Ladder> ladders){
+		if (!Gdx.input.isKeyPressed(Input.Keys.Z))
+			return false;
+		for (Ladder l : ladders) {
+			if (this.center.overlaps(l.climbZone)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isClimbingDown(){
+		if (!Gdx.input.isKeyPressed(Input.Keys.S))
+			return false;
+		for (Ladder l : this.ladders) {
+			if (this.hero.center.overlaps(l.climbZoneDown)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public float getCenterX() {
+		return this.collideManager.getCenterX();
+	}
+	
+	public float getCenterY() {
+		return this.collideManager.getCenterY();
 	}
 }
