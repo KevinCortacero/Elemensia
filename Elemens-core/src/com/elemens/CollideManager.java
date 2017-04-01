@@ -65,4 +65,8 @@ public class CollideManager {
 	public float getCenterY() {
 		return this.center.y + this.center.height / 2;
 	}
+
+	public CollideBox getCenterBox() {
+		return this.center;
+	}
 }

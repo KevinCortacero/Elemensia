@@ -1,8 +1,12 @@
 package com.elemens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 public abstract class DynamicGameObject extends GameObject implements Disposable {
@@ -25,8 +29,29 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.waterAbility = new WaterAbility(x, y, width, height);
 	}
 	
-	public void update(){
-		this.waterAbility.update();
+	public void update(float delta, Vector2 gravity, boolean canClimbUp, ArrayList<Solid> water){
+		this.waterAbility.update(water, this.isOnWater(water));
+		if (!canClimbUp && !this.waterAbility.isUnderWater){
+			this.velocityY += (gravity.y*delta*2.5);
+		}
+		
+		if (this.waterAbility.isUnderWater){
+			this.velocityY *= 0.95;
+			if (this.velocityY < 0.5 && this.velocityY > -0.5){
+				this.resetJump();
+			}
+		}
+
+		if (this.waterAbility.isOnWater){
+			this.velocityY -= (gravity.y*delta*1.25);			
+		}
+		
+		//  ANIMATION
+		this.updateAnimation(delta);
+		
+		// GRAVITY
+		this.body.y += this.velocityY;
+		this.setPosition(body.x, body.y);
 		
 	}
 	
@@ -38,6 +63,16 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	
 	public void updateAnimation(float delta){
 		this.sprite.update(delta);
+	}
+	
+	private boolean isOnWater(ArrayList<Solid> water) {
+		for (Solid w : water) {
+			if (this.body.overlaps(w.body)){
+				return true;
+			}
+
+		}
+		return false;
 	}
 	
 	private void setState(int i) {
@@ -56,6 +91,10 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.setPosition(this.body.x, height);
 	}
 
+	public boolean isOnWater(Rectangle water) {
+		return (this.body.overlaps(water));
+	}
+	
 	public void stopH(float width) {
 		this.setPosition(width, this.body.y);
 	}

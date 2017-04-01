@@ -38,7 +38,7 @@ public class World implements Disposable {
 
 		// Ladder
 		this.ladders = new ArrayList<Ladder>();
-		this.ladders.add(new Ladder(372, 140, 80, 350));
+		this.ladders.add(new Ladder(372, 140, 80, 250));
 
 		this.solids.add(this.ladders.get(0).top);
 
@@ -67,7 +67,7 @@ public class World implements Disposable {
 	}
 
 	public void update() {
-		this.hero.update((float)Math.min(Gdx.graphics.getDeltaTime(), 0.035), this.gravity);
+		this.hero.update((float)Math.min(Gdx.graphics.getDeltaTime(), 0.035), this.gravity, this.water, this.ladders);
 		
 		
 		

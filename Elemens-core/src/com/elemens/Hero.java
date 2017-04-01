@@ -23,34 +23,14 @@ public class Hero extends AliveGameObject {
 		this.canClimbDown = false;
 	}
 
-	public void update(float delta, Vector2 gravity){
-		super.update();
+	public void update(float delta, Vector2 gravity, ArrayList<Solid> water, ArrayList<Ladder> ladders){
+		super.update(delta, gravity, canClimbDown, water);
 		
-		if (!this.canClimbUp && !this.isUnderWater()){
-			this.velocityY += (gravity.y*delta*2.5);
-		}
 		
-		if (this.isUnderWater()){
-			this.velocityY *= 0.95;
-			if (this.velocityY < 0.5 && this.velocityY > -0.5){
-				this.resetJump();
-			}
-		}
-
-		if (this.isOnWater()){
-			this.velocityY -= (gravity.y*delta*1.25);			
-		}
-		
-		//  ANIMATION
-		this.updateAnimation(delta);
-		
-		// GRAVITY
-		this.body.y += this.velocityY;
-		this.setPosition(body.x, body.y);
 		
 		// CLIMB
-		this.canClimbDown = this.isClimbingDown();
-		this.canClimbUp = this.isClimbingUp(null);
+		this.canClimbDown = this.isClimbingDown(ladders);
+		this.canClimbUp = this.isClimbingUp(ladders);
 	}
 
 	public Hitbox isCollidingHorizontal(Rectangle r) {
@@ -81,49 +61,22 @@ public class Hero extends AliveGameObject {
 		}
 	}
 
-	public boolean isOnWater(Rectangle water) {
-		return (this.body.overlaps(water));
-	}
-
-	public boolean isUnderWater(Rectangle water) {
-		return (this.waterBox.overlaps(water));
-	}
-
-	private boolean isOnWater() {
-		for (Solid w : this.water) {
-			if (this.hero.isOnWater(w.body)){
-				return true;
-			}
-
-		}
-		return false;
-	}
-
-	private boolean isUnderWater() {
-		for (Solid w : this.water) {
-			if (this.hero.isUnderWater(w.body)){
-				return true;
-			}
-		}
-		return false;
-	}
-
 	private boolean isClimbingUp(ArrayList<Ladder> ladders){
 		if (!Gdx.input.isKeyPressed(Input.Keys.Z))
 			return false;
 		for (Ladder l : ladders) {
-			if (this.center.overlaps(l.climbZone)) {
+			if (this.collideManager.getCenterBox().overlaps(l.climbZone)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean isClimbingDown(){
+	private boolean isClimbingDown(ArrayList<Ladder> ladders){
 		if (!Gdx.input.isKeyPressed(Input.Keys.S))
 			return false;
-		for (Ladder l : this.ladders) {
-			if (this.hero.center.overlaps(l.climbZoneDown)) {
+		for (Ladder l : ladders) {
+			if (this.collideManager.getCenterBox().overlaps(l.climbZoneDown)) {
 				return true;
 			}
 		}
