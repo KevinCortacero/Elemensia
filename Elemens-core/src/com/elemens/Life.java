@@ -18,4 +18,9 @@ public class Life {
 		this.healthPoint = this.maxHealthPoint;
 	}
 	
+	@Override
+	public String toString() {
+		return this.healthPoint + " / " + this.maxHealthPoint;
+	}
+	
 }

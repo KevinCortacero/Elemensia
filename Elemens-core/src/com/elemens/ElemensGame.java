@@ -10,44 +10,22 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class ElemensGame extends ApplicationAdapter {
 	
-	private static final boolean DEBUG = true;
-	private SpriteBatch batch;
-	private ShapeRenderer sr;
-	private OrthographicCamera camera;
-	private World world;
+	
 	
 	@Override
 	public void create () {
-		this.camera = new OrthographicCamera();
-		this.camera.setToOrtho(false, 1600, 900);
-		this.batch = new SpriteBatch();
-		this.sr = new ShapeRenderer();
-		this.world = new World(0.0f, -9.8f);
-		Gdx.app.debug(this.getClass().getName(), "Elemens Game created");
+		
 	}
 
 	@Override
 	public void render () {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		this.camera.position.set(this.world.getCameraPosition(), 0);
-		this.camera.update();
 		
-		this.batch.setProjectionMatrix(camera.combined);
-		this.batch.begin();
-		this.world.draw(this.batch, Gdx.graphics.getDeltaTime());
-		this.batch.end();
-		this.sr.begin(ShapeType.Line);
-		this.sr.setProjectionMatrix(camera.combined);
-		if(DEBUG)
-			this.world.draw(sr);
-		this.sr.end();
-		
-		this.world.update();
 	}
 	
 	@Override
 	public void dispose () {
-		this.batch.dispose();
+		
 	}
 }

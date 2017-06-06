@@ -2,7 +2,6 @@ package com.elemens;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,10 +17,10 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	private String state;
 	private SpriteAnimation sprite;
 
-	public DynamicGameObject(int x, int y, int width, int height, String[] states, String spritePath) {
+	public DynamicGameObject(int x, int y, int width, int height, SpriteAnimation sprite) {
 		super(x, y, width, height);
-		this.sprite = new SpriteAnimation(width, height, states,spritePath);
-		this.state = states[0];
+		this.sprite = sprite;
+		this.state = sprite.getDefaultState();
 		this.setState(0);
 		this.velocityY = 0;
 		this.jumpCount = 1;
@@ -29,12 +28,15 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.waterAbility = new WaterAbility(x, y, width, height);
 	}
 	
-	public void update(float delta, Vector2 gravity, boolean canClimbUp, ArrayList<Solid> water){
+	public void update(float delta, Vector2 gravity, boolean canClimbUp, ArrayList<WaterArea> water){
 		this.waterAbility.update(water, this.isOnWater(water));
+		
+		// normal gravity
 		if (!canClimbUp && !this.waterAbility.isUnderWater){
-			this.velocityY += (gravity.y*delta*2.5);
+			this.velocityY += (gravity.y*delta*3);
 		}
 		
+		// under water
 		if (this.waterAbility.isUnderWater){
 			this.velocityY *= 0.95;
 			if (this.velocityY < 0.5 && this.velocityY > -0.5){
@@ -42,6 +44,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 			}
 		}
 
+		// on water
 		if (this.waterAbility.isOnWater){
 			this.velocityY -= (gravity.y*delta*1.25);			
 		}
@@ -50,13 +53,57 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.updateAnimation(delta);
 		
 		// GRAVITY
-		this.body.y += this.velocityY;
-		this.setPosition(body.x, body.y);
+		this.setY(this.getY() + this.velocityY);
+		this.setPosition(this.getBody().x, this.getBody().y);
 		
+	}
+
+	public Hitbox isCollidingHorizontal(Rectangle r) {
+		return this.collideManager.isCollidingHorizontal(r);
+	}
+
+	public Hitbox isCollidingVertical(Rectangle r) {
+		return this.collideManager.isCollidingVertical(r, this.isMovingUp());
+	}
+	
+	public void updateColliding(ArrayList<Solid> solids, boolean canClimbDown, boolean canClimbUp) {
+		for (Solid s : solids) {
+
+			switch (this.isCollidingHorizontal(s.getBody())) {
+			case CENTER:
+				break;
+			case LEFT:
+				this.stopH(s.getX() + s.getWidth() + 1);
+				break;
+			case RIGHT:
+				this.stopH(s.getX() - this.getWidth() - 1);
+				break;
+			default:
+				break;
+			}
+
+			switch (this.isCollidingVertical(s.getBody())) {
+			case CENTER:
+				break;
+			case BOTTOM:
+				if (!canClimbDown) {
+					this.resetJump();
+					this.stopV(s.getY() + s.getHeight());
+				}
+				break;
+			case TOP:
+				if (!canClimbUp) {
+					this.stopV(s.getY() - this.getHeight());
+				}
+				break;
+			default:
+				break;
+			}
+		}
 	}
 	
 	public void draw(ShapeRenderer sr) {
-		this.body.draw(sr, Color.GOLD);
+		super.draw(sr);
 		this.collideManager.draw(sr);
 		this.waterAbility.draw(sr);
 	}
@@ -65,9 +112,9 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.sprite.update(delta);
 	}
 	
-	private boolean isOnWater(ArrayList<Solid> water) {
-		for (Solid w : water) {
-			if (this.body.overlaps(w.body)){
+	private boolean isOnWater(ArrayList<WaterArea> water) {
+		for (WaterArea w : water) {
+			if (this.getBody().overlaps(w.getBody())){
 				return true;
 			}
 
@@ -76,8 +123,8 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	}
 	
 	private void setState(int i) {
-		if (!this.state.equals(Hero.STATES[i])){
-			this.state = Hero.STATES[i];
+		if (!this.state.equals(Hero.HERO_STATES[i])){
+			this.state = Hero.HERO_STATES[i];
 			this.sprite.reset();
 		}
 	}
@@ -88,31 +135,26 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 
 	public void stopV(float height) {
 		this.velocityY = 0;
-		this.setPosition(this.body.x, height);
-	}
-
-	public boolean isOnWater(Rectangle water) {
-		return (this.body.overlaps(water));
+		this.setPosition(this.getBody().x, height);
 	}
 	
 	public void stopH(float width) {
-		this.setPosition(width, this.body.y);
+		this.setPosition(width, this.getBody().y);
 	}
 
 	public void setPosition(float x, float y) {
-		this.body.x = x;
-		this.body.y = y;
+		super.setPosition(x, y);
 		this.collideManager.setPosition(x, y);
 		this.waterAbility.setPosition(x, y);
 	}
 
 	public void moveRight(float delta) {
-		this.body.x += (250 * delta);
+		this.setX(this.getX() + 250 * delta);
 		this.setState(2);
 	}
 
 	public void moveLeft(float delta) {
-		this.body.x -= (250 * delta);
+		this.setX(this.getX() - 250 * delta);
 		this.setState(3);
 	}
 
@@ -139,7 +181,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	}
 
 	public void draw(SpriteBatch batch, float delta) {
-		batch.draw(this.sprite.getCurrentAnimation(this.state), this.body.x, this.body.y);
+		batch.draw(this.sprite.getCurrentAnimation(this.state), this.getBody().x, this.getBody().y);
 	}
 
 	@Override

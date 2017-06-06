@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 
 public class WaterAbility {
 
@@ -26,14 +25,14 @@ public class WaterAbility {
 		this.waterBox.draw(sr, Color.ORANGE);
 	}
 
-	public void update(ArrayList<Solid> water, boolean isOnWater) {
+	public void update(ArrayList<WaterArea> water, boolean isOnWater) {
 		this.isOnWater = isOnWater;
 		this.isUnderWater = isUnderWater(water);
 	}
 
-	private boolean isUnderWater(ArrayList<Solid> water) {
-		for (Solid w : water) {
-			if (this.waterBox.overlaps(w.body)){
+	private boolean isUnderWater(ArrayList<WaterArea> water) {
+		for (WaterArea w : water) {
+			if (this.waterBox.overlaps(w.getBody())){
 				return true;
 			}
 		}

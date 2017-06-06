@@ -3,6 +3,7 @@ package com.elemens;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,11 +13,12 @@ public class SpriteAnimation {
 	private Map<String, Animation<TextureRegion>> animations;
 	protected Texture sprite;
 	private float timer;
+	private String defaultState;
 	
 	public SpriteAnimation(int width, int height, String[] states, String spritePath) {
-		this.sprite = new Texture(spritePath);
+		this.sprite = Utility.getTextureAsset(spritePath);
 		this.timer = 0;
-
+		this.defaultState = states[0];
 		TextureRegion[][] tmp = TextureRegion.split(this.sprite, width, height);
 
 		this.animations = new HashMap<String, Animation<TextureRegion>>();
@@ -27,6 +29,7 @@ public class SpriteAnimation {
 			}
 			this.animations.put(states[j], new Animation<TextureRegion>(0.15f, animation));
 		}
+		Gdx.app.debug("SpriteAnimation", "animations loaded " + spritePath + " !");
 	}
 
 	public void reset() {
@@ -43,5 +46,9 @@ public class SpriteAnimation {
 
 	public void dispose() {
 		this.sprite.dispose();
+	}
+
+	public String getDefaultState() {
+		return this.defaultState;
 	}
 }
