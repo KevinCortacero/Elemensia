@@ -1,89 +1,181 @@
 package com.elemens;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 public abstract class DynamicGameObject extends GameObject implements Disposable {
-
-	private static final String[] STATES = {"IDLE_RIGHT", "IDLE_LEFT", "WALK_RIGHT", "WALK_LEFT", 
-											"JUMP_RIGHT", "JUMP_LEFT", "SWIM_RIGHT", "SWIM_LEFT", "CLIMB"};
-	private Map<String, Animation<TextureRegion>> animations;
-	protected Texture sprite;
+	
+	
+	protected CollideManager collideManager;
+	private WaterAbility waterAbility;
 	protected float velocityY;
 	private int jumpCount;
-	private float timer;
 	private String state;
+	private SpriteAnimation sprite;
+	private float timer;
 
-	public DynamicGameObject(int x, int y, int width, int height) {
+	public DynamicGameObject(int x, int y, int width, int height, SpriteAnimation sprite) {
 		super(x, y, width, height);
-		this.sprite = new Texture("Blizz.png");
-		this.state = STATES[0];
-		// new Sprite(new TextureRegion(, 50, 0, 50, 50));
+		this.waterAbility = new WaterAbility(x, y, width, height);
+		this.sprite = sprite;
+		this.state = sprite.getDefaultState();
+		this.setState(0);
 		this.velocityY = 0;
 		this.jumpCount = 1;
 		this.timer = 0;
+		this.collideManager = new CollideManager(x, y, width, height);
+	}
+	
+	public void update(float delta, Vector2 gravity, boolean canClimbUp, ArrayList<WaterArea> water){
+		this.waterAbility.update(water, this.isOnWater(water));
 
-		
-		TextureRegion[][] tmp = TextureRegion.split(this.sprite, width, height);
+		this.waterAbility.isUnderWater = World.isUnderWater(this);
+		// normal gravity
+		if (!canClimbUp && !this.waterAbility.isUnderWater){
+			this.velocityY += (gravity.y*delta*3);
+		}
 
-		this.animations = new HashMap<String, Animation<TextureRegion>>();
-		for (int j = 0; j < STATES.length; j++){
-			TextureRegion[] animation = new TextureRegion[6];
-			for (int i = 0; i < 6; i++) {
-				animation[i] = tmp[j][i];
+		// under water
+		if (this.waterAbility.isUnderWater){
+			this.velocityY *= 0.95;
+			if (this.velocityY < 0.5 && this.velocityY > -0.5){
+				this.resetJump();
 			}
-			this.animations.put(STATES[j], new Animation<TextureRegion>(0.15f, animation));
+		}
+
+		// on water
+		if (this.waterAbility.isOnWater){
+			this.velocityY -= (gravity.y*delta*1.25);			
+		}
+		//  ANIMATION
+		this.updateAnimation(delta);
+		
+		// GRAVITY
+		this.setY(this.getY() + this.velocityY);
+		this.setPosition(this.getBody().x, this.getBody().y);
+		
+	}
+
+	public Hitbox isCollidingHorizontal(Rectangle r) {
+		return this.collideManager.isCollidingHorizontal(r);
+	}
+
+	public Hitbox isCollidingVertical(Rectangle r) {
+		return this.collideManager.isCollidingVertical(r, this.isMovingUp());
+	}
+	
+	public void updateColliding(ArrayList<Solid> solids, boolean canClimbDown, boolean canClimbUp) {
+		for (Solid s : solids) {
+
+			switch (this.isCollidingHorizontal(s.getBody())) {
+			case CENTER:
+				break;
+			case LEFT:
+				this.stopH(s.getX() + s.getWidth() + 1);
+				break;
+			case RIGHT:
+				this.stopH(s.getX() - this.getWidth() - 1);
+				break;
+			default:
+				break;
+			}
+
+			switch (this.isCollidingVertical(s.getBody())) {
+			case CENTER:
+				break;
+			case BOTTOM:
+				if (!canClimbDown) {
+					this.resetJump();
+					this.stopV(s.getY() + s.getHeight());
+				}
+				break;
+			case TOP:
+				if (!canClimbUp) {
+					this.stopV(s.getY() - this.getHeight());
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	public void draw(ShapeRenderer sr) {
+		super.draw(sr);
+		this.collideManager.draw(sr);
+		this.waterAbility.draw(sr);
+	}
+	
+	public void updateAnimation(float delta){
+		this.timer += delta;
+	}
+	
+	protected boolean isOnWater(ArrayList<WaterArea> water) {
+		for (WaterArea w : water) {
+			if (this.getBody().overlaps(w.getBody())){
+				return true;
+			}
+
+		}
+		return false;
+	}
+	
+	private void setState(int i) {
+		if (!this.state.equals(Hero.HERO_STATES[i])){
+			this.state = Hero.HERO_STATES[i];
+			this.timer = 0;
 		}
 	}
 
 	public boolean isMovingUp() {
-		return (this.velocityY > 0);
+		return (this.velocityY > 0); 
 	}
 
 	public void stopV(float height) {
 		this.velocityY = 0;
-		this.setPosition(this.body.x, height);
+		this.setPosition(this.getBody().x, height);
 	}
-
+	
 	public void stopH(float width) {
-		this.setPosition(width, this.body.y);
+		this.setPosition(width, this.getBody().y);
 	}
 
 	public void setPosition(float x, float y) {
-		this.body.x = x;
-		this.body.y = y;
+		super.setPosition(x, y);
+		this.collideManager.setPosition(x, y);
+		this.waterAbility.setPosition(x, y);
 	}
 
 	public void moveRight(float delta) {
-		this.body.x += (250 * delta);
-		this.state = STATES[2];
+		this.setX(this.getX() + 250 * delta);
+		this.setState(2);
 	}
 
 	public void moveLeft(float delta) {
-		this.body.x -= (250 * delta);
-		this.state = STATES[3];
+		this.setX(this.getX() - 250 * delta);
+		this.setState(3);
 	}
 
 	public void climbUp() {
 		this.velocityY = 5;
-		this.state = STATES[8];
+		this.setState(8);
 	}
 
 	public void climbDown() {
 		this.velocityY = -5;
-		this.state = STATES[8];
+		this.setState(8);
 	}
 
 	public void jump() {
 		if (this.jumpCount > 0) {
 			this.velocityY = 10;
 			this.jumpCount--;
+			this.setState(4);
 		}
 	}
 
@@ -92,13 +184,16 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	}
 
 	public void draw(SpriteBatch batch, float delta) {
-		this.timer += delta;
-		batch.draw(this.animations.get(this.state).getKeyFrame(this.timer, true), this.body.x, this.body.y);
+		batch.draw(this.sprite.getCurrentAnimation(this.state, this.timer), this.getBody().x, this.getBody().y);
 	}
 
 	@Override
 	public void dispose() {
 		this.sprite.dispose();
+	}
+
+	public CollideBox getWaterBox() {
+		return this.waterAbility.waterBox;
 	}
 
 }

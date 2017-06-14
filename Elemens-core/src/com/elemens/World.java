@@ -3,8 +3,6 @@ package com.elemens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -16,153 +14,108 @@ public class World implements Disposable {
 	private Hero hero;
 	private ArrayList<Solid> solids;
 	private ArrayList<Ladder> ladders;
-	private ArrayList<Solid> water;
+	private ArrayList<Creature> creatures;
+	private ArrayList<WaterArea> water;
 	private Texture background;
-	private Texture foreground;
+	//private Texture foreground;
 	private Vector2 gravity;
+	
+	private static World world;
+	
+	public static World create(float x, float y) {
+		if (world == null)
+			world = new World(x, y);
+		return world;
+	}
 
-	public World(float x, float y) {
+	private World(float x, float y) {
 		this.gravity = new Vector2(x, y);
-		this.background = new Texture("village_back.png");
-		this.foreground = new Texture("village_front.png");
+		this.background = Utility.getTextureAsset("village_back.png");
+		//this.foreground = Utility.getTextureAsset("village_front.png");
+		
+		// Solids
 		this.solids = new ArrayList<Solid>();
-		this.solids.add(new Solid(0, 0, 2000, 140));
+		this.solids.add(new Solid(0, 0, 8000, 140));
 		this.solids.add(new Solid(0, 140, 20, 1000));
 		this.solids.add(new Solid(50, 200, 200, 50));
 		this.solids.add(new Solid(600, 140, 40, 400));
 		this.solids.add(new Solid(2000, 140, 40, 400));
-		
+
 		// Water zone
-		this.water = new ArrayList<Solid>();
-		this.water.add(new Solid(640, 140, 1360, 380));
+		this.water = new ArrayList<WaterArea>();
+		this.water.add(new WaterArea(640, 140, 1360, 380));
+		this.water.add(new WaterArea(5150, 140, 300, 2000));
 
 		// Ladder
 		this.ladders = new ArrayList<Ladder>();
-		this.ladders.add(new Ladder(372, 140, 80, 350));
-
+		this.ladders.add(new Ladder(372, 140, 80, 250));
 		this.solids.add(this.ladders.get(0).top);
 
+		this.ladders.add(new Ladder(520, 140, 80, 350));
+		this.solids.add(this.ladders.get(1).top);
+
+
+		this.creatures = new ArrayList<Creature>();
+		this.creatures.add(new Twarzian(700, 800));
+		this.creatures.add(new Twarzian(850, 1000));
+		this.creatures.add(new Twarzian(1000, 1200));
+		this.creatures.add(new Twarzian(1150, 1400));
+		this.creatures.add(new Twarzian(1300, 1600));
+		this.creatures.add(new Twarzian(2350, 2000));
 		/* Steps
 		for (int i = 0; i < 1000; i++) {
 			this.solids.add(new Solid(800 + i * 20, 140 + i * 10, 20, 1));
 		}*/
 		//this.hero = new Hero(200, 200, 74, 107);
-		this.hero = new Hero(200, 200, 50, 50);
+		this.hero = new Hero(200, 200);
 	}
 
 	public void draw(SpriteBatch sb, float delta) {
 		sb.draw(this.background, 0, 0);
+		for(Creature c : this.creatures)
+			c.draw(sb, delta);
 		this.hero.draw(sb, delta);
-		sb.draw(this.foreground, 0, 0);
+		//sb.draw(this.foreground, 0, 0);
 	}
 
 	public void draw(ShapeRenderer sr) {
-		this.hero.draw(sr);
 		for (Solid s : this.solids)
-			s.draw(sr, Color.RED);
-		for (Solid s : this.water)
-			s.draw(sr, Color.BLUE);
+			s.draw(sr);
+		for (WaterArea w : this.water)
+			w.draw(sr);
 		for (Ladder s : this.ladders)
 			s.draw(sr);
+		for(Creature c : this.creatures)
+			c.draw(sr);
+		this.hero.draw(sr);
 	}
 
 	public void update() {
-		this.hero.update((float)Math.min(Gdx.graphics.getDeltaTime(), 0.035), this.gravity);
-		this.hero.canClimbDown = this.isClimbingDown();
-		this.hero.canClimbUp = this.isClimbingUp();
-		this.hero.isOnWater = isOnWater();
-		this.hero.isUnderWater = isUnderWater();
+		float delta = (float)Math.min(Gdx.graphics.getDeltaTime(), 0.035);
 		
-		
-		for (Solid s : this.solids) {
-
-			switch (this.hero.isCollidingH(s.body)) {
-			case CENTER:
-				break;
-			case LEFT:
-				this.hero.stopH(s.body.x + s.body.width + 1);
-				break;
-			case RIGHT:
-				this.hero.stopH(s.body.x - this.hero.body.width - 1);
-				break;
-			default:
-				break;
-			}
-
-			switch (this.hero.isCollidingV(s.body)) {
-			case CENTER:
-				break;
-			case BOTTOM:
-				if (!this.hero.canClimbDown) {
-					this.hero.resetJump();
-					this.hero.stopV(s.body.y + s.body.height);
-				}
-				break;
-			case TOP:
-				if (!this.hero.canClimbUp) {
-					this.hero.stopV(s.body.y - this.hero.body.height);
-				}
-				break;
-			default:
-				break;
-			}
-		}
-
-		this.hero.updateInput();
+		this.hero.update(delta, this.gravity, this.water, this.ladders);
+		this.hero.updateColliding(this.solids, this.hero.canClimbDown, this.hero.canClimbUp);
 
 		// DEATH
-		if (this.hero.body.y < -100) {
+		if (this.hero.getY() < -100) {
 			this.hero.setPosition(600, 200);
 		}
-	}
-
-	private boolean isOnWater() {
-		for (Solid w : this.water) {
-			if (this.hero.isOnWater(w.body)){
-				return true;
-			}
-			
+		for(Creature c : this.creatures){
+			c.update(delta, this.gravity, false, this.water);
+			c.updateColliding(this.solids, false, false);
+			c.takeDecision(delta);
 		}
-		return false;
-	}
-	
-	private boolean isUnderWater() {
-		for (Solid w : this.water) {
-			if (this.hero.isUnderWater(w.body)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	
-
-	private boolean isClimbingUp(){
-		if (!Gdx.input.isKeyPressed(Input.Keys.Z))
-			return false;
-		for (Ladder l : this.ladders) {
-			if (this.hero.center.overlaps(l.climbZone)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean isClimbingDown(){
-		if (!Gdx.input.isKeyPressed(Input.Keys.S))
-			return false;
-		for (Ladder l : this.ladders) {
-			if (this.hero.center.overlaps(l.climbZoneDown)) {
-				return true;
-			}
-		}
-		return false;
+		this.hero.updateInput();
 	}
 
 	@Override
 	public void dispose() {
 		this.background.dispose();
+		//this.foreground.dispose();
 		this.hero.dispose();
+		for (Creature c : this.creatures){
+			c.dispose();
+		}
 	}
 
 	public Vector2 getCameraPosition() {
@@ -185,5 +138,14 @@ public class World implements Disposable {
 			camY = heroY;
 		}
 		return new Vector2(camX, camY);
+	}
+	
+	public static boolean isUnderWater(DynamicGameObject object){
+		for (WaterArea w : world.water) {
+			if (w.contains(object)){
+				return true;
+			}
+		}
+		return false;
 	}
 }

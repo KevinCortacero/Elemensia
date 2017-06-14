@@ -18,10 +18,10 @@ public class Ladder extends GameObject{
 	}
 	
 	public void draw(ShapeRenderer sr) {
-		sr.rect(this.body.x, this.body.y, this.body.width, this.body.height, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY);
+		super.draw(sr);
 		sr.rect(this.climbZone.x, this.climbZone.y, this.climbZone.width, this.climbZone.height, Color.GREEN, Color.GREEN, Color.GREEN, Color.GREEN);
 		sr.rect(this.climbZoneDown.x, this.climbZoneDown.y, this.climbZoneDown.width, this.climbZoneDown.height, Color.CYAN, Color.CYAN, Color.CYAN, Color.CYAN);
-		this.top.draw(sr, Color.RED);
+		this.top.draw(sr);
 	}
 
 }
