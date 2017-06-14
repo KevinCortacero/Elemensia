@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 public class Hero extends LivingThing {
@@ -24,7 +25,8 @@ public class Hero extends LivingThing {
 
 	public void update(float delta, Vector2 gravity, ArrayList<WaterArea> water, ArrayList<Ladder> ladders){
 		super.update(delta, gravity, canClimbDown, water);
-		
+
+
 		// CLIMB
 		this.canClimbDown = this.isClimbingDown(ladders);
 		this.canClimbUp = this.isClimbingUp(ladders);
@@ -73,10 +75,10 @@ public class Hero extends LivingThing {
 	public float getCenterX() {
 		return this.collideManager.getCenterX();
 	}
-	
+
 	public float getCenterY() {
 		return this.collideManager.getCenterY();
 	}
 
-	
+
 }

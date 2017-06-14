@@ -17,13 +17,21 @@ public class World implements Disposable {
 	private ArrayList<Creature> creatures;
 	private ArrayList<WaterArea> water;
 	private Texture background;
-	private Texture foreground;
+	//private Texture foreground;
 	private Vector2 gravity;
+	
+	private static World world;
+	
+	public static World create(float x, float y) {
+		if (world == null)
+			world = new World(x, y);
+		return world;
+	}
 
-	public World(float x, float y) {
+	private World(float x, float y) {
 		this.gravity = new Vector2(x, y);
 		this.background = Utility.getTextureAsset("village_back.png");
-		this.foreground = Utility.getTextureAsset("village_front.png");
+		//this.foreground = Utility.getTextureAsset("village_front.png");
 		
 		// Solids
 		this.solids = new ArrayList<Solid>();
@@ -53,7 +61,7 @@ public class World implements Disposable {
 		this.creatures.add(new Twarzian(1000, 1200));
 		this.creatures.add(new Twarzian(1150, 1400));
 		this.creatures.add(new Twarzian(1300, 1600));
-		this.creatures.add(new Twarzian(1450, 2000));
+		this.creatures.add(new Twarzian(2350, 2000));
 		/* Steps
 		for (int i = 0; i < 1000; i++) {
 			this.solids.add(new Solid(800 + i * 20, 140 + i * 10, 20, 1));
@@ -67,7 +75,7 @@ public class World implements Disposable {
 		for(Creature c : this.creatures)
 			c.draw(sb, delta);
 		this.hero.draw(sb, delta);
-		sb.draw(this.foreground, 0, 0);
+		//sb.draw(this.foreground, 0, 0);
 	}
 
 	public void draw(ShapeRenderer sr) {
@@ -84,7 +92,7 @@ public class World implements Disposable {
 
 	public void update() {
 		float delta = (float)Math.min(Gdx.graphics.getDeltaTime(), 0.035);
-
+		
 		this.hero.update(delta, this.gravity, this.water, this.ladders);
 		this.hero.updateColliding(this.solids, this.hero.canClimbDown, this.hero.canClimbUp);
 
@@ -103,7 +111,7 @@ public class World implements Disposable {
 	@Override
 	public void dispose() {
 		this.background.dispose();
-		this.foreground.dispose();
+		//this.foreground.dispose();
 		this.hero.dispose();
 		for (Creature c : this.creatures){
 			c.dispose();
@@ -130,5 +138,14 @@ public class World implements Disposable {
 			camY = heroY;
 		}
 		return new Vector2(camX, camY);
+	}
+	
+	public static boolean isUnderWater(DynamicGameObject object){
+		for (WaterArea w : world.water) {
+			if (w.contains(object)){
+				return true;
+			}
+		}
+		return false;
 	}
 }

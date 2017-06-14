@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class ElemensiaGame extends Game{
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	private BitmapFont font;
 	private SpriteBatch batch;
 	private ShapeRenderer sr;
@@ -26,9 +26,9 @@ public class ElemensiaGame extends Game{
 		this.font = new BitmapFont();
 		Utility.loadTextureAsset("village_back.png");
 		Utility.loadTextureAsset("village_front.png");
-		Utility.loadTextureAsset(Twarzian.TWARZIAN_SPRITE_PATH);
+		Utility.loadTextureAsset(Twarzian.SPRITE_PATH);
 		Utility.loadTextureAsset(Hero.HERO_SPRITE_PATH);
-		this.world = new World(0.0f, -9.8f);
+		this.world = World.create(0.0f, -9.8f);
 	}
 	
 	@Override

@@ -10,32 +10,36 @@ import com.badlogic.gdx.utils.Disposable;
 
 public abstract class DynamicGameObject extends GameObject implements Disposable {
 	
-	private WaterAbility waterAbility;
+	
 	protected CollideManager collideManager;
+	private WaterAbility waterAbility;
 	protected float velocityY;
 	private int jumpCount;
 	private String state;
 	private SpriteAnimation sprite;
+	private float timer;
 
 	public DynamicGameObject(int x, int y, int width, int height, SpriteAnimation sprite) {
 		super(x, y, width, height);
+		this.waterAbility = new WaterAbility(x, y, width, height);
 		this.sprite = sprite;
 		this.state = sprite.getDefaultState();
 		this.setState(0);
 		this.velocityY = 0;
 		this.jumpCount = 1;
+		this.timer = 0;
 		this.collideManager = new CollideManager(x, y, width, height);
-		this.waterAbility = new WaterAbility(x, y, width, height);
 	}
 	
 	public void update(float delta, Vector2 gravity, boolean canClimbUp, ArrayList<WaterArea> water){
 		this.waterAbility.update(water, this.isOnWater(water));
-		
+
+		this.waterAbility.isUnderWater = World.isUnderWater(this);
 		// normal gravity
 		if (!canClimbUp && !this.waterAbility.isUnderWater){
 			this.velocityY += (gravity.y*delta*3);
 		}
-		
+
 		// under water
 		if (this.waterAbility.isUnderWater){
 			this.velocityY *= 0.95;
@@ -48,7 +52,6 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		if (this.waterAbility.isOnWater){
 			this.velocityY -= (gravity.y*delta*1.25);			
 		}
-		
 		//  ANIMATION
 		this.updateAnimation(delta);
 		
@@ -109,10 +112,10 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	}
 	
 	public void updateAnimation(float delta){
-		this.sprite.update(delta);
+		this.timer += delta;
 	}
 	
-	private boolean isOnWater(ArrayList<WaterArea> water) {
+	protected boolean isOnWater(ArrayList<WaterArea> water) {
 		for (WaterArea w : water) {
 			if (this.getBody().overlaps(w.getBody())){
 				return true;
@@ -125,7 +128,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	private void setState(int i) {
 		if (!this.state.equals(Hero.HERO_STATES[i])){
 			this.state = Hero.HERO_STATES[i];
-			this.sprite.reset();
+			this.timer = 0;
 		}
 	}
 
@@ -181,12 +184,16 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	}
 
 	public void draw(SpriteBatch batch, float delta) {
-		batch.draw(this.sprite.getCurrentAnimation(this.state), this.getBody().x, this.getBody().y);
+		batch.draw(this.sprite.getCurrentAnimation(this.state, this.timer), this.getBody().x, this.getBody().y);
 	}
 
 	@Override
 	public void dispose() {
 		this.sprite.dispose();
+	}
+
+	public CollideBox getWaterBox() {
+		return this.waterAbility.waterBox;
 	}
 
 }

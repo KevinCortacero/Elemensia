@@ -2,22 +2,34 @@ package com.elemens;
 
 public class Twarzian extends Creature{
 
-	public static final String[] TWARZIAN_STATES = {"IDLE_RIGHT", "IDLE_LEFT", "WALK_RIGHT", "WALK_LEFT", 
-			"JUMP_RIGHT", "JUMP_LEFT", "SWIM_RIGHT", "SWIM_LEFT", "CLIMB"};
-
-	private static final int TWARZIAN_WIDTH = 128;
-	private static final int TWARZIAN_HEIGHT = 128;
+	public static final String[] STATES = {
+		"IDLE_RIGHT", 
+		"IDLE_LEFT", 
+		"WALK_RIGHT", 
+		"WALK_LEFT", 
+		"JUMP_RIGHT", 
+		"JUMP_LEFT", 
+		"SWIM_RIGHT", 
+		"SWIM_LEFT", 
+		"CLIMB"
+	};
 	
-	public static final String TWARZIAN_SPRITE_PATH = "blizz128.png";
+	private static final int HEALTH_POINT = 100;
+	private static final int WIDTH = 256;
+	private static final int HEIGHT = 128;
+	
+	public static final String SPRITE_PATH = "wolf3.png";
+	
+	private static final SpriteAnimation ANIMATION = new SpriteAnimation(WIDTH, HEIGHT, STATES, SPRITE_PATH);
 	
 	public Twarzian(int x, int y) {
-		super(x, y, 128, 128, new SpriteAnimation(TWARZIAN_WIDTH, TWARZIAN_HEIGHT, TWARZIAN_STATES, TWARZIAN_SPRITE_PATH), 100);
-		// TODO Auto-generated constructor stub
+		super(x, y, WIDTH, HEIGHT, ANIMATION, HEALTH_POINT);
 	}
 
 
 	@Override
 	public void takeDecision(float delta) {
+		/*
 		if (Math.random() < 0.05)
 			this.jump();
 		if (Math.random() < 0.05){
@@ -26,6 +38,6 @@ public class Twarzian extends Creature{
 			else
 				this.moveLeft(delta);
 		}
-
+		*/
 	}
 }
