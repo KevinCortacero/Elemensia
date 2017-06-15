@@ -3,29 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/Elemens-core"/>
-	<classpathentry kind="src" path="assets"/>
-	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/lib/gdx.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/lib/gdx-backend-lwjgl.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/lib/gdx-natives.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Twarz/git/RPG-Game/lib/gdx-backend-lwjgl-natives.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="/Elemens-core"/>
-	<classpathentry kind="src" path="assets"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-backend-jglfw.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-backend-jglfw-natives.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-backend-lwjgl.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-backend-lwjgl-natives.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-natives.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-setup.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-backend-android.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-backend-gwt.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-backend-headless.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-backend-lwjgl3.jar"/>
-	<classpathentry kind="lib" path="/home/twarz/git/RPG-Game/lib/gdx-backend-robovm.jar"/>
+	<classpathentry kind="lib" path="/Elemens-core/lib/gdx-backend-lwjgl-natives.jar"/>
+	<classpathentry kind="lib" path="/Elemens-core/lib/gdx-natives.jar"/>
+	<classpathentry kind="lib" path="/Elemens-core/lib/gdx.jar"/>
+	<classpathentry kind="lib" path="/Elemens-core/lib/gdx-backend-lwjgl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

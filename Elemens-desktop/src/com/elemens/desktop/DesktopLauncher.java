@@ -13,7 +13,8 @@ public class DesktopLauncher {
 		config.useGL30 = false;
 		config.width = 1600;
 		config.height = 900;
-		Application app = new LwjglApplication(new ElemensiaGame(), config);
+		ElemensiaGame elemensia = new ElemensiaGame();
+		Application app = new LwjglApplication(elemensia, config);
 		Gdx.app = app;
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 	}

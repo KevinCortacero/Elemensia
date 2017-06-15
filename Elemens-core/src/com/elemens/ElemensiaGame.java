@@ -2,6 +2,7 @@ package com.elemens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -34,6 +35,8 @@ public class ElemensiaGame extends Game{
 	@Override
 	public void render() {
 		super.render();
+		Gdx.gl.glClearColor( 1, 1, 1, 1 );
+		Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 		this.camera.position.set(this.world.getCameraPosition(), 0);
 		this.camera.update();
 		

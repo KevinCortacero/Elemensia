@@ -86,6 +86,7 @@ public final class Utility {
 		}
 		else{
 			Gdx.app.debug(TAG, "Texture doesn't exist!: " + textureFilenamePath );
+			System.out.println("Texture doesn't exist!: " + textureFilenamePath );
 		}
 	}
 

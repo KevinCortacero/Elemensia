@@ -184,7 +184,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	}
 
 	public void draw(SpriteBatch batch, float delta) {
-		batch.draw(this.sprite.getCurrentAnimation(this.state, this.timer), this.getBody().x, this.getBody().y);
+		batch.draw(this.sprite.getCurrentAnimation(this.state, this.timer), this.getX(), this.getY());
 	}
 
 	@Override
