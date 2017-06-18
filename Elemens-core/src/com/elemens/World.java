@@ -90,8 +90,7 @@ public class World implements Disposable {
 		this.hero.draw(sr);
 	}
 
-	public void update() {
-		float delta = (float)Math.min(Gdx.graphics.getDeltaTime(), 0.035);
+	public void update(float delta) {
 		
 		this.hero.update(delta, this.gravity, this.water, this.ladders);
 		this.hero.updateColliding(this.solids, this.hero.canClimbDown, this.hero.canClimbUp);

@@ -9,10 +9,12 @@ import com.elemens.ElemensiaGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 		config.title = "Elemens";
 		config.useGL30 = false;
-		config.width = 1600;
-		config.height = 900;
+		config.width = ElemensiaGame.WINDOW_WIDTH;
+		config.height = ElemensiaGame.WINDOW_HEIGHT;
+		config.resizable = false;
 		ElemensiaGame elemensia = new ElemensiaGame();
 		Application app = new LwjglApplication(elemensia, config);
 		Gdx.app = app;
