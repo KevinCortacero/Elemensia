@@ -18,28 +18,13 @@ public class SplashScreen extends AbstractScreen {
 	private Texture texture;
 
 	@Override
-	public void show() {
-		
-		super.show();
-	}
-
-	@Override
-	public void render(float delta) {
-		super.render(delta);
-		/*
-		this.batch.begin();
-		this.batch.draw(this.texture, 0, 0);
-		this.batch.end();
-		 */
-	}
-
-	@Override
 	public void buildStage() {
 
 		Skin skin = new Skin();
 		Utility.loadTextureAsset("splashScreen.jpg");
 		this.texture = Utility.getTextureAsset("splashScreen.jpg");
 		Image background = new Image(this.texture);
+		background.setBounds(0, 0, ElemensiaGame.WINDOW_WIDTH, ElemensiaGame.WINDOW_HEIGHT);
 		this.addActor(background);
 		
 		// Generate a 1x1 white texture and store it in the skin named "white".
@@ -62,11 +47,11 @@ public class SplashScreen extends AbstractScreen {
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
-		table.setFillParent(true);
+		table.setBounds(350, 30, 100, 20);
 		this.addActor(table);
 
 		// Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
-		final TextButton button = new TextButton("Click me!", skin);
+		final TextButton button = new TextButton("PLAY", skin);
 		table.add(button);
 
 		// Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
@@ -75,8 +60,7 @@ public class SplashScreen extends AbstractScreen {
 		// revert the checked state.
 		button.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				System.out.println("Clicked! Is checked: " + button.isChecked());
-				button.setText("Good job!");
+				ScreenManager.getInstance().showScreen(new WorldGameScreen());
 			}
 		});
 		/*

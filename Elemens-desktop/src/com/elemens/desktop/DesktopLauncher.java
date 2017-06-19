@@ -19,5 +19,6 @@ public class DesktopLauncher {
 		Application app = new LwjglApplication(elemensia, config);
 		Gdx.app = app;
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+		Gdx.app.setLogLevel(Application.LOG_ERROR);
 	}
 }
