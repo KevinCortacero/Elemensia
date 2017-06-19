@@ -11,7 +11,8 @@ public class ElemensiaGame extends Game{
 
 	@Override
 	public void create() {
-		this.setScreen(new SplashScreen());
+		//this.setScreen(new SplashScreen());
+		this.setScreen(new WorldGameScreen());
 	}
 	
 	@Override
