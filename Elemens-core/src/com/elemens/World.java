@@ -116,22 +116,22 @@ public class World implements Disposable {
 		}
 	}
 
-	public Vector2 getCameraPosition() {
+	public Vector2 getCameraPosition(float width, float height) {
 		float heroX, heroY, camX, camY;
 		heroX = this.hero.getCenterX(); 
 		heroY = this.hero.getCenterY(); 
-		if (heroX <= ElemensiaGame.WINDOW_WIDTH/2) {
-			camX = ElemensiaGame.WINDOW_WIDTH/2;
-		} else if (heroX >= 3840 - ElemensiaGame.WINDOW_WIDTH/2) {
-			camX = 3840 - ElemensiaGame.WINDOW_WIDTH/2;
+		if (heroX <= width) {
+			camX = width;
+		} else if (heroX >= 3840 - width) {
+			camX = 3840 - width;
 		} else {
 			camX = heroX;
 		}
 
-		if (heroY <= ElemensiaGame.WINDOW_HEIGHT/2) {
-			camY = ElemensiaGame.WINDOW_HEIGHT/2;
-		} else if (heroY >= 2160 - ElemensiaGame.WINDOW_HEIGHT/2) {
-			camY = 2160 - ElemensiaGame.WINDOW_HEIGHT/2;
+		if (heroY <= height) {
+			camY = height;
+		} else if (heroY >= 2160 - height) {
+			camY = 2160 - height;
 		} else {
 			camY = heroY;
 		}

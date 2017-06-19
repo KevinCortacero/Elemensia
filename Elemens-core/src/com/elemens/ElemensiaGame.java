@@ -12,13 +12,13 @@ public class ElemensiaGame extends Game{
 	@Override
 	public void create() {
 		ScreenManager.getInstance().initialize(this);
-		//ScreenManager.getInstance().showScreen(new WorldGameScreen());
-		ScreenManager.getInstance().showScreen(new SplashScreen());
+		//ScreenManager.getInstance().showScreen(new WorldGameScreen(), false);
+		ScreenManager.getInstance().showScreen(new SplashScreen(), true);
 	}
 	
 	@Override
 	public void render() {
 		super.render();
-		this.getScreen().render(Math.min(Gdx.graphics.getDeltaTime(), 0.035f));
+		this.getScreen().render(Gdx.graphics.getDeltaTime());
 	}
 }

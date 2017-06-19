@@ -9,8 +9,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public abstract class AbstractScreen extends Stage implements Screen{
 
-	protected AbstractScreen() {
-		super(new StretchViewport(ElemensiaGame.WINDOW_WIDTH, ElemensiaGame.WINDOW_HEIGHT, new OrthographicCamera()) );
+	protected AbstractScreen(float width, float height) {
+		super(new StretchViewport(width, height, new OrthographicCamera()) );
 		this.buildStage();
 	}
 

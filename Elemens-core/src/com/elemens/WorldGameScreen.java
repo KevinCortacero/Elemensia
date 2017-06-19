@@ -1,6 +1,5 @@
 package com.elemens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,6 +8,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class WorldGameScreen extends AbstractScreen {
 
+	public WorldGameScreen() {
+		super(1600, 900);
+	}
+	
 	private BitmapFont font;
 	private SpriteBatch batch;
 	private ShapeRenderer sr;
@@ -19,7 +22,7 @@ public class WorldGameScreen extends AbstractScreen {
 	public void show() {
 		super.show();
 		this.camera = new OrthographicCamera();
-		this.camera.setToOrtho(false, ElemensiaGame.WINDOW_WIDTH, ElemensiaGame.WINDOW_HEIGHT);
+		this.camera.setToOrtho(false, this.getWidth(), this.getHeight());
 		this.batch = new SpriteBatch();
 		this.sr = new ShapeRenderer();
 		this.font = new BitmapFont();
@@ -33,12 +36,12 @@ public class WorldGameScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
-		this.camera.position.set(this.world.getCameraPosition(), 0);
+		this.camera.position.set(this.world.getCameraPosition(this.getWidth()/2, this.getHeight()/2), 0);
 		this.camera.update();
 		
 		this.batch.setProjectionMatrix(this.camera.combined);
 		this.batch.begin();
-		this.world.draw(this.batch, Gdx.graphics.getDeltaTime());
+		this.world.draw(this.batch, delta);
 		this.batch.end();
 		
 		this.sr.begin(ShapeType.Line);

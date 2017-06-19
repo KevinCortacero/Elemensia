@@ -15,15 +15,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class SplashScreen extends AbstractScreen {
 
-	private Texture texture;
-
+	public SplashScreen() {
+		super(800, 450);
+	}
+	
 	@Override
 	public void buildStage() {
 
 		Skin skin = new Skin();
 		Utility.loadTextureAsset("splashScreen.jpg");
-		this.texture = Utility.getTextureAsset("splashScreen.jpg");
-		Image background = new Image(this.texture);
+		Texture texture = Utility.getTextureAsset("splashScreen.jpg");
+		Image background = new Image(texture);
 		background.setBounds(0, 0, ElemensiaGame.WINDOW_WIDTH, ElemensiaGame.WINDOW_HEIGHT);
 		this.addActor(background);
 		
@@ -60,7 +62,7 @@ public class SplashScreen extends AbstractScreen {
 		// revert the checked state.
 		button.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				ScreenManager.getInstance().showScreen(new WorldGameScreen());
+				ScreenManager.getInstance().showScreen(new WorldGameScreen(), false);
 			}
 		});
 		/*
