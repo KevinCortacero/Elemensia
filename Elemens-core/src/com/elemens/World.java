@@ -2,7 +2,6 @@ package com.elemens;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -121,18 +120,18 @@ public class World implements Disposable {
 		float heroX, heroY, camX, camY;
 		heroX = this.hero.getCenterX(); 
 		heroY = this.hero.getCenterY(); 
-		if (heroX <= 800) {
-			camX = 800;
-		} else if (heroX >= 6880) {
-			camX = 6880;
+		if (heroX <= ElemensiaGame.WINDOW_WIDTH/2) {
+			camX = ElemensiaGame.WINDOW_WIDTH/2;
+		} else if (heroX >= 3840 - ElemensiaGame.WINDOW_WIDTH/2) {
+			camX = 3840 - ElemensiaGame.WINDOW_WIDTH/2;
 		} else {
 			camX = heroX;
 		}
 
-		if (heroY <= 450) {
-			camY = 450;
-		} else if (heroY >= 3870) {
-			camY = 3870;
+		if (heroY <= ElemensiaGame.WINDOW_HEIGHT/2) {
+			camY = ElemensiaGame.WINDOW_HEIGHT/2;
+		} else if (heroY >= 2160 - ElemensiaGame.WINDOW_HEIGHT/2) {
+			camY = 2160 - ElemensiaGame.WINDOW_HEIGHT/2;
 		} else {
 			camY = heroY;
 		}

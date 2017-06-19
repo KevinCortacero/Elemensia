@@ -3,7 +3,7 @@ package com.elemens;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public abstract class GameObject {
+public abstract class GameObject{
 
 	private CollideBox body;
 	
