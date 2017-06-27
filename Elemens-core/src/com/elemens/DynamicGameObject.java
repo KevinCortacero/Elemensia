@@ -37,7 +37,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.waterAbility.isUnderWater = World.isUnderWater(this);
 		// normal gravity
 		if (!canClimbUp && !this.waterAbility.isUnderWater){
-			this.velocityY += (gravity.y*delta*3);
+			this.velocityY += (gravity.y*delta*1.5);
 		}
 
 		// under water
@@ -50,7 +50,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 
 		// on water
 		if (this.waterAbility.isOnWater){
-			this.velocityY -= (gravity.y*delta*1.25);			
+			this.velocityY -= (gravity.y*delta*0.75);			
 		}
 		//  ANIMATION
 		this.updateAnimation(delta);
@@ -152,28 +152,28 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	}
 
 	public void moveRight(float delta) {
-		this.setX(this.getX() + 250 * delta);
+		this.setX(this.getX() + 150 * delta);
 		this.setState(2);
 	}
 
 	public void moveLeft(float delta) {
-		this.setX(this.getX() - 250 * delta);
+		this.setX(this.getX() - 150 * delta);
 		this.setState(3);
 	}
 
 	public void climbUp() {
-		this.velocityY = 5;
+		this.velocityY = 4;
 		this.setState(8);
 	}
 
 	public void climbDown() {
-		this.velocityY = -5;
+		this.velocityY = -4;
 		this.setState(8);
 	}
 
 	public void jump() {
 		if (this.jumpCount > 0) {
-			this.velocityY = 10;
+			this.velocityY = 8;
 			this.jumpCount--;
 			this.setState(4);
 		}

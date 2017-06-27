@@ -11,7 +11,6 @@ public abstract class AbstractScreen extends Stage implements Screen{
 
 	protected AbstractScreen(float width, float height) {
 		super(new StretchViewport(width, height, new OrthographicCamera()) );
-		this.buildStage();
 	}
 
 	// Subclasses must load actors in this method

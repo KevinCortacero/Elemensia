@@ -27,6 +27,7 @@ public class ScreenManager {
         Screen currentScreen = this.game.getScreen();
  
         // Show new screen
+        newScreen.buildStage();
         this.game.setScreen(newScreen);
         Gdx.graphics.setUndecorated(undecorated);
 		Gdx.graphics.setWindowedMode((int) newScreen.getWidth(), (int) newScreen.getHeight());

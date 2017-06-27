@@ -90,7 +90,6 @@ public class World implements Disposable {
 	}
 
 	public void update(float delta) {
-		
 		this.hero.update(delta, this.gravity, this.water, this.ladders);
 		this.hero.updateColliding(this.solids, this.hero.canClimbDown, this.hero.canClimbUp);
 
