@@ -9,6 +9,8 @@ public class ElemensiaConfiguration extends LwjglApplicationConfiguration{
 		this.height = height;
 		this.fullscreen = false;
 		this.resizable = false;
+		this.samples = 3;
+		this.useGL30 = false;
 		System.setProperty("org.lwjgl.opengl.Window.undecorated", String.valueOf(undecorated));
 	}
 }

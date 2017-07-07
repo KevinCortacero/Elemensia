@@ -1,16 +1,13 @@
 package com.elemens;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 public abstract class DynamicGameObject extends GameObject implements Disposable {
-	
-	
+
+
 	protected CollideManager collideManager;
 	private WaterAbility waterAbility;
 	protected float velocityY;
@@ -22,18 +19,18 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	public DynamicGameObject(int x, int y, int width, int height, SpriteAnimation sprite) {
 		super(x, y, width, height);
 		this.waterAbility = new WaterAbility(x, y, width, height);
+		this.collideManager = new CollideManager(x, y, width, height);
 		this.sprite = sprite;
 		this.state = sprite.getDefaultState();
 		this.setState(0);
 		this.velocityY = 0;
 		this.jumpCount = 1;
 		this.timer = 0;
-		this.collideManager = new CollideManager(x, y, width, height);
+		
 	}
-	
-	public void update(float delta, Vector2 gravity, boolean canClimbUp, ArrayList<WaterArea> water){
-		this.waterAbility.update(water, this.isOnWater(water));
 
+	public void update(float delta, Vector2 gravity, boolean canClimbUp){
+		this.waterAbility.isOnWater = World.isOnWater(this);
 		this.waterAbility.isUnderWater = World.isUnderWater(this);
 		// normal gravity
 		if (!canClimbUp && !this.waterAbility.isUnderWater){
@@ -54,77 +51,32 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		}
 		//  ANIMATION
 		this.updateAnimation(delta);
-		
+
 		// GRAVITY
 		this.setY(this.getY() + this.velocityY);
 		this.setPosition(this.getBody().x, this.getBody().y);
-		
+
 	}
 
-	public Hitbox isCollidingHorizontal(Rectangle r) {
-		return this.collideManager.isCollidingHorizontal(r);
-	}
-
-	public Hitbox isCollidingVertical(Rectangle r) {
-		return this.collideManager.isCollidingVertical(r, this.isMovingUp());
-	}
+	public abstract void applyHorizontalCollidingEffect(CollideBox collider, Hitbox hitbox);
 	
-	public void updateColliding(ArrayList<Solid> solids, boolean canClimbDown, boolean canClimbUp) {
-		for (Solid s : solids) {
-
-			switch (this.isCollidingHorizontal(s.getBody())) {
-			case CENTER:
-				break;
-			case LEFT:
-				this.stopH(s.getX() + s.getWidth() + 1);
-				break;
-			case RIGHT:
-				this.stopH(s.getX() - this.getWidth() - 1);
-				break;
-			default:
-				break;
-			}
-
-			switch (this.isCollidingVertical(s.getBody())) {
-			case CENTER:
-				break;
-			case BOTTOM:
-				if (!canClimbDown) {
-					this.resetJump();
-					this.stopV(s.getY() + s.getHeight());
-				}
-				break;
-			case TOP:
-				if (!canClimbUp) {
-					this.stopV(s.getY() - this.getHeight());
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	}
+	public abstract void applyVerticalCollidingEffect(CollideBox collider, Hitbox hitbox);
 	
+	public void updateColliding() {
+		World.updateHorizontalColliding(this);
+		World.updateVerticalColliding(this);
+	}
+
 	public void draw(ShapeRenderer sr) {
 		super.draw(sr);
 		this.collideManager.draw(sr);
 		this.waterAbility.draw(sr);
 	}
-	
+
 	public void updateAnimation(float delta){
 		this.timer += delta;
 	}
-	
-	protected boolean isOnWater(ArrayList<WaterArea> water) {
-		for (WaterArea w : water) {
-			if (this.getBody().overlaps(w.getBody())){
-				return true;
-			}
 
-		}
-		return false;
-	}
-	
 	private void setState(int i) {
 		if (!this.state.equals(Hero.HERO_STATES[i])){
 			this.state = Hero.HERO_STATES[i];
@@ -140,7 +92,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.velocityY = 0;
 		this.setPosition(this.getBody().x, height);
 	}
-	
+
 	public void stopH(float width) {
 		this.setPosition(width, this.getBody().y);
 	}

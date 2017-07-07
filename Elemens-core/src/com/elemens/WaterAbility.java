@@ -1,7 +1,5 @@
 package com.elemens;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -23,19 +21,5 @@ public class WaterAbility {
 
 	public void draw(ShapeRenderer sr) {
 		this.waterBox.draw(sr, Color.ORANGE);
-	}
-
-	public void update(ArrayList<WaterArea> water, boolean isOnWater) {
-		this.isOnWater = isOnWater;
-		this.isUnderWater = isUnderWater(water);
-	}
-
-	private boolean isUnderWater(ArrayList<WaterArea> water) {
-		for (WaterArea w : water) {
-			if (this.waterBox.overlaps(w.getBody())){
-				return true;
-			}
-		}
-		return false;
 	}
 }

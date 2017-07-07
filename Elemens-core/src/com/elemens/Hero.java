@@ -22,8 +22,8 @@ public class Hero extends LivingThing {
 		this.canClimbDown = false;
 	}
 
-	public void update(float delta, Vector2 gravity, ArrayList<WaterArea> water, ArrayList<Ladder> ladders){
-		super.update(delta, gravity, canClimbDown, water);
+	public void update(float delta, Vector2 gravity, ArrayList<Ladder> ladders){
+		super.update(delta, gravity, canClimbDown);
 
 
 		// CLIMB
@@ -77,6 +77,43 @@ public class Hero extends LivingThing {
 
 	public float getCenterY() {
 		return this.collideManager.getCenterY();
+	}
+	
+	@Override
+	public void applyHorizontalCollidingEffect(CollideBox collider, Hitbox hitbox){
+		switch (hitbox) {
+		case CENTER:
+			break;
+		case LEFT:
+			this.stopH(collider.getX() + collider.getWidth() + 1);
+			break;
+		case RIGHT:
+			this.stopH(collider.getX() - this.getWidth() - 1);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	@Override
+	public void applyVerticalCollidingEffect(CollideBox collider, Hitbox hitbox){
+		switch (hitbox) {
+		case CENTER:
+			break;
+		case BOTTOM:
+			if (!this.canClimbDown) {
+				this.resetJump();
+				this.stopV(collider.getY() + collider.getHeight());
+			}
+			break;
+		case TOP:
+			if (!this.canClimbUp && this.isMovingUp()) {
+				this.stopV(collider.getY() - this.getHeight());
+			}
+			break;
+		default:
+			break;
+		}
 	}
 
 

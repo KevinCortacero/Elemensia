@@ -14,8 +14,8 @@ public abstract class Creature extends LivingThing{
 	public abstract void takeDecision(float delta);
 	
 	@Override
-	public void update(float delta, Vector2 gravity, boolean canClimbUp, ArrayList<WaterArea> water) {
-		super.update(delta, gravity, canClimbUp, water);
+	public void update(float delta, Vector2 gravity, boolean canClimbUp) {
+		super.update(delta, gravity, canClimbUp);
 		//this.velocityY += (gravity.y*delta*3);
 	}
 

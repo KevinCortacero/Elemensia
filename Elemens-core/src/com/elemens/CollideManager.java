@@ -45,11 +45,11 @@ public class CollideManager {
 		return Hitbox.NONE;
 	}
 
-	public Hitbox isCollidingVertical(Rectangle r, boolean isMovingUP) {
+	public Hitbox isCollidingVertical(Rectangle r) {
 		if (this.bottom.overlaps(r) && (!this.top.overlaps(r) || this.center.overlaps(r))){
 			return Hitbox.BOTTOM;
 		}
-		if (this.top.overlaps(r) && !this.bottom.overlaps(r) && isMovingUP){
+		if (this.top.overlaps(r) && !this.bottom.overlaps(r)){
 			return Hitbox.TOP;
 		}
 		if (this.center.overlaps(r)){

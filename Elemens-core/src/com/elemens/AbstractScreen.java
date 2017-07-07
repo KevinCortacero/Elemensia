@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-public abstract class AbstractScreen extends Stage implements Screen{
+public abstract class AbstractScreen extends Stage implements Screen {
 
 	protected AbstractScreen(float width, float height) {
-		super(new StretchViewport(width, height, new OrthographicCamera()) );
+		super(new StretchViewport(width, height, new OrthographicCamera()));
 	}
 
 	// Subclasses must load actors in this method
@@ -19,8 +19,9 @@ public abstract class AbstractScreen extends Stage implements Screen{
 	@Override
 	public void render(float delta) {
 		// Clear screen
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT 
+				     | GL20.GL_DEPTH_BUFFER_BIT 
+				     | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 
 		// Calling to Stage methods
 		super.act(delta);
@@ -37,8 +38,16 @@ public abstract class AbstractScreen extends Stage implements Screen{
 		this.getViewport().update(width, height, true);
 	}
 
-	@Override public void hide() {}
-	@Override public void pause() {}
-	@Override public void resume() {}
+	@Override
+	public void hide() {
+	}
+
+	@Override
+	public void pause() {
+	}
+
+	@Override
+	public void resume() {
+	}
 
 }

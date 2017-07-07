@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -34,7 +35,7 @@ public class World implements Disposable {
 		
 		// Solids
 		this.solids = new ArrayList<Solid>();
-		this.solids.add(new Solid(0, 0, 8000, 140));
+		this.solids.add(new Solid(0, 0, 3000, 140));
 		this.solids.add(new Solid(0, 140, 20, 1000));
 		this.solids.add(new Solid(50, 200, 200, 50));
 		this.solids.add(new Solid(600, 140, 40, 400));
@@ -88,18 +89,34 @@ public class World implements Disposable {
 			c.draw(sr);
 		this.hero.draw(sr);
 	}
+	
 
+	public static void updateHorizontalColliding(DynamicGameObject dynamicGameObject) {
+		for (Solid s : world.solids){
+			Hitbox hitbox = dynamicGameObject.collideManager.isCollidingHorizontal(s.getBody());
+			dynamicGameObject.applyHorizontalCollidingEffect(s.getBody(), hitbox);
+		}
+	}
+	
+	public static void updateVerticalColliding(DynamicGameObject dynamicGameObject) {
+		for (Solid s : world.solids){
+			Hitbox hitbox = dynamicGameObject.collideManager.isCollidingVertical(s.getBody());
+			dynamicGameObject.applyVerticalCollidingEffect(s.getBody(), hitbox);
+		}
+	}
+	
+	
 	public void update(float delta) {
-		this.hero.update(delta, this.gravity, this.water, this.ladders);
-		this.hero.updateColliding(this.solids, this.hero.canClimbDown, this.hero.canClimbUp);
+		this.hero.update(delta, this.gravity, this.ladders);
+		this.hero.updateColliding();
 
 		// DEATH
 		if (this.hero.getY() < -100) {
 			this.hero.setPosition(600, 200);
 		}
 		for(Creature c : this.creatures){
-			c.update(delta, this.gravity, false, this.water);
-			c.updateColliding(this.solids, false, false);
+			c.update(delta, this.gravity, false);
+			c.updateColliding();
 			c.takeDecision(delta);
 		}
 		this.hero.updateInput();
@@ -145,4 +162,15 @@ public class World implements Disposable {
 		}
 		return false;
 	}
+	
+	public static boolean isOnWater(DynamicGameObject object) {
+		for (WaterArea w : world.water) {
+			if (object.getBody().overlaps(w.getBody())){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	
 }
