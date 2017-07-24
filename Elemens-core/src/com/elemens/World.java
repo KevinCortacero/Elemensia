@@ -30,38 +30,53 @@ public class World implements Disposable {
 
 	private World(float x, float y) {
 		this.gravity = new Vector2(x, y);
-		this.background = Utility.getTextureAsset("village_back.png");
+		this.background = Utility.getTextureAsset("bg.jpg");
 		//this.foreground = Utility.getTextureAsset("village_front.png");
 		
 		// Solids
 		this.solids = new ArrayList<Solid>();
-		this.solids.add(new Solid(0, 0, 3000, 140));
-		this.solids.add(new Solid(0, 140, 20, 1000));
-		this.solids.add(new Solid(50, 200, 200, 50));
-		this.solids.add(new Solid(600, 140, 40, 400));
-		this.solids.add(new Solid(2000, 140, 40, 400));
-
+		this.solids.add(new Solid(0, 0, 2835, 280));
+		this.solids.add(new Solid(0, 570, 880, 140));
+		this.solids.add(new Solid(975, 570, 300, 140));
+		
+		this.solids.add(new Solid(1270, 683, 30, 30));
+		this.solids.add(new Solid(1298, 677, 30, 30));
+		this.solids.add(new Solid(1328, 671, 30, 30));
+		this.solids.add(new Solid(1356, 665, 30, 30));
+		this.solids.add(new Solid(1384, 660, 30, 30));
+		this.solids.add(new Solid(1414, 658, 30, 30));
+		this.solids.add(new Solid(1444, 656, 30, 30));
+		
+		this.solids.add(new Solid(1474, 656, 30, 30));
+		this.solids.add(new Solid(1502, 658, 30, 30));
+		this.solids.add(new Solid(1532, 660, 30, 30));
+		this.solids.add(new Solid(1558, 664, 30, 30));
+		this.solids.add(new Solid(1586, 669, 30, 30));
+		this.solids.add(new Solid(1616, 675, 30, 30));
+		this.solids.add(new Solid(1644, 682, 30, 30));
+		this.solids.add(new Solid(1674, 685, 30, 30));
+		
+		this.solids.add(new Solid(1704, 570, 1130, 140));
+		
 		// Water zone
 		this.water = new ArrayList<WaterArea>();
-		this.water.add(new WaterArea(640, 140, 1360, 380));
-		this.water.add(new WaterArea(5150, 140, 300, 2000));
 
 		// Ladder
 		this.ladders = new ArrayList<Ladder>();
-		this.ladders.add(new Ladder(372, 140, 80, 250));
+		this.ladders.add(new Ladder(885, 280, 80, 430));
 		this.solids.add(this.ladders.get(0).top);
-
-		this.ladders.add(new Ladder(520, 140, 80, 350));
-		this.solids.add(this.ladders.get(1).top);
 
 
 		this.creatures = new ArrayList<Creature>();
-		this.creatures.add(new Twarzian(700, 800));
+		
+		this.creatures.add(new Twarzian(1700, 800));
+		/*
 		this.creatures.add(new Twarzian(850, 1000));
 		this.creatures.add(new Twarzian(1000, 1200));
 		this.creatures.add(new Twarzian(1150, 1400));
 		this.creatures.add(new Twarzian(1300, 1600));
 		this.creatures.add(new Twarzian(2350, 2000));
+		*/
 		/* Steps
 		for (int i = 0; i < 1000; i++) {
 			this.solids.add(new Solid(800 + i * 20, 140 + i * 10, 20, 1));

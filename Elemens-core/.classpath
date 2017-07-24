@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="lib/gdx.jar"/>
 	<classpathentry kind="lib" path="lib/gdx-backend-lwjgl-natives.jar"/>
 	<classpathentry kind="lib" path="lib/gdx-backend-lwjgl.jar"/>
+	<classpathentry kind="lib" path="lib/spine-libgdx.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,7 +1,5 @@
 package com.elemens;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Creature extends LivingThing{
