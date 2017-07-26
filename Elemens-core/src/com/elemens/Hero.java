@@ -5,111 +5,32 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.esotericsoftware.spine.AnimationState;
-import com.esotericsoftware.spine.AnimationStateData;
-import com.esotericsoftware.spine.Skeleton;
-import com.esotericsoftware.spine.SkeletonData;
-import com.esotericsoftware.spine.SkeletonJson;
-import com.esotericsoftware.spine.SkeletonRenderer;
 
 public class Hero extends LivingThing {
 
-	public static final String[] HERO_STATES = {"IDLE_RIGHT", "IDLE_LEFT", "WALK_RIGHT", "WALK_LEFT", 
-			"JUMP_RIGHT", "JUMP_LEFT", "SWIM_RIGHT", "SWIM_LEFT", "CLIMB"};
-
-	public static final String HERO_SPRITE_PATH = "blizz.png";
-	private static SpriteAnimation sprite = new SpriteAnimation(50, 50, HERO_STATES, HERO_SPRITE_PATH);
+	private final static int WIDTH = 50;
+	private final static int HEIGHT = 50;
+	private final static int MAX_HEALTH_POINT = 100;
+	
 	boolean canClimbUp;
 	boolean canClimbDown;
-	private String current_animation;
 	
-	private AnimationState animationState;
-
-	private Skeleton skeleton;
-
-	private SkeletonRenderer skeletonRenderer;
-
+	private SplineAnimations animations;
+	
 	public Hero(int x, int y) {               
-		super(x, y, 50, 50, sprite, 100);
+		super(x, y, WIDTH, HEIGHT, MAX_HEALTH_POINT);
 		this.canClimbUp = false;
 		this.canClimbDown = false;
-		
-		TextureAtlas playerAtlas = new TextureAtlas(Gdx.files.internal("spineboy-pma.atlas"));
-		SkeletonJson json = new SkeletonJson(playerAtlas);
-		json.setScale(0.3f);
-		SkeletonData playerSkeletonData = json.readSkeletonData(Gdx.files.internal("spineboy.json"));
-		System.out.println(playerSkeletonData.getHeight());
-		AnimationStateData playerAnimationData = new AnimationStateData(playerSkeletonData);
-		playerAnimationData.setMix("run", "jump", 0.2f);
-		playerAnimationData.setMix("jump", "run", 0.2f);
-		this.skeletonRenderer = new SkeletonRenderer();
-		
-		skeletonRenderer.setPremultipliedAlpha(true);
-		
-		this.skeleton = new Skeleton(playerSkeletonData);
-		this.animationState = new AnimationState(playerAnimationData);
-		
-		this.current_animation = "idle";
-		animationState.setAnimation(0, "idle", true); // trackIndex, name, loop
-		
-		
+		this.animations = new SplineAnimations("spineboy-pma.atlas", "spineboy.json");
 	}
 
 	
 	@Override
 	public void draw(SpriteBatch batch, float delta) {
-		// TODO Auto-generated method stub
-		//super.draw(batch, delta);
-		skeleton.setPosition(this.getX(), this.getY());
-		skeletonRenderer.draw(batch, skeleton);
+		this.animations.draw(batch);
 	}
 	
-	public void update(float delta, Vector2 gravity, ArrayList<Ladder> ladders){
-		super.update(delta, gravity, canClimbDown);
-		
-		// CLIMB
-		this.canClimbDown = this.isClimbingDown(ladders);
-		this.canClimbUp = this.isClimbingUp(ladders);
-		
-		animationState.update(delta * 0.35f);
-		animationState.apply(skeleton);
-		skeleton.updateWorldTransform();
-	}
-
-	public void setAnimation(String animation, int index, boolean loop){
-		if (!this.current_animation.equals(animation)){
-			this.current_animation = animation;
-			animationState.setAnimation(index, this.current_animation, loop); // trackIndex, name, loop
-		}
-	}
-	
-	public void updateInput() {
-		if (this.canClimbUp) {
-			this.climbUp();
-		}
-		if (this.canClimbDown) {
-			this.climbDown();
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			this.moveRight(Gdx.graphics.getDeltaTime());
-			if (this.velocityY == 0)
-				this.setAnimation("run", 0, true); // trackIndex, name, loop
-			
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
-			this.moveLeft(Gdx.graphics.getDeltaTime());
-			if (this.velocityY == 0)
-				this.setAnimation("run", 0, true); // trackIndex, name, loop
-			skeleton.getFlipX();
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			this.jump();
-			this.setAnimation("jump", 0, false); // trackIndex, name, loop
-		}
-	}
-
 	private boolean isClimbingUp(ArrayList<Ladder> ladders){
 		if (!Gdx.input.isKeyPressed(Input.Keys.Z))
 			return false;
@@ -130,6 +51,40 @@ public class Hero extends LivingThing {
 			}
 		}
 		return false;
+	}
+	
+	public void update(float delta, Vector2 gravity, ArrayList<Ladder> ladders){
+		super.update(delta, gravity, canClimbDown);
+		
+		// CLIMB
+		this.canClimbDown = this.isClimbingDown(ladders);
+		this.canClimbUp = this.isClimbingUp(ladders);
+		
+		this.animations.update(this.getX(), this.getY(), delta, this.direction);
+	}
+
+	public void updateInput() {
+		if (this.canClimbUp) {
+			this.climbUp();
+		}
+		if (this.canClimbDown) {
+			this.climbDown();
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+			this.moveRight(Gdx.graphics.getDeltaTime());
+			if (this.velocityY == 0)
+				this.animations.setAnimation(State.WALKING, 0, true); // trackIndex, name, loop
+			
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+			this.moveLeft(Gdx.graphics.getDeltaTime());
+			if (this.velocityY == 0)
+				this.animations.setAnimation(State.WALKING, 0, true); // trackIndex, name, loop
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			this.jump();
+			this.animations.setAnimation(State.JUMPING, 0, false); // trackIndex, name, loop
+		}
 	}
 
 	public float getCenterX() {

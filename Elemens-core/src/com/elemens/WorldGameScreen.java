@@ -29,7 +29,6 @@ public class WorldGameScreen extends AbstractScreen {
 		//Utility.loadTextureAsset("village_back.png");
 		Utility.loadTextureAsset("bg.jpg");
 		Utility.loadTextureAsset(Twarzian.SPRITE_PATH);
-		Utility.loadTextureAsset(Hero.HERO_SPRITE_PATH);
 		this.world = World.create(0.0f, -9.8f);
 	}
 	

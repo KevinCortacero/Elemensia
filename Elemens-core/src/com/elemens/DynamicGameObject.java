@@ -7,12 +7,12 @@ import com.badlogic.gdx.utils.Disposable;
 
 public abstract class DynamicGameObject extends GameObject implements Disposable {
 
-
+	protected State state;
+	protected Direction direction;
 	protected CollideManager collideManager;
 	private WaterAbility waterAbility;
 	protected float velocityY;
 	private int jumpCount;
-	private String state;
 	private SpriteAnimation sprite;
 	private float timer;
 
@@ -21,12 +21,20 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.waterAbility = new WaterAbility(x, y, width, height);
 		this.collideManager = new CollideManager(x, y, width, height);
 		this.sprite = sprite;
-		this.state = sprite.getDefaultState();
-		this.setState(0);
+		this.state = State.IDLE;
 		this.velocityY = 0;
 		this.jumpCount = 1;
 		this.timer = 0;
-		
+	}
+	
+	public DynamicGameObject(int x, int y, int width, int height) {
+		super(x, y, width, height);
+		this.waterAbility = new WaterAbility(x, y, width, height);
+		this.collideManager = new CollideManager(x, y, width, height);
+		this.state = State.IDLE;
+		this.velocityY = 0;
+		this.jumpCount = 1;
+		this.timer = 0;
 	}
 
 	public void update(float delta, Vector2 gravity, boolean canClimbUp){
@@ -72,16 +80,14 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 		this.collideManager.draw(sr);
 		this.waterAbility.draw(sr);
 	}
+	
+	public void draw(SpriteBatch batch, float delta) {
+		if (this.sprite != null)
+			batch.draw(this.sprite.getCurrentAnimation("IDLE_RIGHT", this.timer), this.getX(), this.getY());
+	}
 
 	public void updateAnimation(float delta){
 		this.timer += delta;
-	}
-
-	private void setState(int i) {
-		if (!this.state.equals(Hero.HERO_STATES[i])){
-			this.state = Hero.HERO_STATES[i];
-			this.timer = 0;
-		}
 	}
 
 	public boolean isMovingUp() {
@@ -105,38 +111,31 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 
 	public void moveRight(float delta) {
 		this.setX(this.getX() + 150 * delta);
-		this.setState(2);
+		this.direction = Direction.RIGHT;
 	}
 
 	public void moveLeft(float delta) {
 		this.setX(this.getX() - 150 * delta);
-		this.setState(3);
+		this.direction = Direction.LEFT;
 	}
 
 	public void climbUp() {
 		this.velocityY = 4;
-		this.setState(8);
 	}
 
 	public void climbDown() {
 		this.velocityY = -4;
-		this.setState(8);
 	}
 
 	public void jump() {
 		if (this.jumpCount > 0) {
 			this.velocityY = 8;
 			this.jumpCount--;
-			this.setState(4);
 		}
 	}
 
 	public void resetJump() {
 		this.jumpCount = 1;
-	}
-
-	public void draw(SpriteBatch batch, float delta) {
-		batch.draw(this.sprite.getCurrentAnimation(this.state, this.timer), this.getX(), this.getY());
 	}
 
 	@Override

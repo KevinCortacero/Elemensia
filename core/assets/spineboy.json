@@ -136,7 +136,7 @@
 	"footstep": {}
 },
 "animations": {
-	"death": {
+	"DYING": {
 		"slots": {
 			"eye": {
 				"attachment": [
@@ -340,7 +340,7 @@
 			}
 		}
 	},
-	"hit": {
+	"HITTED": {
 		"slots": {
 			"front-fist": {
 				"attachment": [
@@ -482,7 +482,7 @@
 			}
 		}
 	},
-	"idle": {
+	"IDLE": {
 		"slots": {
 			"front-fist": {
 				"attachment": [
@@ -784,7 +784,7 @@
 			}
 		}
 	},
-	"jump": {
+	"JUMPING": {
 		"slots": {
 			"front-fist": {
 				"attachment": [
@@ -1088,7 +1088,7 @@
 			}
 		}
 	},
-	"run": {
+	"RUNNING": {
 		"slots": {
 			"dust01": {
 				"color": [
@@ -1461,7 +1461,7 @@
 			{ "time": 0.4333, "name": "footstep", "int": 1 }
 		]
 	},
-	"shoot": {
+	"ATTACKING": {
 		"slots": {
 			"muzzle": {
 				"color": [
@@ -1530,7 +1530,7 @@
 			}
 		}
 	},
-	"walk": {
+	"WALKING": {
 		"bones": {
 			"front-thigh": {
 				"rotate": [

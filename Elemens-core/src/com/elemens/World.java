@@ -125,10 +125,11 @@ public class World implements Disposable {
 		this.hero.update(delta, this.gravity, this.ladders);
 		this.hero.updateColliding();
 
-		// DEATH
+		// DEATHFOR THE MOMENT
 		if (this.hero.getY() < -100) {
 			this.hero.setPosition(600, 200);
 		}
+		
 		for(Creature c : this.creatures){
 			c.update(delta, this.gravity, false);
 			c.updateColliding();

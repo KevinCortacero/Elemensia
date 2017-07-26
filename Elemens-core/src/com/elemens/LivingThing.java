@@ -10,14 +10,13 @@ public abstract class LivingThing extends DynamicGameObject{
 		super(x, y, width, height, sprite);
 		this.life = new Life(health);
 	}
-
-	public void draw(SpriteBatch batch, float delta) {
-		super.draw(batch, delta);
-		//font.draw(batch, this.getLife(), this.getX(), this.getY() + this.getHeight() + 20);
+	
+	public LivingThing(int x, int y, int width, int height, int health) {
+		super(x, y, width, height);
+		this.life = new Life(health);
 	}
 
 	private String getLife(){
 		return this.life.toString();
 	}
-
 }
