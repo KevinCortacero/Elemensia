@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Hero extends LivingThing {
@@ -16,19 +15,12 @@ public class Hero extends LivingThing {
 	boolean canClimbUp;
 	boolean canClimbDown;
 	
-	private SplineAnimations animations;
+	private static SplineAnimations ANIMATIONS = new SplineAnimations("living_things/hero/spineboy-pma.atlas", "living_things/hero/spineboy.json");
 	
 	public Hero(int x, int y) {               
-		super(x, y, WIDTH, HEIGHT, MAX_HEALTH_POINT);
+		super(x, y, WIDTH, HEIGHT, MAX_HEALTH_POINT, ANIMATIONS);
 		this.canClimbUp = false;
 		this.canClimbDown = false;
-		this.animations = new SplineAnimations("spineboy-pma.atlas", "spineboy.json");
-	}
-
-	
-	@Override
-	public void draw(SpriteBatch batch, float delta) {
-		this.animations.draw(batch);
 	}
 	
 	private boolean isClimbingUp(ArrayList<Ladder> ladders){
@@ -59,8 +51,6 @@ public class Hero extends LivingThing {
 		// CLIMB
 		this.canClimbDown = this.isClimbingDown(ladders);
 		this.canClimbUp = this.isClimbingUp(ladders);
-		
-		this.animations.update(this.getX(), this.getY(), delta, this.direction);
 	}
 
 	public void updateInput() {
@@ -72,13 +62,13 @@ public class Hero extends LivingThing {
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			this.moveRight(Gdx.graphics.getDeltaTime());
-			if (this.velocityY == 0)
+			if (this.velocity.y == 0)
 				this.animations.setAnimation(State.WALKING, 0, true); // trackIndex, name, loop
 			
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
 			this.moveLeft(Gdx.graphics.getDeltaTime());
-			if (this.velocityY == 0)
+			if (this.velocity.y == 0)
 				this.animations.setAnimation(State.WALKING, 0, true); // trackIndex, name, loop
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -87,14 +77,6 @@ public class Hero extends LivingThing {
 		}
 	}
 
-	public float getCenterX() {
-		return this.collideManager.getCenterX();
-	}
-
-	public float getCenterY() {
-		return this.collideManager.getCenterY();
-	}
-	
 	@Override
 	public void applyHorizontalCollidingEffect(CollideBox collider, Hitbox hitbox){
 		switch (hitbox) {

@@ -26,9 +26,8 @@ public class WorldGameScreen extends AbstractScreen {
 		this.batch = new SpriteBatch();
 		this.sr = new ShapeRenderer();
 		this.font = new BitmapFont();
-		//Utility.loadTextureAsset("village_back.png");
-		Utility.loadTextureAsset("bg.jpg");
-		Utility.loadTextureAsset(Twarzian.SPRITE_PATH);
+		Utility.loadTextureAsset("living_things/npc/npc.png");
+		Utility.loadTextureAsset("world/bg.jpg");
 		this.world = World.create(0.0f, -9.8f);
 	}
 	

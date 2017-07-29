@@ -3,12 +3,14 @@ package com.elemens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
+import com.esotericsoftware.spine.SkeletonRendererDebug;
 
 public class SplineAnimations {
 
@@ -16,11 +18,13 @@ public class SplineAnimations {
 	private Skeleton skeleton;
 	private SkeletonRenderer skeletonRenderer;
 	private State state;
+	private SkeletonRendererDebug debugRenderer;
+
 	
 	public SplineAnimations(String textureAtlasPath, String jsonPath) {
 		this.skeletonRenderer = new SkeletonRenderer();
 		this.skeletonRenderer.setPremultipliedAlpha(true);
-		
+		this.debugRenderer = new SkeletonRendererDebug();
 		
 		TextureAtlas playerAtlas = new TextureAtlas(Gdx.files.internal(textureAtlasPath));
 		SkeletonJson json = new SkeletonJson(playerAtlas);
@@ -29,12 +33,14 @@ public class SplineAnimations {
 		AnimationStateData playerAnimationData = new AnimationStateData(playerSkeletonData);
 		
 		// Merge 2 animations for more smooth
+		/*
 		playerAnimationData.setMix("RUNNING", "JUMPING", 0.2f);
 		playerAnimationData.setMix("JUMPING", "RUNNING", 0.2f);
-		
+		*/
 		this.skeleton = new Skeleton(playerSkeletonData);
 		this.animationState = new AnimationState(playerAnimationData);
 		
+		this.animationState.setTimeScale(0.4f); // Slow all animations down to 40% speed.
 		this.animationState.setAnimation(0, "IDLE", true); // trackIndex, name, loop
 	}
 	
@@ -62,5 +68,10 @@ public class SplineAnimations {
 			this.state = state;
 			this.animationState.setAnimation(index, this.state.toString(), loop); // trackIndex, name, loop
 		}
+	}
+
+	public void draw(ShapeRenderer sr) {
+		this.debugRenderer.getShapeRenderer().setProjectionMatrix(sr.getProjectionMatrix());
+		this.debugRenderer.draw(this.skeleton);
 	}
 }

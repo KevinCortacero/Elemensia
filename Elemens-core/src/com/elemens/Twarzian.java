@@ -2,22 +2,14 @@ package com.elemens;
 
 public class Twarzian extends Creature {
 
-	//public static final String[] STATES = { "IDLE_RIGHT", "IDLE_LEFT", "WALK_RIGHT", "WALK_LEFT", "JUMP_RIGHT",
-	//		"JUMP_LEFT", "SWIM_RIGHT", "SWIM_LEFT", "CLIMB" };
-	
-	
-	public static final String[] STATES = { "IDLE_RIGHT"};
-
 	private static final int HEALTH_POINT = 100;
 	private static final int WIDTH = 256;
 	private static final int HEIGHT = 128;
 
-	public static final String SPRITE_PATH = "walk_left.png";
-
-	private static final SpriteAnimation ANIMATION = new SpriteAnimation(WIDTH, HEIGHT, STATES, SPRITE_PATH);
+	private static final SplineAnimations ANIMATIONS = new SplineAnimations("living_things/creatures/wolf/alien.atlas", "living_things/creatures/wolf/alien.json");
 
 	public Twarzian(int x, int y) {
-		super(x, y, WIDTH, HEIGHT, ANIMATION, HEALTH_POINT);
+		super(x, y, WIDTH, HEIGHT, HEALTH_POINT, ANIMATIONS);
 	}
 
 	@Override

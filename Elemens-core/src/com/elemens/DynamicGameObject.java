@@ -3,65 +3,61 @@ package com.elemens;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Disposable;
 
-public abstract class DynamicGameObject extends GameObject implements Disposable {
+public abstract class DynamicGameObject extends GameObject{
 
 	protected State state;
 	protected Direction direction;
 	protected CollideManager collideManager;
 	private WaterAbility waterAbility;
-	protected float velocityY;
+	protected Vector2 velocity;
 	private int jumpCount;
-	private SpriteAnimation sprite;
-	private float timer;
-
-	public DynamicGameObject(int x, int y, int width, int height, SpriteAnimation sprite) {
+	protected SplineAnimations animations;
+	
+	public DynamicGameObject(int x, int y, int width, int height, SplineAnimations animations) {
 		super(x, y, width, height);
 		this.waterAbility = new WaterAbility(x, y, width, height);
 		this.collideManager = new CollideManager(x, y, width, height);
-		this.sprite = sprite;
+		this.animations = animations;
 		this.state = State.IDLE;
-		this.velocityY = 0;
+		this.direction = Direction.LEFT;
+		this.velocity = new Vector2();
 		this.jumpCount = 1;
-		this.timer = 0;
 	}
 	
-	public DynamicGameObject(int x, int y, int width, int height) {
-		super(x, y, width, height);
-		this.waterAbility = new WaterAbility(x, y, width, height);
-		this.collideManager = new CollideManager(x, y, width, height);
-		this.state = State.IDLE;
-		this.velocityY = 0;
-		this.jumpCount = 1;
-		this.timer = 0;
+	public float getCenterX() {
+		return this.collideManager.getCenterX();
 	}
 
+	public float getCenterY() {
+		return this.collideManager.getCenterY();
+	}
+	
 	public void update(float delta, Vector2 gravity, boolean canClimbUp){
 		this.waterAbility.isOnWater = World.isOnWater(this);
 		this.waterAbility.isUnderWater = World.isUnderWater(this);
 		// normal gravity
 		if (!canClimbUp && !this.waterAbility.isUnderWater){
-			this.velocityY += (gravity.y*delta*1.5);
+			this.velocity.y += (gravity.y*delta*1.5);
 		}
 
 		// under water
 		if (this.waterAbility.isUnderWater){
-			this.velocityY *= 0.95;
-			if (this.velocityY < 0.5 && this.velocityY > -0.5){
+			this.velocity.y *= 0.95;
+			if (this.velocity.y < 0.5 && this.velocity.y > -0.5){
 				this.resetJump();
 			}
 		}
 
 		// on water
 		if (this.waterAbility.isOnWater){
-			this.velocityY -= (gravity.y*delta*0.75);			
+			this.velocity.y -= (gravity.y*delta*0.75);			
 		}
 		//  ANIMATION
-		this.updateAnimation(delta);
+		this.animations.update(this.getCenterX(), this.getY(), delta, this.direction);
 
 		// GRAVITY
-		this.setY(this.getY() + this.velocityY);
+		this.setY(this.getY() + this.velocity.y);
 		this.setPosition(this.getBody().x, this.getBody().y);
 
 	}
@@ -76,26 +72,22 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	}
 
 	public void draw(ShapeRenderer sr) {
-		super.draw(sr);
-		this.collideManager.draw(sr);
-		this.waterAbility.draw(sr);
+		//super.draw(sr);
+		//this.collideManager.draw(sr);
+		//this.waterAbility.draw(sr);
+		this.animations.draw(sr);
 	}
 	
 	public void draw(SpriteBatch batch, float delta) {
-		if (this.sprite != null)
-			batch.draw(this.sprite.getCurrentAnimation("IDLE_RIGHT", this.timer), this.getX(), this.getY());
-	}
-
-	public void updateAnimation(float delta){
-		this.timer += delta;
+		this.animations.draw(batch);
 	}
 
 	public boolean isMovingUp() {
-		return (this.velocityY > 0); 
+		return (this.velocity.y > 0); 
 	}
 
 	public void stopV(float height) {
-		this.velocityY = 0;
+		this.velocity.y = 0;
 		this.setPosition(this.getBody().x, height);
 	}
 
@@ -120,16 +112,16 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	}
 
 	public void climbUp() {
-		this.velocityY = 4;
+		this.velocity.y = 4;
 	}
 
 	public void climbDown() {
-		this.velocityY = -4;
+		this.velocity.y = -4;
 	}
 
 	public void jump() {
 		if (this.jumpCount > 0) {
-			this.velocityY = 8;
+			this.velocity.y = 8;
 			this.jumpCount--;
 		}
 	}
@@ -137,12 +129,7 @@ public abstract class DynamicGameObject extends GameObject implements Disposable
 	public void resetJump() {
 		this.jumpCount = 1;
 	}
-
-	@Override
-	public void dispose() {
-		this.sprite.dispose();
-	}
-
+	
 	public CollideBox getWaterBox() {
 		return this.waterAbility.waterBox;
 	}
