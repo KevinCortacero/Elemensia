@@ -9,7 +9,7 @@ public abstract class DynamicGameObject extends GameObject{
 	protected State state;
 	protected Direction direction;
 	protected CollideManager collideManager;
-	private WaterAbility waterAbility;
+	protected WaterAbility waterAbility;
 	protected Vector2 velocity;
 	private int jumpCount;
 	protected SplineAnimations animations;
@@ -33,13 +33,12 @@ public abstract class DynamicGameObject extends GameObject{
 		return this.collideManager.getCenterY();
 	}
 	
-	public void update(float delta, Vector2 gravity, boolean canClimbUp){
+	public void update(Vector2 gravity, float delta){
 		this.waterAbility.isOnWater = World.isOnWater(this);
 		this.waterAbility.isUnderWater = World.isUnderWater(this);
+		
 		// normal gravity
-		if (!canClimbUp && !this.waterAbility.isUnderWater){
-			this.velocity.y += (gravity.y*delta*1.5);
-		}
+		this.applyGravity(gravity, delta);
 
 		// under water
 		if (this.waterAbility.isUnderWater){
@@ -62,19 +61,16 @@ public abstract class DynamicGameObject extends GameObject{
 
 	}
 
+	public abstract void applyGravity(Vector2 gravity, float delta);
+
 	public abstract void applyHorizontalCollidingEffect(CollideBox collider, Hitbox hitbox);
 	
 	public abstract void applyVerticalCollidingEffect(CollideBox collider, Hitbox hitbox);
-	
-	public void updateColliding() {
-		World.updateHorizontalColliding(this);
-		World.updateVerticalColliding(this);
-	}
 
 	public void draw(ShapeRenderer sr) {
-		//super.draw(sr);
-		//this.collideManager.draw(sr);
-		//this.waterAbility.draw(sr);
+		super.draw(sr);
+		this.collideManager.draw(sr);
+		this.waterAbility.draw(sr);
 		this.animations.draw(sr);
 	}
 	

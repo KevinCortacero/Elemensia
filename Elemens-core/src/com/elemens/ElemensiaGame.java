@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 
 public class ElemensiaGame extends Game{
 
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 450;
 

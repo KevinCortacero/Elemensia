@@ -105,32 +105,32 @@ public class World implements Disposable {
 		this.hero.draw(sr);
 	}
 
-	public static void updateHorizontalColliding(DynamicGameObject dynamicGameObject) {
+	public void updateColliding(DynamicGameObject dynamicGameObject) {
 		for (Solid s : world.solids) {
-			Hitbox hitbox = dynamicGameObject.collideManager.isCollidingHorizontal(s.getBody());
-			dynamicGameObject.applyHorizontalCollidingEffect(s.getBody(), hitbox);
-		}
-	}
-
-	public static void updateVerticalColliding(DynamicGameObject dynamicGameObject) {
-		for (Solid s : world.solids) {
-			Hitbox hitbox = dynamicGameObject.collideManager.isCollidingVertical(s.getBody());
-			dynamicGameObject.applyVerticalCollidingEffect(s.getBody(), hitbox);
+			// HORIZONTAL COLLIDING
+			Hitbox hitboxH = dynamicGameObject.collideManager.isCollidingHorizontal(s.getBody());
+			dynamicGameObject.applyHorizontalCollidingEffect(s.getBody(), hitboxH);
+			
+			// VERTICAL COLLIDING
+			Hitbox hitboxV = dynamicGameObject.collideManager.isCollidingVertical(s.getBody());
+			dynamicGameObject.applyVerticalCollidingEffect(s.getBody(), hitboxV);
 		}
 	}
 
 	public void update(float delta) {
-		this.hero.update(delta, this.gravity, this.ladders);
-		this.hero.updateColliding();
+		
+		this.hero.update(this.gravity, delta);
+		
+		this.updateColliding(this.hero);
 
-		// DEATHFOR THE MOMENT
+		// DEATH FOR THE MOMENT
 		if (this.hero.getY() < -100) {
 			this.hero.setPosition(600, 200);
 		}
 
 		for (Creature c : this.creatures) {
-			c.update(delta, this.gravity, false);
-			c.updateColliding();
+			c.update(this.gravity, delta);
+			this.updateColliding(c);
 			c.takeDecision(delta);
 		}
 		this.hero.updateInput();
@@ -185,4 +185,19 @@ public class World implements Disposable {
 		}
 		return false;
 	}
+
+	public static void updateClimbing(Hero hero) {
+		hero.canClimbUp = false;
+		hero.canClimbDown = false;
+		for (Ladder l : world.ladders) {
+			if (hero.collideManager.getCenterBox().overlaps(l.climbZoneDown)) {
+				hero.canClimbDown = true;
+			}
+			if (hero.collideManager.getCenterBox().overlaps(l.climbZone)) {
+				hero.canClimbUp = true;
+			}
+			
+		}
+	}
+
 }

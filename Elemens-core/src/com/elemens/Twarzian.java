@@ -1,5 +1,7 @@
 package com.elemens;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Twarzian extends Creature {
 
 	private static final int HEALTH_POINT = 100;
@@ -53,5 +55,10 @@ public class Twarzian extends Creature {
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void applyGravity(Vector2 gravity, float delta) {
+		this.velocity.y += (gravity.y * delta);
 	}
 }

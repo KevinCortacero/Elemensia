@@ -10,8 +10,8 @@ public abstract class Creature extends LivingThing{
 
 	
 	@Override
-	public void update(float delta, Vector2 gravity, boolean canClimbUp) {
-		super.update(delta, gravity, canClimbUp);
+	public void update(Vector2 gravity, float delta) {
+		super.update(gravity, delta);
 	}
 	
 	public abstract void takeDecision(float delta);
