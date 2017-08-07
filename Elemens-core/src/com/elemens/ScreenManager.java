@@ -26,15 +26,17 @@ public class ScreenManager {
         // Get current screen to dispose it
         Screen currentScreen = this.game.getScreen();
  
+        // Dispose previous screen
+        if (currentScreen != null) {
+            currentScreen.dispose();
+        }
+        
         // Show new screen
         newScreen.buildStage();
         this.game.setScreen(newScreen);
         Gdx.graphics.setUndecorated(undecorated);
 		Gdx.graphics.setWindowedMode((int) newScreen.getWidth(), (int) newScreen.getHeight());
  
-        // Dispose previous screen
-        if (currentScreen != null) {
-            currentScreen.dispose();
-        }
+        
     }
 }

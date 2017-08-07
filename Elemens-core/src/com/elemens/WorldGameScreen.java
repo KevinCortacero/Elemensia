@@ -12,7 +12,7 @@ public class WorldGameScreen extends AbstractScreen {
 		super(1600, 900);
 	}
 	
-	private BitmapFont font;
+	//private BitmapFont font;
 	private SpriteBatch batch;
 	private ShapeRenderer sr;
 	private OrthographicCamera camera;
@@ -25,7 +25,7 @@ public class WorldGameScreen extends AbstractScreen {
 		this.camera.setToOrtho(false, this.getWidth(), this.getHeight());
 		this.batch = new SpriteBatch();
 		this.sr = new ShapeRenderer();
-		this.font = new BitmapFont();
+		//this.font = new BitmapFont();
 		Utility.loadTextureAsset("living_things/npc/npc.png");
 		Utility.loadTextureAsset("world/bg.jpg");
 		this.world = World.create(0.0f, -9.8f);
@@ -46,7 +46,7 @@ public class WorldGameScreen extends AbstractScreen {
 		this.sr.begin(ShapeType.Line);
 		this.sr.setProjectionMatrix(this.camera.combined);
 		if(ElemensiaGame.DEBUG)
-			this.world.draw(sr);
+			this.world.draw(this.sr);
 		this.sr.end();
 		
 		this.world.update(delta);

@@ -14,19 +14,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class SplashScreen extends AbstractScreen {
+	
+	public static final int WINDOW_WIDTH = 800;
+	public static final int WINDOW_HEIGHT = 450;
 
 	public SplashScreen() {
-		super(800, 450);
+		super(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 	
 	@Override
 	public void buildStage() {
 
 		Skin skin = new Skin();
-		Utility.loadTextureAsset("splashScreen.jpg");
-		Texture texture = Utility.getTextureAsset("splashScreen.jpg");
+		Utility.loadTextureAsset("screens/splashScreen.jpg");
+		Texture texture = Utility.getTextureAsset("screens/splashScreen.jpg");
 		Image background = new Image(texture);
-		background.setBounds(0, 0, ElemensiaGame.WINDOW_WIDTH, ElemensiaGame.WINDOW_HEIGHT);
+		background.setBounds(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.addActor(background);
 		
 		// Generate a 1x1 white texture and store it in the skin named "white".
