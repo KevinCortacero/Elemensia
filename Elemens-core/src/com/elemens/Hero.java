@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Hero extends LivingThing {
 
-	private final static int WIDTH = 50;
-	private final static int HEIGHT = 50;
+	private final static int WIDTH = 80;
+	private final static int HEIGHT = 200;
 	private final static int MAX_HEALTH_POINT = 100;
 
 	public boolean canClimbUp;
