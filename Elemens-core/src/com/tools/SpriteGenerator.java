@@ -1,14 +1,14 @@
 package com.tools;
 
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -25,6 +25,19 @@ public class SpriteGenerator {
 	private final static String IMAGE_FOLDER = "images/";
 	public final static String SPRITE_FOLDER = "sprites/";
 	private final static String OUT_FOLDER = "out/";
+
+	public static BufferedImage resizeImg(BufferedImage img, int newW, int newH)
+	{
+		int w = img.getWidth();
+		int h = img.getHeight();
+		BufferedImage dimg = new BufferedImage(newW, newH, img.getType());
+		Graphics2D g = dimg.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.drawImage(img, 0, 0, newW, newH, 0, 0, w, h, null);
+		g.dispose();
+		return dimg;      
+	}
 
 	public static void main(String[] args) throws IOException, Exception{
 		final JFrame frame = new JFrame();
@@ -58,6 +71,7 @@ public class SpriteGenerator {
 						SpriteGenerator.createSprite(frame, (Integer) width.getValue(), (Integer) height.getValue(), (Integer) animations.getValue(), (Integer) frames.getValue(), name.getText());
 					} catch (Exception e1) {
 						JOptionPane.showMessageDialog(frame, "Problem !!", "Error", JOptionPane.ERROR_MESSAGE);
+						e1.printStackTrace();
 					}
 					frame.dispose();
 				}
@@ -103,7 +117,8 @@ public class SpriteGenerator {
 			if (!sprites.containsKey(type))
 				sprites.put(type, new BufferedImage[frames]);
 			BufferedImage image = ImageIO.read(new File(IMAGE_FOLDER + filename));
-
+			
+			/*
 			if (image.getWidth() != width){
 				JOptionPane.showMessageDialog(frame, "Width is not equal to " + width + " for image " + filename, "Inane error", JOptionPane.ERROR_MESSAGE);
 				System.exit(0);
@@ -112,13 +127,19 @@ public class SpriteGenerator {
 				JOptionPane.showMessageDialog(frame, "Height is not equal to " + height + " for image " + filename, "Inane error", JOptionPane.ERROR_MESSAGE);
 				System.exit(0);
 			}
+			
+			*/
+			image = resizeImg(image, 64, 64);
 			sprites.get(type)[number-1] = image;
 			count ++;
 		}
 		if (count != frames*animations){
 			JOptionPane.showMessageDialog(frame, count + " files found ! Expected " + frames*animations + " !", "Inane error", JOptionPane.ERROR_MESSAGE);
 		}
-
+		
+		width = 64;
+		height = 64;
+		
 		for (String type : sprites.keySet()){
 			BufferedImage img = new BufferedImage(width*frames, height, BufferedImage.TYPE_INT_ARGB);
 			for (int i = 0; i < frames; i++){

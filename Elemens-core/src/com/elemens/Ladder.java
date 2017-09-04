@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Ladder extends GameObject{
 	
-	Solid top;
+	public Solid top;
 	Rectangle climbZone;
 	Rectangle climbZoneDown;
 	

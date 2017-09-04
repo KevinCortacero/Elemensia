@@ -6,8 +6,8 @@ public class WaterArea extends Area{
 		super(x, y, width, height);
 	}
 
-	public boolean contains(DynamicGameObject object) {
-		return this.getBody().overlaps(object.getWaterBox());
+	public boolean overlaps(CollideBox box) {
+		return this.getBody().overlaps(box);
 	}
 
 }

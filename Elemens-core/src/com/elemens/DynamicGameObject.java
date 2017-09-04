@@ -12,9 +12,9 @@ public abstract class DynamicGameObject extends GameObject{
 	protected WaterAbility waterAbility;
 	protected Vector2 velocity;
 	private int jumpCount;
-	protected SplineAnimations animations;
+	protected Animation animations;
 	
-	public DynamicGameObject(int x, int y, int width, int height, SplineAnimations animations) {
+	public DynamicGameObject(int x, int y, int width, int height, Animation animations) {
 		super(x, y, width, height);
 		this.waterAbility = new WaterAbility(x, y, width, height);
 		this.collideManager = new CollideManager(x, y, width, height);
@@ -119,6 +119,7 @@ public abstract class DynamicGameObject extends GameObject{
 		if (this.jumpCount > 0) {
 			this.velocity.y = 8;
 			this.jumpCount--;
+			this.animations.setAnimation(State.JUMPING, false);
 		}
 	}
 

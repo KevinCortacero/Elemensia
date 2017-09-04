@@ -12,7 +12,7 @@ import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.SkeletonRendererDebug;
 
-public class SplineAnimations {
+public class SplineAnimations extends Animation{
 
 	private AnimationState animationState;
 	private Skeleton skeleton;
@@ -41,7 +41,7 @@ public class SplineAnimations {
 		this.animationState = new AnimationState(playerAnimationData);
 		
 		this.animationState.setTimeScale(0.4f); // Slow all animations down to 40% speed.
-		this.animationState.setAnimation(0, "IDLE", true); // trackIndex, name, loop
+		this.setAnimation(State.IDLE, true);
 	}
 	
 	public void update(float x, float y, float delta, Direction direction){
@@ -59,19 +59,21 @@ public class SplineAnimations {
 		this.skeleton.updateWorldTransform();
 	}
 	
+	@Override
 	public void draw(SpriteBatch batch) {
 		this.skeletonRenderer.draw(batch, this.skeleton);
-	}
-	
-	public void setAnimation(State state, int index, boolean loop){
-		if (!(this.state == state)){
-			this.state = state;
-			this.animationState.setAnimation(index, this.state.toString(), loop); // trackIndex, name, loop
-		}
 	}
 
 	public void draw(ShapeRenderer sr) {
 		this.debugRenderer.getShapeRenderer().setProjectionMatrix(sr.getProjectionMatrix());
 		this.debugRenderer.draw(this.skeleton);
+	}
+
+	@Override
+	public void setAnimation(State state, boolean loop) {
+		if (!(this.state == state)){
+			this.state = state;
+			this.animationState.setAnimation(0, this.state.toString(), loop); // trackIndex, name, loop
+		}
 	}
 }

@@ -47,17 +47,17 @@ public class Hero extends LivingThing {
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			this.moveRight(Gdx.graphics.getDeltaTime());
 			if (this.velocity.y == 0)
-				this.animations.setAnimation(State.WALKING, 0, true); // trackIndex, name, loop
+				this.animations.setAnimation(State.WALKING, true); // trackIndex, name, loop
 
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
 			this.moveLeft(Gdx.graphics.getDeltaTime());
 			if (this.velocity.y == 0)
-				this.animations.setAnimation(State.WALKING, 0, true); // trackIndex, name, loop
+				this.animations.setAnimation(State.WALKING, true); // trackIndex, name, loop
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 			this.jump();
-			this.animations.setAnimation(State.JUMPING, 0, false); // trackIndex, name, loop
+			this.animations.setAnimation(State.JUMPING, false); // trackIndex, name, loop
 		}
 	}
 
