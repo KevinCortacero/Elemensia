@@ -19,7 +19,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.elemensia.Utility;
+import com.elemensia.api.Utility;
 
 public class SpriteSimulatorApp extends Game{
 
