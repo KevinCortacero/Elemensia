@@ -1,6 +1,6 @@
 package com;
 
-import com.elemens.Solid;
+import com.elemensia.Solid;
 
 public class MainWorldMap extends Environment {
 

@@ -7,14 +7,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.elemens.CollideBox;
-import com.elemens.Creature;
-import com.elemens.DynamicGameObject;
-import com.elemens.Hero;
-import com.elemens.Ladder;
-import com.elemens.Solid;
-import com.elemens.Utility;
-import com.elemens.WaterArea;
+import com.elemensia.CollideBox;
+import com.elemensia.Creature;
+import com.elemensia.DynamicGameObject;
+import com.elemensia.Hero;
+import com.elemensia.Ladder;
+import com.elemensia.Solid;
+import com.elemensia.Utility;
+import com.elemensia.WaterArea;
 
 public abstract class Environment {
 
