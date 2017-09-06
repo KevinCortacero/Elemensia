@@ -1,7 +1,7 @@
 package com.elemensia.game;
 
 import com.elemensia.api.Environment;
-import com.elemensia.api.Solid;
+import com.elemensia.api.gameobjects.Solid;
 
 public class MainWorldMap extends Environment {
 

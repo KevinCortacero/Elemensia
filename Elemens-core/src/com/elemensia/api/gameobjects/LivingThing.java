@@ -1,4 +1,7 @@
-package com.elemensia.api;
+package com.elemensia.api.gameobjects;
+
+import com.elemensia.api.Animation;
+import com.elemensia.api.Life;
 
 public abstract class LivingThing extends DynamicGameObject{
 

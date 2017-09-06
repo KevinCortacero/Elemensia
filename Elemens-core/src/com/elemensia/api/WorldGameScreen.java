@@ -34,6 +34,7 @@ public class WorldGameScreen extends AbstractScreen {
 		Utility.loadTextureAsset("living_things/npc/npc.png");
 		Utility.loadTextureAsset("living_things/creatures/cube/cube.png");
 		Utility.loadTextureAsset("world/bg.jpg");
+		Utility.loadTextureAsset("apple.png");
 		this.world = World.create(0.0f, -9.8f);
 	}
 	

@@ -3,11 +3,11 @@ package com.elemensia.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import com.elemensia.api.CollideBox;
-import com.elemensia.api.Hitbox;
-import com.elemensia.api.LivingThing;
 import com.elemensia.api.SplineAnimations;
 import com.elemensia.api.State;
+import com.elemensia.api.gameobjects.LivingThing;
+import com.elemensia.api.physics.CollideBox;
+import com.elemensia.api.physics.Hitbox;
 
 public class Hero extends LivingThing {
 
@@ -27,7 +27,7 @@ public class Hero extends LivingThing {
 	}
 
 	@Override
-	public void update(Vector2 gravity, float delta){
+	public void update(float gravity, float delta){
 		super.update(gravity, delta);
 
 		// CLIMB
@@ -36,9 +36,9 @@ public class Hero extends LivingThing {
 	}
 	
 	@Override
-	public void applyGravity(Vector2 gravity, float delta){
+	public void applyGravity(float gravity, float delta){
 		if (!(canClimbUp && Gdx.input.isKeyPressed(Input.Keys.Z)) && !this.waterAbility.isUnderWater){
-			this.velocity.y += (gravity.y*delta);
+			this.velocity.y += (gravity*delta);
 		}
 	}
 
@@ -102,6 +102,5 @@ public class Hero extends LivingThing {
 			break;
 		}
 	}
-
 
 }

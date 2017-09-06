@@ -1,10 +1,9 @@
 package com.elemensia.game;
 
-import com.badlogic.gdx.math.Vector2;
-import com.elemensia.api.CollideBox;
-import com.elemensia.api.Creature;
-import com.elemensia.api.Hitbox;
 import com.elemensia.api.SplineAnimations;
+import com.elemensia.api.gameobjects.Creature;
+import com.elemensia.api.physics.CollideBox;
+import com.elemensia.api.physics.Hitbox;
 
 public class Twarzian extends Creature {
 
@@ -62,7 +61,7 @@ public class Twarzian extends Creature {
 	}
 
 	@Override
-	public void applyGravity(Vector2 gravity, float delta) {
-		this.velocity.y += (gravity.y * delta);
+	public void applyGravity(float gravity, float delta) {
+		this.velocity.y += (gravity * delta);
 	}
 }

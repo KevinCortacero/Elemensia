@@ -3,6 +3,11 @@ package com.elemensia.api;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.elemensia.api.gameobjects.Creature;
+import com.elemensia.api.gameobjects.DynamicGameObject;
+import com.elemensia.api.gameobjects.Ladder;
+import com.elemensia.api.gameobjects.Solid;
+import com.elemensia.api.physics.Hitbox;
 import com.elemensia.game.Hero;
 import com.elemensia.game.MainWorldMap;
 
@@ -27,7 +32,7 @@ public class Ecosystem {
 		this.env = new MainWorldMap(0, -9.8f);
 		this.bio = new Biodiversity();
 		this.hero = new Hero(200, 200);
-		this.size = new Vector2(3000, 1000);
+		this.size = new Vector2(2835, 1134);
 		this.gravity = -9.8f;
 	}
 	
@@ -47,18 +52,18 @@ public class Ecosystem {
 	public void updateColliding(DynamicGameObject dynamicGameObject) {
 		for (Solid s : this.env.solids) {
 			// HORIZONTAL COLLIDING
-			Hitbox hitboxH = dynamicGameObject.collideManager.isCollidingHorizontal(s.getBody());
+			Hitbox hitboxH = dynamicGameObject.isCollapsingHorizontal(s.getBody());
 			dynamicGameObject.applyHorizontalCollidingEffect(s.getBody(), hitboxH);
 			
 			// VERTICAL COLLIDING
-			Hitbox hitboxV = dynamicGameObject.collideManager.isCollidingVertical(s.getBody());
+			Hitbox hitboxV = dynamicGameObject.isCollapsingVertical(s.getBody());
 			dynamicGameObject.applyVerticalCollidingEffect(s.getBody(), hitboxV);
 		}
 	}
 
 	public void update(float delta) {
 		
-		this.hero.update(this.env.gravity, delta);
+		this.hero.update(this.gravity, delta);
 		
 		this.updateColliding(this.hero);
 
@@ -67,11 +72,7 @@ public class Ecosystem {
 			this.hero.setPosition(600, 200);
 		}
 
-		for (Creature c : this.bio.creatures) {
-			c.update(this.env.gravity, delta);
-			this.updateColliding(c);
-			c.takeDecision(delta);
-		}
+		this.bio.update(this.gravity, delta);
 		
 		// INPUTS
 		this.hero.updateInput();
@@ -121,10 +122,10 @@ public class Ecosystem {
 		hero.canClimbUp = false;
 		hero.canClimbDown = false;
 		for (Ladder l : this.env.ladders) {
-			if (hero.collideManager.getCenterBox().overlaps(l.climbZoneDown)) {
+			if (hero.overlaps(l.climbZoneDown)) {
 				hero.canClimbDown = true;
 			}
-			if (hero.collideManager.getCenterBox().overlaps(l.climbZone)) {
+			if (hero.overlaps(l.climbZone)) {
 				hero.canClimbUp = true;
 			}
 			

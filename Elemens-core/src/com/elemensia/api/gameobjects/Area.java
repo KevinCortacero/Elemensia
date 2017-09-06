@@ -1,4 +1,4 @@
-package com.elemensia.api;
+package com.elemensia.api.gameobjects;
 
 public abstract class Area extends GameObject{
 

@@ -3,8 +3,8 @@ package com.elemensia.game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.elemensia.api.DynamicGameObject;
 import com.elemensia.api.Ecosystem;
+import com.elemensia.api.gameobjects.DynamicGameObject;
 
 public class World {
 
@@ -48,6 +48,10 @@ public class World {
 
 	public static boolean isUnderWater(DynamicGameObject obj) {
 		return world.ecosystem.isUnderWater(obj);
+	}
+
+	public static void updateColliding(DynamicGameObject dynamicGameObject) {
+		world.ecosystem.updateColliding(dynamicGameObject);
 	}
 
 }

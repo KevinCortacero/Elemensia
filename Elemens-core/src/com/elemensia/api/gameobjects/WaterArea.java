@@ -1,4 +1,6 @@
-package com.elemensia.api;
+package com.elemensia.api.gameobjects;
+
+import com.elemensia.api.physics.CollideBox;
 
 public class WaterArea extends Area{
 

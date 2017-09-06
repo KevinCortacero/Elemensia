@@ -1,4 +1,4 @@
-package com.elemensia.api;
+package com.elemensia.api.gameobjects;
 
 public class Solid extends GameObject {
 

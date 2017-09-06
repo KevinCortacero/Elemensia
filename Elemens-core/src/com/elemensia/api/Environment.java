@@ -2,12 +2,14 @@ package com.elemensia.api;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.elemensia.game.Hero;
+import com.elemensia.api.gameobjects.DynamicGameObject;
+import com.elemensia.api.gameobjects.Food;
+import com.elemensia.api.gameobjects.Ladder;
+import com.elemensia.api.gameobjects.Solid;
+import com.elemensia.api.gameobjects.WaterArea;
 
 public abstract class Environment {
 
@@ -18,17 +20,14 @@ public abstract class Environment {
 	public ArrayList<Ladder> ladders;
 
 	public ArrayList<WaterArea> water;
+
 	private Texture background;
 	private Texture npc;
 	// private Texture foreground;
-	public Vector2 gravity;
 
 	private int[][] environement;
 
 	public Environment(float x, float y) {
-		this.gravity = new Vector2(x, y);
-		this.width = 2835;
-		this.height = 1134;
 		this.environement =  new int[this.width / 10][this.height / 10];
 		this.background = Utility.getTextureAsset("world/bg.jpg");
 		this.npc = Utility.getTextureAsset("living_things/npc/npc.png");
@@ -43,13 +42,15 @@ public abstract class Environment {
 		this.ladders = new ArrayList<Ladder>();
 		this.ladders.add(new Ladder(885, 280, 80, 430));
 		this.addSolid(this.ladders.get(0).top);
+
 	}	
 
 	public void draw(SpriteBatch sb){
 		sb.draw(this.background, 0, 0);
 		sb.draw(this.npc, 600, 270);
+		
 	}
-	
+
 	public void draw(ShapeRenderer sr) {
 		for (Solid s : this.solids)
 			s.draw(sr);
@@ -58,16 +59,18 @@ public abstract class Environment {
 		for (Ladder s : this.ladders)
 			s.draw(sr);
 	}
-	
+
 	protected void addSolid(Solid solid){
 		this.solids.add(solid);
+		/*
 		for (int x = (int) (solid.getX() / 10); x < (solid.getX() + solid.getWidth()) / 10 -1; x ++){
 			for (int y = (int) (solid.getY() / 10); y < (solid.getY() + solid.getHeight()) / 10 -1; y ++){
 				this.environement[x][y] = 1;
 			}
 		}
+		 */
 	}
-	
+
 	public boolean isUnderWater(DynamicGameObject obj) {
 		for (WaterArea w : this.water) {
 			if (w.overlaps(obj.getWaterBox())) {
@@ -85,6 +88,6 @@ public abstract class Environment {
 		}
 		return false;
 	}
-	
+
 	public abstract void loadSolids();
 }

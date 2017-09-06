@@ -1,7 +1,8 @@
-package com.elemensia.api;
+package com.elemensia.api.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.elemensia.api.physics.CollideBox;
 
 public abstract class GameObject{
 

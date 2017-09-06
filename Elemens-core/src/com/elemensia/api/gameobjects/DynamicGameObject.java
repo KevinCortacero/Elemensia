@@ -1,15 +1,23 @@
-package com.elemensia.api;
+package com.elemensia.api.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.elemensia.api.Animation;
+import com.elemensia.api.Direction;
+import com.elemensia.api.State;
+import com.elemensia.api.physics.CollideBox;
+import com.elemensia.api.physics.CollideManager;
+import com.elemensia.api.physics.Hitbox;
+import com.elemensia.api.physics.WaterAbility;
 import com.elemensia.game.World;
 
-public abstract class DynamicGameObject extends GameObject{
+public abstract class DynamicGameObject extends InteractiveGameObject{
 
 	protected State state;
 	protected Direction direction;
-	protected CollideManager collideManager;
+	private CollideManager collideManager;
 	protected WaterAbility waterAbility;
 	protected Vector2 velocity;
 	private int jumpCount;
@@ -23,7 +31,11 @@ public abstract class DynamicGameObject extends GameObject{
 		this.state = State.IDLE;
 		this.direction = Direction.LEFT;
 		this.velocity = new Vector2();
-		this.jumpCount = 1;
+		this.jumpCount = 2;
+	}
+	
+	public boolean overlaps(Rectangle rectangle) {
+		return this.collideManager.getCenterBox().overlaps(rectangle);
 	}
 	
 	public float getCenterX() {
@@ -34,7 +46,7 @@ public abstract class DynamicGameObject extends GameObject{
 		return this.collideManager.getCenterY();
 	}
 	
-	public void update(Vector2 gravity, float delta){
+	public void update(float gravity, float delta){
 		this.waterAbility.isOnWater = World.isOnWater(this);
 		this.waterAbility.isUnderWater = World.isUnderWater(this);
 		
@@ -51,7 +63,7 @@ public abstract class DynamicGameObject extends GameObject{
 
 		// on water
 		if (this.waterAbility.isOnWater){
-			this.velocity.y -= (gravity.y*delta*0.75);			
+			this.velocity.y -= (gravity*delta*0.75);			
 		}
 		//  ANIMATION
 		this.animations.update(this.getCenterX(), this.getY(), delta, this.direction);
@@ -62,7 +74,7 @@ public abstract class DynamicGameObject extends GameObject{
 
 	}
 
-	public abstract void applyGravity(Vector2 gravity, float delta);
+	public abstract void applyGravity(float gravity, float delta);
 
 	public abstract void applyHorizontalCollidingEffect(CollideBox collider, Hitbox hitbox);
 	
@@ -99,21 +111,21 @@ public abstract class DynamicGameObject extends GameObject{
 	}
 
 	public void moveRight(float delta) {
-		this.setX(this.getX() + 150 * delta);
+		this.setX(this.getX() + 300 * delta);
 		this.direction = Direction.RIGHT;
 	}
 
 	public void moveLeft(float delta) {
-		this.setX(this.getX() - 150 * delta);
+		this.setX(this.getX() - 300 * delta);
 		this.direction = Direction.LEFT;
 	}
 
 	public void climbUp() {
-		this.velocity.y = 4;
+		this.velocity.y = 5;
 	}
 
 	public void climbDown() {
-		this.velocity.y = -4;
+		this.velocity.y = -5;
 	}
 
 	public void jump() {
@@ -125,11 +137,19 @@ public abstract class DynamicGameObject extends GameObject{
 	}
 
 	public void resetJump() {
-		this.jumpCount = 1;
+		this.jumpCount = 2;
 	}
 	
 	public CollideBox getWaterBox() {
 		return this.waterAbility.waterBox;
+	}
+
+	public Hitbox isCollapsingHorizontal(CollideBox box) {
+		return this.collideManager.isCollidingHorizontal(box);
+	}
+	
+	public Hitbox isCollapsingVertical(CollideBox box) {
+		return this.collideManager.isCollidingVertical(box);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.elemensia.api;
+package com.elemensia.api.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Rectangle;
 public class Ladder extends GameObject{
 	
 	public Solid top;
-	Rectangle climbZone;
-	Rectangle climbZoneDown;
+	public Rectangle climbZone;
+	public Rectangle climbZoneDown;
 	
 	public Ladder(int x, int y, int width, int height) {
 		super(x, y, width, height);

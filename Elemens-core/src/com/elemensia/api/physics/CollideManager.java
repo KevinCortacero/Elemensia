@@ -1,4 +1,4 @@
-package com.elemensia.api;
+package com.elemensia.api.physics;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;

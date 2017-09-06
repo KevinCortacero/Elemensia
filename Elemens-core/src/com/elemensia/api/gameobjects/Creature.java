@@ -1,6 +1,7 @@
-package com.elemensia.api;
+package com.elemensia.api.gameobjects;
 
-import com.badlogic.gdx.math.Vector2;
+import com.elemensia.api.Animation;
+import com.elemensia.api.State;
 
 public abstract class Creature extends LivingThing{
 
@@ -8,12 +9,6 @@ public abstract class Creature extends LivingThing{
 		super(x, y, width, height, health, animations);
 	}
 
-	
-	@Override
-	public void update(Vector2 gravity, float delta) {
-		super.update(gravity, delta);
-	}
-	
 	public void eat(){
 		this.animations.setAnimation(State.EATING, false);
 	}

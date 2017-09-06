@@ -1,28 +1,17 @@
-package com.elemensia.game;
+package com.elemensia.api.gameobjects;
 
 import com.elemensia.api.SpriteAnimation;
 import com.elemensia.api.State;
-import com.elemensia.api.gameobjects.Creature;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.Hitbox;
 
-public class Cube extends Creature{
+public class Food extends DynamicGameObject {
+	
+	public static State[] STATES = {State.IDLE};
 
-	public static State STATES[] = {State.WALKING, State.IDLE, State.EATING, State.JUMPING};
-	public static int WIDTH = 64;
-	public static int HEIGHT = 64;
-
-	public Cube(int x, int y) {
-		super(x, y, WIDTH, HEIGHT, 100, new SpriteAnimation(WIDTH, HEIGHT, STATES, "living_things/creatures/cube/cube.png"));
+	public Food(int x, int y) {
+		super(x, y, 64, 64, new SpriteAnimation(64, 64, STATES, "apple.png"));
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public void takeDecision(float delta) {
-		if (Math.random() < 0.0005) 
-			this.jump(); 
-		else 
-			this.moveRight(delta); 
 	}
 
 	@Override
@@ -64,5 +53,6 @@ public class Cube extends Creature{
 			break;
 		}
 	}
+
 
 }
