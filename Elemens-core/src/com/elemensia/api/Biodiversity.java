@@ -26,7 +26,13 @@ public class Biodiversity {
 
 		// Foods
 		this.foods = new ArrayList<Food>();
-		this.foods.add(new Food(700, 300));
+		this.foods.add(new Food(2000, 300));
+	}
+	
+	public void animate(){
+		for (Creature c : this.creatures){
+			c.live();
+		}
 	}
 
 	public void draw(SpriteBatch sb, float delta){
@@ -44,12 +50,11 @@ public class Biodiversity {
 	}
 
 	public void update(float gravity, float delta) {
+		/*
 		for (Creature c : this.creatures) {
 			c.update(gravity, delta);
-			World.updateColliding(c);
-			c.takeDecision(delta);
 		}
-		
+		*/
 		for (Food f : this.foods){
 			f.update(gravity, delta);
 			World.updateColliding(f);

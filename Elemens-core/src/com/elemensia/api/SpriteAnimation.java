@@ -29,7 +29,7 @@ public class SpriteAnimation extends com.elemensia.api.Animation{
 			for (int i = 0; i < tmp[0].length; i++) {
 				animation[i] = tmp[j][i];
 			}
-			this.animations.put(states[j], new Animation<TextureRegion>(0.1f, animation));
+			this.animations.put(states[j], new Animation<TextureRegion>(0.05f, animation));
 		}
 		this.setAnimation(states[0], true);
 	}

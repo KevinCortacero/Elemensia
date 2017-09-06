@@ -11,4 +11,8 @@ public abstract class LivingThing extends DynamicGameObject{
 		super(x, y, width, height, animations);
 		this.life = new Life(health);
 	}
+	
+	public boolean isAlive() {
+		return true;
+	}
 }

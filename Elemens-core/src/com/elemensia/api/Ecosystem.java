@@ -140,4 +140,8 @@ public class Ecosystem {
 		return this.env.isUnderWater(obj);
 	}
 
+	public void animate() {
+		this.bio.animate();
+	}
+
 }

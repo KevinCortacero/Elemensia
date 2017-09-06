@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.elemensia.api.gameobjects.DynamicGameObject;
-import com.elemensia.api.gameobjects.Food;
 import com.elemensia.api.gameobjects.Ladder;
 import com.elemensia.api.gameobjects.Solid;
 import com.elemensia.api.gameobjects.WaterArea;
@@ -37,6 +36,7 @@ public abstract class Environment {
 		this.loadSolids();
 		// Water zone
 		this.water = new ArrayList<WaterArea>();
+		this.loadWater();
 
 		// Ladder
 		this.ladders = new ArrayList<Ladder>();
@@ -70,6 +70,10 @@ public abstract class Environment {
 		}
 		 */
 	}
+	
+	protected void addWater(WaterArea waterArea) {
+		this.water.add(waterArea);
+	}
 
 	public boolean isUnderWater(DynamicGameObject obj) {
 		for (WaterArea w : this.water) {
@@ -90,4 +94,6 @@ public abstract class Environment {
 	}
 
 	public abstract void loadSolids();
+	
+	public abstract void loadWater();
 }

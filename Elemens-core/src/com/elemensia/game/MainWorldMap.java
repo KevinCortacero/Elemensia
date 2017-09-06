@@ -2,6 +2,7 @@ package com.elemensia.game;
 
 import com.elemensia.api.Environment;
 import com.elemensia.api.gameobjects.Solid;
+import com.elemensia.api.gameobjects.WaterArea;
 
 public class MainWorldMap extends Environment {
 
@@ -12,7 +13,8 @@ public class MainWorldMap extends Environment {
 
 	@Override
 	public void loadSolids() {
-		this.addSolid(new Solid(0, 0, 2835, 280));
+		this.addSolid(new Solid(0, 0, 1980, 280));
+		this.addSolid(new Solid(2260, 0, 600, 280));
 
 		this.addSolid(new Solid(0, 570, 880, 140));
 		this.addSolid(new Solid(975, 570, 300, 140));
@@ -37,5 +39,12 @@ public class MainWorldMap extends Environment {
 		this.addSolid(new Solid(1704, 570, 1130, 140));
 
 	}
+
+	@Override
+	public void loadWater() {
+		this.addWater(new WaterArea(1980, 0, 280, 260));
+	}
+
+	
 
 }

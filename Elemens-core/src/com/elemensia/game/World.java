@@ -13,8 +13,10 @@ public class World {
 	private Ecosystem ecosystem;
 
 	public static World create(float x, float y) {
-		if (world == null)
+		if (world == null){
 			world = new World(x, y);
+		}
+		
 		return world;
 	}
 
@@ -43,6 +45,7 @@ public class World {
 	}
 
 	public static boolean isOnWater(DynamicGameObject dynamicGameObject) {
+		
 		return world.ecosystem.isOnWater(dynamicGameObject);
 	}
 
@@ -52,6 +55,10 @@ public class World {
 
 	public static void updateColliding(DynamicGameObject dynamicGameObject) {
 		world.ecosystem.updateColliding(dynamicGameObject);
+	}
+
+	public void animate() {
+		this.ecosystem.animate();
 	}
 
 }

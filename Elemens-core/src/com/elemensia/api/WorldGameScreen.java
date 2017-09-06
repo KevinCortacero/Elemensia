@@ -36,6 +36,7 @@ public class WorldGameScreen extends AbstractScreen {
 		Utility.loadTextureAsset("world/bg.jpg");
 		Utility.loadTextureAsset("apple.png");
 		this.world = World.create(0.0f, -9.8f);
+		this.world.animate();
 	}
 	
 	@Override

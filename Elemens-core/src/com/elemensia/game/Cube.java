@@ -19,7 +19,7 @@ public class Cube extends Creature{
 
 	@Override
 	public void takeDecision(float delta) {
-		if (Math.random() < 0.0005) 
+		if (Math.random() < 0.005) 
 			this.jump(); 
 		else 
 			this.moveRight(delta); 

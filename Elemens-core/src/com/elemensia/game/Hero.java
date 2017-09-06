@@ -2,7 +2,6 @@ package com.elemensia.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Vector2;
 import com.elemensia.api.SplineAnimations;
 import com.elemensia.api.State;
 import com.elemensia.api.gameobjects.LivingThing;
