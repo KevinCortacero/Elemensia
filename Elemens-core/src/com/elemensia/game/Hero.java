@@ -31,6 +31,9 @@ public class Hero extends LivingThing {
 
 		// CLIMB
 		World.updateClimbing(this);
+		
+		// INPUTS NEW
+		this.updateInputs();
 
 	}
 	

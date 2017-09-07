@@ -24,10 +24,10 @@ public abstract class Environment {
 	private Texture npc;
 	// private Texture foreground;
 
-	private int[][] environement;
+	//private int[][] environement;
 
 	public Environment(float x, float y) {
-		this.environement =  new int[this.width / 10][this.height / 10];
+		//this.environement =  new int[this.width / 10][this.height / 10];
 		this.background = Utility.getTextureAsset("world/bg.jpg");
 		this.npc = Utility.getTextureAsset("living_things/npc/npc.png");
 

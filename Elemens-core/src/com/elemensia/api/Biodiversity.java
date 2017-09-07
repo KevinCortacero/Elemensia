@@ -34,7 +34,7 @@ public class Biodiversity {
 			c.live();
 		}
 	}
-
+	
 	public void draw(SpriteBatch sb, float delta){
 		for (Food f : this.foods)
 			f.draw(sb, delta);
