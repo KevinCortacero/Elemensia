@@ -26,6 +26,6 @@ public class InputManager {
 	}
 
 	public boolean getInputValue(String inputName) {
-		return this.getInputValue(inputName);
+		return this.inputs.get(inputName);
 	}
 }
