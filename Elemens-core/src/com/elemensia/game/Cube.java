@@ -21,6 +21,8 @@ public class Cube extends Creature{
 	public void takeDecision(float delta) {
 		if (Math.random() < 0.005) 
 			this.jump(); 
+		else if(Math.random() < 0.005)
+			this.eat();
 		else 
 			this.moveRight(delta); 
 	}

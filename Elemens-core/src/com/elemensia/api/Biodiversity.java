@@ -26,7 +26,7 @@ public class Biodiversity {
 
 		// Foods
 		this.foods = new ArrayList<Food>();
-		this.foods.add(new Food(2000, 300));
+		this.foods.add(new Food(1800, 300));
 	}
 	
 	public void animate(){
@@ -50,11 +50,6 @@ public class Biodiversity {
 	}
 
 	public void update(float gravity, float delta) {
-		/*
-		for (Creature c : this.creatures) {
-			c.update(gravity, delta);
-		}
-		*/
 		for (Food f : this.foods){
 			f.update(gravity, delta);
 			World.updateColliding(f);

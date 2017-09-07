@@ -71,6 +71,9 @@ public abstract class DynamicGameObject extends InteractiveGameObject{
 		// GRAVITY
 		this.setY(this.getY() + this.velocity.y);
 		this.setPosition(this.getBody().x, this.getBody().y);
+		
+		if (this.getCenterY() < -500)
+			this.setPosition(200, 300);
 
 	}
 
