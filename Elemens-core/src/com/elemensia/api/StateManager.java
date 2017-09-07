@@ -28,7 +28,7 @@ public class StateManager {
 				newState = "RIGHT";
 			}
 			break;
-			
+
 		case "RIGHT" :
 			if (livingThing.getInputValue("LEFT")){
 				newState = "LEFT";
@@ -49,7 +49,74 @@ public class StateManager {
 		 */
 	}
 
-	public void changeAnimation(){
+	
+	private void setDirectionVertical(LivingThing livingThing){
+		String newState = new String(this.currentDirectionVertical);
+		// BLOC F
+		switch(this.currentDirectionVertical){
+		case "NONE" :
+			if (livingThing.getInputValue("TOP")){
+				newState = "TOP";
+			}
+			if (livingThing.getInputValue("DOWN")){
+				newState = "DOWN";
+			}
+			break;
+
+		case "TOP" :
+			if (!livingThing.getInputValue("TOP")){
+				newState = "NONE";
+			}
+			break;
+			
+		case "DOWN" :
+			if (!livingThing.getInputValue("DOWN")){
+				newState = "NONE";
+			}
+			break;
+		}
+
+		// BLOC M
+		this.currentDirectionVertical = newState;
 
 	}
-}
+
+	private void setEnvironment(LivingThing livingThing){
+		String newState = new String(this.currentEnvironment);
+		// BLOC F
+		switch(this.currentEnvironment){
+		case "GROUND" :
+			if (livingThing.getEnvironmentType()=="WATER"){
+				newState = "WATER";
+			}
+			if (livingThing.getEnvironmentType()=="AIR"){
+				newState = "AIR";
+			}
+			break;
+
+		case "WATER" :
+			if (livingThing.getEnvironmentType()=="GROUND"){
+				newState = "GROUND";
+			}
+			if (livingThing.getEnvironmentType()=="AIR"){
+				newState = "AIR";
+			}
+			break;
+
+		case "AIR" :
+			if (livingThing.getEnvironmentType()=="WATER"){
+				newState = "WATER";
+			}
+			if (livingThing.getEnvironmentType()=="GROUND"){
+				newState = "GROUND";
+			}
+			break;
+
+			// BLOC M
+			this.currentEnvironment = newState;
+		}
+
+		public void changeAnimation(){
+
+		}
+	}
