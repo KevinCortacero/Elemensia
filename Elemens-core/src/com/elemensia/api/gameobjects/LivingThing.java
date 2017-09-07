@@ -2,6 +2,7 @@ package com.elemensia.api.gameobjects;
 
 import com.elemensia.api.Animation;
 import com.elemensia.api.Life;
+import com.elemensia.api.StateManager;
 
 public abstract class LivingThing extends DynamicGameObject{
 
@@ -25,5 +26,6 @@ public abstract class LivingThing extends DynamicGameObject{
 	
 	public void updateInputs() {
 		this.inputs.updateInputs();
+		StateManager.updateState(this);
 	}
 }

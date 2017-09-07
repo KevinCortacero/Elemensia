@@ -3,18 +3,24 @@ package com.elemensia.api;
 import com.elemensia.api.gameobjects.LivingThing;
 
 public class StateManager {
-
+	
+	private static StateManager instance;
 	private String currentState;
-
 	private String currentDirectionHorizontal;
 	private String currentDirectionVertical;
 	private String currentEnvironment;
 	private String currentAction;
 	private String currentMovement;
 
-	public void updateState(LivingThing livingThing){
-		this.setDirectionHorizontal(livingThing);
-
+	private StateManager(){
+		this.currentDirectionHorizontal = "RIGHT";
+	}
+	
+	public static void updateState(LivingThing livingThing){
+		if (instance == null)
+			instance = new StateManager();
+		instance.setDirectionHorizontal(livingThing);
+		
 
 		//TODO: set animation
 	}
@@ -38,6 +44,8 @@ public class StateManager {
 
 		// BLOC M
 		this.currentDirectionHorizontal = newState;
+		
+		System.out.println("DIRECTION : " + this.currentDirectionHorizontal);
 
 		/*
 		// BLOC G
