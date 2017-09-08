@@ -89,7 +89,7 @@ public class StateManager {
 
 	}
 
-	private void setEnvironment(LivingThing livingThing){
+	/*private void setEnvironment(LivingThing livingThing){
 		String newState = new String(this.currentEnvironment);
 		// BLOC F
 		switch(this.currentEnvironment){
@@ -126,5 +126,5 @@ public class StateManager {
 
 		public void changeAnimation(){
 
-		}
+		}*/
 	}
