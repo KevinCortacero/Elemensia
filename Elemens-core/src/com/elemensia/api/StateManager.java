@@ -14,13 +14,17 @@ public class StateManager {
 
 	private StateManager(){
 		this.currentDirectionHorizontal = "RIGHT";
+		this.currentDirectionVertical = "NONE";
 	}
 	
 	public static void updateState(LivingThing livingThing){
 		if (instance == null)
 			instance = new StateManager();
 		instance.setDirectionHorizontal(livingThing);
+		instance.setDirectionVertical(livingThing);
 		
+		instance.currentState = instance.currentDirectionHorizontal + " " + instance.currentDirectionVertical;
+		System.out.println("STATE : " + instance.currentState);
 
 		//TODO: set animation
 	}
@@ -45,16 +49,6 @@ public class StateManager {
 		// BLOC M
 		this.currentDirectionHorizontal = newState;
 		
-		System.out.println("DIRECTION : " + this.currentDirectionHorizontal);
-
-		/*
-		// BLOC G
-		switch(this.currentDirectionHorizontal){
-		case "LEFT" :
-			doSomething();
-		case "RIGHT" :
-			doSomething();
-		 */
 	}
 
 	

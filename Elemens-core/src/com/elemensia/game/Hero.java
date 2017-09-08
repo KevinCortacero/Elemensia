@@ -34,6 +34,8 @@ public class Hero extends LivingThing {
 		
 		// INPUTS NEW
 		this.updateInputs();
+		
+		World.updateColliding(this);
 
 	}
 	

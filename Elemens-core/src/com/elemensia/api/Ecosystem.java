@@ -63,10 +63,8 @@ public class Ecosystem {
 
 	public void update(float delta) {
 		
-		this.hero.update(this.gravity, delta);
+		//this.hero.update(this.gravity, delta);
 		
-		this.updateColliding(this.hero);
-
 		// DEATH FOR THE MOMENT
 		if (this.hero.getY() < -100) {
 			this.hero.setPosition(600, 200);
@@ -141,6 +139,7 @@ public class Ecosystem {
 	}
 
 	public void animate() {
+		this.hero.live();
 		this.bio.animate();
 	}
 
