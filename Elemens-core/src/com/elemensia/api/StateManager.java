@@ -3,7 +3,7 @@ package com.elemensia.api;
 import com.elemensia.api.gameobjects.LivingThing;
 
 public class StateManager {
-	
+
 	private static StateManager instance;
 	private String currentState;
 	private String currentDirectionHorizontal;
@@ -16,7 +16,7 @@ public class StateManager {
 		this.currentDirectionHorizontal = "RIGHT";
 		this.currentDirectionVertical = "NONE";
 	}
-	
+
 	public static void updateState(LivingThing livingThing){
 		if (instance == null)
 			instance = new StateManager();
@@ -48,10 +48,10 @@ public class StateManager {
 
 		// BLOC M
 		this.currentDirectionHorizontal = newState;
-		
+
 	}
 
-	
+
 	private void setDirectionVertical(LivingThing livingThing){
 		String newState = new String(this.currentDirectionVertical);
 		// BLOC F
@@ -70,7 +70,7 @@ public class StateManager {
 				newState = "NONE";
 			}
 			break;
-			
+
 		case "DOWN" :
 			if (!livingThing.getInputValue("DOWN")){
 				newState = "NONE";
@@ -121,4 +121,67 @@ public class StateManager {
 		public void changeAnimation(){
 
 		}*/
+
+
+	private void setAction(LivingThing livingThing){
+		String newState = new String(this.currentAction);
+		// BLOC F
+		switch(this.currentAction){
+		case "NONE" :
+			if (livingThing.getInputValue("ATTACK") /*TODO : isAvailble()*/){
+				newState = "FIGHT";
+			}else if  (livingThing.getInputValue("EAT")){
+				newState = "EAT";
+			}else if  (livingThing.getInputValue("SLEEP") && this.currentMovement=="IDLE"){
+				newState = "SLEEP";
+			}else if  (livingThing.getInputValue("CLIMB") /*TODO : isEchelle()*/){
+				newState = "CLIMB";
+			}else if  (livingThing.isAlive()){
+				newState = "DEAD";
+			}
+			break;
+
+		case "FIGHT" :
+			if (true/*TODO : isAvailble()*/){
+				newState = "NONE";
+			}else if  (livingThing.isAlive()){
+				newState = "DEAD";
+			}
+			break;
+
+		case "EAT" :
+			if (true/*TODO : isAvailble()*/){
+				newState = "NONE";
+			}else if  (livingThing.isAlive()){
+				newState = "DEAD";
+			}
+			break;
+
+		case "SLEEP" :
+			if (livingThing.getInputValue("SLEEP")){
+				newState = "NONE";
+			}else if  (livingThing.isAlive()){
+				newState = "DEAD";
+			}
+			break;
+
+		case "CLIMB" :
+			if (livingThing.getInputValue("JUMP") || livingThing.getInputValue("CLIMB") /*TODO  || contactGround() */){
+				newState = "NONE";
+			}else if  (livingThing.isAlive()){
+				newState = "DEAD";
+			}
+			break;
+		case "DEAD" :
+			if (livingThing.getInputValue("DOWN")){
+				newState = "NONE";
+			}
+			break;
+		}
+
+		// BLOC M
+		this.currentAction = newState;
 	}
+	
+
+}
