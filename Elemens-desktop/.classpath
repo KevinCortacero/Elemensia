@@ -4,9 +4,9 @@
 	<classpathentry kind="src" path="assets"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/Elemens-core"/>
-	<classpathentry kind="lib" path="/Elemens-core/lib/gdx-backend-lwjgl-natives.jar"/>
-	<classpathentry kind="lib" path="/Elemens-core/lib/gdx-natives.jar"/>
-	<classpathentry kind="lib" path="/Elemens-core/lib/gdx.jar"/>
-	<classpathentry kind="lib" path="/Elemens-core/lib/gdx-backend-lwjgl.jar"/>
+	<classpathentry kind="lib" path="/lib/libgdx/gdx-natives.jar"/>
+	<classpathentry kind="lib" path="/lib/libgdx/gdx-backend-lwjgl-natives.jar"/>
+	<classpathentry kind="lib" path="/lib/libgdx/gdx-backend-lwjgl.jar"/>
+	<classpathentry kind="lib" path="/lib/libgdx/gdx.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

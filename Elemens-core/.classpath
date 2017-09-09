@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/gdx-natives.jar"/>
-	<classpathentry kind="lib" path="lib/gdx.jar"/>
-	<classpathentry kind="lib" path="lib/gdx-backend-lwjgl-natives.jar"/>
-	<classpathentry kind="lib" path="lib/gdx-backend-lwjgl.jar"/>
-	<classpathentry kind="lib" path="lib/spine-libgdx.jar"/>
+	<classpathentry kind="lib" path="/lib/libgdx/gdx-backend-lwjgl-natives.jar"/>
+	<classpathentry kind="lib" path="/lib/libgdx/gdx-backend-lwjgl.jar"/>
+	<classpathentry kind="lib" path="/lib/libgdx/gdx-natives.jar"/>
+	<classpathentry kind="lib" path="/lib/libgdx/gdx.jar"/>
+	<classpathentry kind="lib" path="/lib/libgdx/spine-libgdx.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
