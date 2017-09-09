@@ -7,7 +7,7 @@ public abstract class Animation {
 
 	public abstract void setAnimation(State state, boolean loop);
 
-	public abstract void update(float x, float y, float delta, Direction direction);
+	public abstract void update(float x, float y, float delta, State direction);
 
 	public abstract void draw(SpriteBatch batch);
 	

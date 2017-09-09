@@ -8,21 +8,13 @@ import com.elemensia.api.physics.Hitbox;
 public class Twarzian extends Creature {
 
 	private static final int HEALTH_POINT = 100;
-	private static final int WIDTH = 256;
-	private static final int HEIGHT = 128;
+	private static final int WIDTH = 80;
+	private static final int HEIGHT = 100;
 
 	private static final SplineAnimations ANIMATIONS = new SplineAnimations("living_things/creatures/wolf/alien.atlas", "living_things/creatures/wolf/alien.json");
 
 	public Twarzian(int x, int y) {
 		super(x, y, WIDTH, HEIGHT, HEALTH_POINT, ANIMATIONS);
-	}
-
-	@Override
-	public void takeDecision(float delta) {
-		/*
-		 * if (Math.random() < 0.05) this.jump(); if (Math.random() < 0.05){
-		 * if(false) this.moveRight(delta); else this.moveLeft(delta); }
-		 */
 	}
 
 	@Override
@@ -63,5 +55,11 @@ public class Twarzian extends Creature {
 	@Override
 	public void applyGravity(float gravity, float delta) {
 		this.velocity.y += (gravity * delta);
+	}
+
+	@Override
+	public void updateDecision() {
+		// TODO Auto-generated method stub
+		
 	}
 }

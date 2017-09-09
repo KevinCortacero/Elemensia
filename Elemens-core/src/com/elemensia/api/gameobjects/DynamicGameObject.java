@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.elemensia.api.Animation;
-import com.elemensia.api.Direction;
 import com.elemensia.api.State;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.CollideManager;
@@ -15,8 +14,6 @@ import com.elemensia.game.World;
 
 public abstract class DynamicGameObject extends InteractiveGameObject{
 
-	protected State state;
-	protected Direction direction;
 	private CollideManager collideManager;
 	protected WaterAbility waterAbility;
 	protected Vector2 velocity;
@@ -28,10 +25,8 @@ public abstract class DynamicGameObject extends InteractiveGameObject{
 		this.waterAbility = new WaterAbility(x, y, width, height);
 		this.collideManager = new CollideManager(x, y, width, height);
 		this.animations = animations;
-		this.state = State.IDLE;
-		this.direction = Direction.LEFT;
 		this.velocity = new Vector2();
-		this.jumpCount = 2;
+		this.jumpCount = 3;
 	}
 	
 	public boolean overlaps(Rectangle rectangle) {
@@ -66,7 +61,7 @@ public abstract class DynamicGameObject extends InteractiveGameObject{
 			this.velocity.y -= (gravity*delta*0.75);			
 		}
 		//  ANIMATION
-		this.animations.update(this.getCenterX(), this.getY(), delta, this.direction);
+		this.animations.update(this.getCenterX(), this.getY(), delta, State.RIGHT);
 
 		// GRAVITY
 		this.setY(this.getY() + this.velocity.y);
@@ -114,13 +109,11 @@ public abstract class DynamicGameObject extends InteractiveGameObject{
 	}
 
 	public void moveRight(float delta) {
-		this.setX(this.getX() + 300 * delta);
-		this.direction = Direction.RIGHT;
+		this.setX(this.getX() + 200 * delta);
 	}
 
 	public void moveLeft(float delta) {
-		this.setX(this.getX() - 300 * delta);
-		this.direction = Direction.LEFT;
+		this.setX(this.getX() - 200 * delta);
 	}
 
 	public void climbUp() {
@@ -135,12 +128,12 @@ public abstract class DynamicGameObject extends InteractiveGameObject{
 		if (this.jumpCount > 0) {
 			this.velocity.y = 8;
 			this.jumpCount--;
-			this.animations.setAnimation(State.JUMPING, false);
+			this.animations.setAnimation(State.JUMP, false);
 		}
 	}
 
 	public void resetJump() {
-		this.jumpCount = 2;
+		this.jumpCount = 3;
 	}
 	
 	public CollideBox getWaterBox() {

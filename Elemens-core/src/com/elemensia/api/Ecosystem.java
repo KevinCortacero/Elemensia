@@ -67,13 +67,15 @@ public class Ecosystem {
 		
 		// DEATH FOR THE MOMENT
 		if (this.hero.getY() < -100) {
-			this.hero.setPosition(600, 200);
+			this.hero.setPosition(600, 300);
 		}
 
 		this.bio.update(this.gravity, delta);
 		
+		/*
 		// INPUTS
 		this.hero.updateInput();
+		*/
 	}
 
 	

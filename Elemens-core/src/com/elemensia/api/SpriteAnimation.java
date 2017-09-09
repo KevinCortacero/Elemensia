@@ -29,7 +29,7 @@ public class SpriteAnimation extends com.elemensia.api.Animation{
 			for (int i = 0; i < tmp[0].length; i++) {
 				animation[i] = tmp[j][i];
 			}
-			this.animations.put(states[j], new Animation<TextureRegion>(0.05f, animation));
+			this.animations.put(states[j], new Animation<TextureRegion>(0.03f, animation));
 		}
 		this.setAnimation(states[0], true);
 	}
@@ -56,7 +56,7 @@ public class SpriteAnimation extends com.elemensia.api.Animation{
 	}
 
 	@Override
-	public void update(float x, float y, float delta, Direction direction) {
+	public void update(float x, float y, float delta, State direction) {
 		this.x = x - 32;
 		this.y = y;
 		this.timer += delta;

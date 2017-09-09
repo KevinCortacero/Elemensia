@@ -3,7 +3,7 @@ package com.elemensia.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.elemensia.api.SplineAnimations;
-import com.elemensia.api.State;
+import com.elemensia.api.Status;
 import com.elemensia.api.gameobjects.LivingThing;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.Hitbox;
@@ -31,14 +31,11 @@ public class Hero extends LivingThing {
 
 		// CLIMB
 		World.updateClimbing(this);
-		
-		// INPUTS NEW
-		this.updateInputs();
-		
+
 		World.updateColliding(this);
 
 	}
-	
+
 	@Override
 	public void applyGravity(float gravity, float delta){
 		if (!(canClimbUp && Gdx.input.isKeyPressed(Input.Keys.Z)) && !this.waterAbility.isUnderWater){
@@ -46,6 +43,7 @@ public class Hero extends LivingThing {
 		}
 	}
 
+	/*
 	public void updateInput() {
 		if (Gdx.input.isKeyPressed(Input.Keys.Z) && this.canClimbUp) {
 			this.climbUp();
@@ -53,6 +51,7 @@ public class Hero extends LivingThing {
 		if (Gdx.input.isKeyPressed(Input.Keys.S) && this.canClimbDown) {
 			this.climbDown();
 		}
+
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 			this.moveRight(Gdx.graphics.getDeltaTime());
 			if (this.velocity.y == 0)
@@ -69,6 +68,8 @@ public class Hero extends LivingThing {
 			this.animations.setAnimation(State.JUMPING, false); // trackIndex, name, loop
 		}
 	}
+
+	 */
 
 	@Override
 	public void applyHorizontalCollidingEffect(CollideBox collider, Hitbox hitbox){
@@ -105,6 +106,11 @@ public class Hero extends LivingThing {
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void updateDecision() {
+		this.setDecisionValue("RIGHT", Input.Keys.D);
 	}
 
 }

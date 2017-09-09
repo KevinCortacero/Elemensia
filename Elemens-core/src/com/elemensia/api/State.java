@@ -1,17 +1,13 @@
 package com.elemensia.api;
 
 public enum State {
-	IDLE, 
-	WALKING, 
-	JUMPING, 
-	CLIMBING,
-	SLIDING,
-	SWIMMING, 
-	FLYING,
-	FALLING,
+	LEFT, RIGHT,
 	
-	SLEEPING,
-	EATING,
-	ATTACKING,
-	DYING
+	TOP, DOWN, NONE,
+	
+	GROUND,	WATER, AIR,
+	
+	IDLE, WALK,	JUMP, CLIMB, FALL,
+	
+	SLEEP, EAT,	ATTACK,	DEAD
 }

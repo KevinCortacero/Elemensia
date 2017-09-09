@@ -44,15 +44,15 @@ public class SplineAnimations extends Animation{
 		this.setAnimation(State.IDLE, true);
 	}
 	
-	public void update(float x, float y, float delta, Direction direction){
+	public void update(float x, float y, float delta, State direction){
 		this.animationState.update(delta);
 		this.animationState.apply(this.skeleton);
 		this.skeleton.setPosition(x, y);
 		
-		if (direction == Direction.LEFT){
+		if (direction == State.LEFT){
 			this.skeleton.setFlipX(true);
 		}
-		else if (direction == Direction.RIGHT){
+		else if (direction == State.RIGHT){
 			this.skeleton.setFlipX(false);
 		}
 			

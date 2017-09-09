@@ -13,8 +13,8 @@ public class MainWorldMap extends Environment {
 
 	@Override
 	public void loadSolids() {
-		this.addSolid(new Solid(0, 0, 1980, 280));
-		this.addSolid(new Solid(2260, 0, 600, 280));
+		this.addSolid(new Solid(0, 200, 1980, 80));
+		this.addSolid(new Solid(2275, 200, 600, 80));
 
 		this.addSolid(new Solid(0, 570, 880, 140));
 		this.addSolid(new Solid(975, 570, 300, 140));
@@ -42,7 +42,8 @@ public class MainWorldMap extends Environment {
 
 	@Override
 	public void loadWater() {
-		this.addWater(new WaterArea(1980, 0, 280, 260));
+		this.addWater(new WaterArea(1980, 200, 295, 60));
+		this.addWater(new WaterArea(0, 0, 2840, 140));
 	}
 
 	

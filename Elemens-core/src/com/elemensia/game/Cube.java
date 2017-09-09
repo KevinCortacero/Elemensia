@@ -2,13 +2,14 @@ package com.elemensia.game;
 
 import com.elemensia.api.SpriteAnimation;
 import com.elemensia.api.State;
+import com.elemensia.api.Status;
 import com.elemensia.api.gameobjects.Creature;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.Hitbox;
 
 public class Cube extends Creature{
 
-	public static State STATES[] = {State.WALKING, State.IDLE, State.EATING, State.JUMPING};
+	public static State STATES[] = {State.WALK, State.IDLE, State.EAT, State.JUMP};
 	public static int WIDTH = 64;
 	public static int HEIGHT = 64;
 
@@ -18,13 +19,9 @@ public class Cube extends Creature{
 	}
 
 	@Override
-	public void takeDecision(float delta) {
-		if (Math.random() < 0.005) 
-			this.jump(); 
-		else if(Math.random() < 0.005)
-			this.eat();
-		else 
-			this.moveRight(delta); 
+	public void updateDecision() {
+		// TODO Auto-generated method stub
+		this.setDecisionValue("RIGHT", true);
 	}
 
 	@Override

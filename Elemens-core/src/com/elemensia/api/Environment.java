@@ -12,9 +12,6 @@ import com.elemensia.api.gameobjects.WaterArea;
 
 public abstract class Environment {
 
-	private int width;
-	private int height;
-
 	public ArrayList<Solid> solids;
 	public ArrayList<Ladder> ladders;
 
@@ -40,7 +37,7 @@ public abstract class Environment {
 
 		// Ladder
 		this.ladders = new ArrayList<Ladder>();
-		this.ladders.add(new Ladder(885, 280, 80, 430));
+		this.ladders.add(new Ladder(895, 280, 60, 430));
 		this.addSolid(this.ladders.get(0).top);
 
 	}	

@@ -2,6 +2,7 @@ package com.elemensia.api.gameobjects;
 
 import com.elemensia.api.SpriteAnimation;
 import com.elemensia.api.State;
+import com.elemensia.api.Status;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.Hitbox;
 
