@@ -13,6 +13,15 @@ public class StatusManager {
 		this.status = new Status();
 	}
 
+	public State getState(String stateName){
+		return this.status.getState(stateName);
+	}
+	
+	@Override
+	public String toString() {
+		return this.status.toString();
+	}
+	
 	public void updateStatus(LivingThing livingThing){
 		State newState = this.stateMachine.getDirectionH(livingThing, this.status);
 		this.status.setState("DIRECTIONH", newState);

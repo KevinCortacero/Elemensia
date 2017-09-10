@@ -9,10 +9,10 @@ public class Status {
 	
 	public Status() {
 		this.states = new HashMap<>();
-		this.states.put("DIRECTIONV", State.RIGHT);
-		this.states.put("DIRECTIONH", State.NONE);
+		this.states.put("DIRECTIONV", State.NONE);
+		this.states.put("DIRECTIONH", State.RIGHT);
 		this.states.put("ENVIRONMENT", State.GROUND);
-		this.states.put("MOVEMENT", State.IDLE);
+		this.states.put("MOVEMENT", State.WALK);
 		this.states.put("ACTION", State.NONE);
 	}
 
@@ -22,5 +22,14 @@ public class Status {
 
 	public void setState(String stateName, State state) {
 		this.states.put(stateName, state);
+	}
+	
+	@Override
+	public String toString() {
+		String res = "";
+		for (State s : this.states.values()){
+			res += s.name() + " ";
+		}
+		return res;
 	}
 }

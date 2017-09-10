@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.elemensia.api.gameobjects.Creature;
 import com.elemensia.api.gameobjects.Food;
 import com.elemensia.game.Cube;
-import com.elemensia.game.Twarzian;
 import com.elemensia.game.World;
 
 public class Biodiversity {
@@ -21,8 +20,14 @@ public class Biodiversity {
 	public Biodiversity() {
 		// Creatures
 		this.creatures = new ArrayList<Creature>();
-		this.creatures.add(new Twarzian(1700, 800));
+		this.creatures.add(new Cube(1700, 800));
+		this.creatures.add(new Cube(1500, 800));
+		this.creatures.add(new Cube(1300, 800));
+		this.creatures.add(new Cube(1100, 800));
 		this.creatures.add(new Cube(400, 400));
+		this.creatures.add(new Cube(600, 400));
+		this.creatures.add(new Cube(800, 400));
+		this.creatures.add(new Cube(1000, 400));
 
 		// Foods
 		this.foods = new ArrayList<Food>();

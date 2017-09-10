@@ -2,7 +2,6 @@ package com.elemensia.game;
 
 import com.elemensia.api.SpriteAnimation;
 import com.elemensia.api.State;
-import com.elemensia.api.Status;
 import com.elemensia.api.gameobjects.Creature;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.Hitbox;
@@ -20,8 +19,27 @@ public class Cube extends Creature{
 
 	@Override
 	public void updateDecision() {
-		// TODO Auto-generated method stub
-		this.setDecisionValue("RIGHT", true);
+		if (Math.random() < 0.005){
+			if (Math.random() < 0.5){
+				if (this.getState("DIRECTIONH") == State.RIGHT){
+					this.setDecisionValue("RIGHT", false);
+					this.setDecisionValue("LEFT", true);
+					System.out.println("LEFT !");
+				}
+				else if (this.getState("DIRECTIONH") == State.LEFT){
+					this.setDecisionValue("RIGHT", true);
+					this.setDecisionValue("LEFT", false);
+					System.out.println("RIGHT !");
+				}
+			}
+			else {
+				this.setDecisionValue("RIGHT", false);
+				this.setDecisionValue("LEFT", false);
+				System.out.println("STOP !");
+			}
+			
+		}
+		
 	}
 
 	@Override

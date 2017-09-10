@@ -60,8 +60,7 @@ public abstract class DynamicGameObject extends InteractiveGameObject{
 		if (this.waterAbility.isOnWater){
 			this.velocity.y -= (gravity*delta*0.75);			
 		}
-		//  ANIMATION
-		this.animations.update(this.getCenterX(), this.getY(), delta, State.RIGHT);
+		
 
 		// GRAVITY
 		this.setY(this.getY() + this.velocity.y);

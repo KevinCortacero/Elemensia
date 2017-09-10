@@ -784,7 +784,7 @@
 			}
 		}
 	},
-	"JUMPING": {
+	"JUMP": {
 		"slots": {
 			"front-fist": {
 				"attachment": [
@@ -1530,7 +1530,7 @@
 			}
 		}
 	},
-	"WALKING": {
+	"WALK": {
 		"bones": {
 			"front-thigh": {
 				"rotate": [

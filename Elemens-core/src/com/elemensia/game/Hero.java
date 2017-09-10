@@ -3,7 +3,6 @@ package com.elemensia.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.elemensia.api.SplineAnimations;
-import com.elemensia.api.Status;
 import com.elemensia.api.gameobjects.LivingThing;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.Hitbox;
@@ -111,6 +110,7 @@ public class Hero extends LivingThing {
 	@Override
 	public void updateDecision() {
 		this.setDecisionValue("RIGHT", Input.Keys.D);
+		this.setDecisionValue("LEFT", Input.Keys.Q);
 	}
 
 }
