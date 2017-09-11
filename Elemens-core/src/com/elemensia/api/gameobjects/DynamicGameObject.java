@@ -125,9 +125,8 @@ public abstract class DynamicGameObject extends InteractiveGameObject{
 
 	public void jump() {
 		if (this.jumpCount > 0) {
-			this.velocity.y = 8;
+			this.velocity.y = 5;
 			this.jumpCount--;
-			this.animations.setAnimation(State.JUMP, false);
 		}
 	}
 

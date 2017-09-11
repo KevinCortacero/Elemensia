@@ -50,22 +50,6 @@ public class Hero extends LivingThing {
 		if (Gdx.input.isKeyPressed(Input.Keys.S) && this.canClimbDown) {
 			this.climbDown();
 		}
-
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			this.moveRight(Gdx.graphics.getDeltaTime());
-			if (this.velocity.y == 0)
-				this.animations.setAnimation(State.WALKING, true); // trackIndex, name, loop
-
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
-			this.moveLeft(Gdx.graphics.getDeltaTime());
-			if (this.velocity.y == 0)
-				this.animations.setAnimation(State.WALKING, true); // trackIndex, name, loop
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			this.jump();
-			this.animations.setAnimation(State.JUMPING, false); // trackIndex, name, loop
-		}
 	}
 
 	 */
@@ -111,6 +95,7 @@ public class Hero extends LivingThing {
 	public void updateDecision() {
 		this.setDecisionValue("RIGHT", Input.Keys.D);
 		this.setDecisionValue("LEFT", Input.Keys.Q);
+		this.setDecisionValue("JUMP", Input.Keys.SPACE);
 	}
 
 }

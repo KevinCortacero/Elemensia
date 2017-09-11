@@ -57,7 +57,7 @@ public abstract class LivingThing extends DynamicGameObject{
 
 	private void act(float delta) {
 		//System.out.println(this.statusManager);
-		if(statusManager.getState("MOVEMENT") == State.WALK && (this.getDecisionValue("LEFT") || this.getDecisionValue("RIGHT"))){
+		if(this.statusManager.getState("MOVEMENT") == State.WALK){
 			this.animations.setAnimation(State.WALK, true);
 			if (statusManager.getState("DIRECTIONH") == State.RIGHT){
 				this.moveRight(delta);
@@ -66,8 +66,11 @@ public abstract class LivingThing extends DynamicGameObject{
 				this.moveLeft(delta);
 			}
 		}
-		else {
+		else if (this.statusManager.getState("MOVEMENT") == State.IDLE){
 			this.animations.setAnimation(State.IDLE, true);
+		}
+		else if (this.statusManager.getState("MOVEMENT") == State.JUMP){
+			this.jump();
 		}
 	}
 

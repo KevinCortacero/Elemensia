@@ -31,6 +31,9 @@ public class StatusManager {
 		
 		newState = this.stateMachine.getAction(livingThing, this.status);
 		this.status.setState("ACTION", newState);
+		
+		newState = this.stateMachine.getMovement(livingThing, this.status);
+		this.status.setState("MOVEMENT", newState);
 
 		/*
 		instance.currentState = instance.currentDirectionHorizontal + " " + instance.currentDirectionVertical + " " + instance.currentAction;
@@ -40,42 +43,4 @@ public class StatusManager {
 		//TODO: set animation
 	}
 
-	/*private void setEnvironment(LivingThing livingThing){
-		String newState = new String(this.currentEnvironment);
-		// BLOC F
-		switch(this.currentEnvironment){
-		case "GROUND" :
-			if (livingThing.getEnvironmentType()=="WATER"){
-				newState = "WATER";
-			}
-			if (livingThing.getEnvironmentType()=="AIR"){
-				newState = "AIR";
-			}
-			break;
-
-		case "WATER" :
-			if (livingThing.getEnvironmentType()=="GROUND"){
-				newState = "GROUND";
-			}
-			if (livingThing.getEnvironmentType()=="AIR"){
-				newState = "AIR";
-			}
-			break;
-
-		case "AIR" :
-			if (livingThing.getEnvironmentType()=="WATER"){
-				newState = "WATER";
-			}
-			if (livingThing.getEnvironmentType()=="GROUND"){
-				newState = "GROUND";
-			}
-			break;
-
-			// BLOC M
-			this.currentEnvironment = newState;
-		}
-
-		public void changeAnimation(){
-
-		}*/
 }

@@ -24,18 +24,24 @@ public class Cube extends Creature{
 				if (this.getState("DIRECTIONH") == State.RIGHT){
 					this.setDecisionValue("RIGHT", false);
 					this.setDecisionValue("LEFT", true);
+					this.setDecisionValue("JUMP", false);
 					System.out.println("LEFT !");
 				}
 				else if (this.getState("DIRECTIONH") == State.LEFT){
 					this.setDecisionValue("RIGHT", true);
 					this.setDecisionValue("LEFT", false);
+					this.setDecisionValue("JUMP", false);
 					System.out.println("RIGHT !");
 				}
 			}
-			else {
+			else if (Math.random() < 0.5){
 				this.setDecisionValue("RIGHT", false);
 				this.setDecisionValue("LEFT", false);
+				this.setDecisionValue("JUMP", false);
 				System.out.println("STOP !");
+			}
+			else {
+				this.setDecisionValue("JUMP", true);
 			}
 			
 		}

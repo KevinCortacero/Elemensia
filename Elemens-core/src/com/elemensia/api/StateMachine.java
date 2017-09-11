@@ -3,7 +3,7 @@ package com.elemensia.api;
 import com.elemensia.api.gameobjects.LivingThing;
 
 public class StateMachine {
-	
+
 	public State getDirectionH(LivingThing livingThing, Status status){
 		State next = status.getState("DIRECTIONH");
 		// BLOC F
@@ -23,7 +23,7 @@ public class StateMachine {
 
 		return next;
 	}
-	
+
 	public State getDirectionV(LivingThing livingThing, Status status){
 		State next = status.getState("DIRECTIONV");
 		// BLOC F
@@ -52,7 +52,7 @@ public class StateMachine {
 
 		return next;
 	}
-	
+
 	public State getAction(LivingThing livingThing, Status status){
 		State next = status.getState("ACTION");
 		// BLOC F
@@ -114,6 +114,66 @@ public class StateMachine {
 		}
 
 		return next;
+	}
+
+	public State getMovement(LivingThing livingThing, Status status){
+		State newState = status.getState("MOVEMENT");
+		// BLOC F
+		switch(status.getState("MOVEMENT")){
+		case IDLE :
+			if (livingThing.getDecisionValue("JUMP")){
+				newState = State.JUMP;
+			}
+			else if  (status.getState("ENVIRONMENT") == State.AIR){
+				newState = State.FALL;
+			}
+			else if  (livingThing.getDecisionValue("RIGHT") || livingThing.getDecisionValue("LEFT")){
+				newState = State.WALK;
+			}
+			break;
+		case WALK :
+			if (livingThing.getDecisionValue("JUMP")){
+				newState = State.JUMP;
+			}
+			else if (!livingThing.getDecisionValue("RIGHT") && !livingThing.getDecisionValue("LEFT")){
+				newState = State.IDLE;
+			}
+			else if  (status.getState("ENVIRONMENT") == State.AIR){
+				newState = State.FALL;
+			}
+			else if  (status.getState("ENVIRONMENT")== State.WATER){
+				newState = State.IDLE;
+			}
+			break;
+		case FALL :
+			if (status.getState("ENVIRONMENT") == State.GROUND){
+				newState = State.IDLE;
+			}
+			else if  (status.getState("ENVIRONMENT") == State.GROUND && (livingThing.getDecisionValue("RIGHT") || livingThing.getDecisionValue("LEFT"))){
+				newState = State.WALK;
+			}
+			else if  (status.getState("ENVIRONMENT")==State.WATER){
+				newState = State.IDLE;
+			}
+			else if  (livingThing.getDecisionValue("JUMP")/*TODO: && jumpAvailable()*/){
+				newState = State.JUMP;
+			}
+			break;
+		case JUMP :
+			if (! livingThing.isMovingUp()){
+				newState = State.IDLE;
+			}
+			else if  (status.getState("ENVIRONMENT")==State.WATER){
+				newState = State.IDLE;
+			}
+			else if  (livingThing.getDecisionValue("JUMP")/*TODO: && jumpAvailable()*/){
+				newState = State.JUMP;
+			}
+			break;
+
+		}
+		
+		return newState;
 	}
 
 }
