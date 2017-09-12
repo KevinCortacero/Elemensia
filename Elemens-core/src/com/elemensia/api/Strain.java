@@ -1,17 +1,17 @@
 package com.elemensia.api;
 
-public class Hunger {
+public class Strain {
 
 	private float max;
 	private float current;
-	private float starvation;
 
-	private final float hpLost = (float) 0.25;
-
-	public Hunger(int max, float starvation) {
+	public Strain(int max) {
 		this.max = (float) max;
 		this.current = this.max;
-		this.starvation = starvation;
+	}
+
+	public boolean isKO() {
+		return this.max > 0;
 	}
 
 	public int getRatio() {
@@ -30,17 +30,12 @@ public class Hunger {
 		return this.increase((float) value);
 	}
 
-	// Return the amount of life lost if hunger reaches 0
-	public float decrease(float value) {
-		float hpLost = 0;
+	public boolean decrease(float value) {
 		this.current -= value;
-		if (this.current <= 0) {
-			hpLost = this.hpLost;
-		}
-		return hpLost;
+		return this.isKO();
 	}
-	
-	public float decrease(int value) {
+
+	public boolean decrease(int value) {
 		return this.decrease((float) value);
 	}
 
@@ -52,13 +47,9 @@ public class Hunger {
 		return (int) current;
 	}
 
-	public float getStarvation() {
-		return starvation;
-	}
-
 	@Override
 	public String toString() {
-		return "Hunger [max=" + max + ", current=" + current + ", starvation=" + starvation + "]";
+		return "Strain [max=" + max + ", current=" + current + "]";
 	}
 
 }

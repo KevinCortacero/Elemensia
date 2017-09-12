@@ -7,9 +7,9 @@ import com.elemensia.api.State;
 import com.elemensia.api.StatusManager;
 import com.elemensia.game.World;
 
-public abstract class LivingThing extends DynamicGameObject{
+public abstract class LivingThing extends DynamicGameObject {
 
-	private Life life;
+	// private Life life;
 	private Thread alive;
 	private DecisionManager decisionManager;
 	private StatusManager statusManager;
@@ -17,7 +17,9 @@ public abstract class LivingThing extends DynamicGameObject{
 
 	public LivingThing(int x, int y, int width, int height, int health, Animation animations) {
 		super(x, y, width, height, animations);
-		this.life = new Life(health);
+		// this.life = new Life(health);
+		// For now, temporary
+		this.organism = new Organism(health, (float) 0.001, 100, (float) 0.001, 100);
 		this.decisionManager = new DecisionManager();
 		this.statusManager = new StatusManager();
 		this.alive = new Thread(new Runnable() {
@@ -30,12 +32,15 @@ public abstract class LivingThing extends DynamicGameObject{
 				System.out.println(delta + " " + delay);
 				do {
 					LivingThing.this.update(-9.8f, delta);
+
+					LivingThing.this.organism.live();
+					System.out.println(LivingThing.this.organism);
 					try {
 						Thread.sleep(delay);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-				}while(LivingThing.this.isAlive());
+				} while (LivingThing.this.isAlive());
 
 			}
 
@@ -48,30 +53,27 @@ public abstract class LivingThing extends DynamicGameObject{
 		World.updateColliding(this);
 		this.updateDecision();
 		this.updateState();
-		//  ANIMATION
+		// ANIMATION
 		this.animations.update(this.getCenterX(), this.getY(), delta, this.statusManager.getState("DIRECTIONH"));
 		this.act(delta);
 	}
 
-	public void updateState(){
+	public void updateState() {
 		this.statusManager.updateStatus(this);
 	}
 
 	private void act(float delta) {
-		//System.out.println(this.statusManager);
-		if(this.statusManager.getState("MOVEMENT") == State.WALK){
+		// System.out.println(this.statusManager);
+		if (this.statusManager.getState("MOVEMENT") == State.WALK) {
 			this.animations.setAnimation(State.WALK, true);
-			if (statusManager.getState("DIRECTIONH") == State.RIGHT){
+			if (statusManager.getState("DIRECTIONH") == State.RIGHT) {
 				this.moveRight(delta);
-			}
-			else if (statusManager.getState("DIRECTIONH") == State.LEFT){
+			} else if (statusManager.getState("DIRECTIONH") == State.LEFT) {
 				this.moveLeft(delta);
 			}
-		}
-		else if (this.statusManager.getState("MOVEMENT") == State.IDLE){
+		} else if (this.statusManager.getState("MOVEMENT") == State.IDLE) {
 			this.animations.setAnimation(State.IDLE, true);
-		}
-		else if (this.statusManager.getState("MOVEMENT") == State.JUMP){
+		} else if (this.statusManager.getState("MOVEMENT") == State.JUMP) {
 			this.jump();
 		}
 	}
@@ -86,25 +88,23 @@ public abstract class LivingThing extends DynamicGameObject{
 		return this.decisionManager.getDecisionValue(inputName);
 	}
 
-	public void setDecisionValue(String inputName, boolean value){
+	public void setDecisionValue(String inputName, boolean value) {
 		this.decisionManager.setDecisionValue(inputName, value);
 	}
 
-	public void setDecisionValue(String inputName, int keyPressed){
+	public void setDecisionValue(String inputName, int keyPressed) {
 		this.decisionManager.setDecisionValue(inputName, keyPressed);
 	}
-	
-	public State getState(String stateName){
+
+	public State getState(String stateName) {
 		return this.statusManager.getState(stateName);
 	}
 	/*
-	public void updateInputs() {
-		this.decisionManager.updateInputs();
-		StateManager.updateState(this);
-	}
+	 * public void updateInputs() { this.decisionManager.updateInputs();
+	 * StateManager.updateState(this); }
 	 */
 
-	public void live(){
+	public void live() {
 		this.alive.start();
 	}
 }
