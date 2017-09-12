@@ -2,6 +2,7 @@ package com.elemensia.api.gameobjects;
 
 import com.elemensia.api.Animation;
 import com.elemensia.api.Life;
+import com.elemensia.api.Organism;
 import com.elemensia.api.State;
 import com.elemensia.api.StatusManager;
 import com.elemensia.game.World;
@@ -12,6 +13,7 @@ public abstract class LivingThing extends DynamicGameObject{
 	private Thread alive;
 	private DecisionManager decisionManager;
 	private StatusManager statusManager;
+	private Organism organism;
 
 	public LivingThing(int x, int y, int width, int height, int health, Animation animations) {
 		super(x, y, width, height, animations);
