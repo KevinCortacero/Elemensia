@@ -62,7 +62,7 @@ public class Ecosystem {
 			dynamicGameObject.applyVerticalCollidingEffect(s.getBody(), hitboxV);
 		}
 		if (dynamicGameObject.velocity.y != 0){
-			dynamicGameObject.setStateValue("ENVIRONMENT", State.AIR);
+			dynamicGameObject.setStateValue("ENVIRONMENT", SubState.AIR);
 		}
 	}
 

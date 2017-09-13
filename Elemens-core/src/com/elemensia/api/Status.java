@@ -5,29 +5,29 @@ import java.util.Map;
 
 public class Status {
 	
-	private Map<String, State> states;
+	private Map<String, SubState> states;
 	
 	public Status() {
 		this.states = new HashMap<>();
-		this.states.put("DIRECTIONV", State.NONE);
-		this.states.put("DIRECTIONH", State.RIGHT);
-		this.states.put("ENVIRONMENT", State.GROUND);
-		this.states.put("MOVEMENT", State.MOVE);
-		this.states.put("ACTION", State.NONE);
+		this.states.put("DIRECTIONV", SubState.NONE);
+		this.states.put("DIRECTIONH", SubState.RIGHT);
+		this.states.put("ENVIRONMENT", SubState.GROUND);
+		this.states.put("MOVEMENT", SubState.NONE);
+		this.states.put("ACTION", SubState.NONE);
 	}
 
-	public State getState(String stateName) {
+	public SubState getState(String stateName) {
 		return this.states.get(stateName);
 	}
 
-	public void setState(String stateName, State state) {
+	public void setState(String stateName, SubState state) {
 		this.states.put(stateName, state);
 	}
 	
 	@Override
 	public String toString() {
 		String res = "";
-		for (State s : this.states.values()){
+		for (SubState s : this.states.values()){
 			res += s.name() + " ";
 		}
 		return res;

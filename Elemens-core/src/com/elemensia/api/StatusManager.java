@@ -13,7 +13,7 @@ public class StatusManager {
 		this.status = new Status();
 	}
 
-	public State getState(String stateName){
+	public SubState getState(String stateName){
 		return this.status.getState(stateName);
 	}
 	
@@ -23,7 +23,7 @@ public class StatusManager {
 	}
 	
 	public void updateStatus(LivingThing livingThing){
-		State newState = this.stateMachine.getDirectionH(livingThing, this.status);
+		SubState newState = this.stateMachine.getDirectionH(livingThing, this.status);
 		this.status.setState("DIRECTIONH", newState);
 		
 		newState = this.stateMachine.getDirectionV(livingThing, this.status);
@@ -47,7 +47,7 @@ public class StatusManager {
 		return this.getState("ENVIRONMENT").name() + " " + this.getState("MOVEMENT").name() + " " + this.getState("ACTION").name() + " " + this.getState("DIRECTIONH").name();
 	}
 
-	public void setState(String stateName, State state) {
+	public void setState(String stateName, SubState state) {
 		this.status.setState(stateName, state);
 	}
 

@@ -3,7 +3,8 @@ package com.elemensia.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.elemensia.api.SplineAnimations;
-import com.elemensia.api.State;
+import com.elemensia.api.SubState;
+import com.elemensia.api.gameobjects.Decision;
 import com.elemensia.api.gameobjects.LivingThing;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.Hitbox;
@@ -33,13 +34,13 @@ public class Hero extends LivingThing {
 		World.updateClimbing(this);
 
 		World.updateColliding(this);
-		*/
+		 */
 
 	}
 
 	@Override
 	public void applyGravity(float gravity, float delta){
-		if (!(canClimbUp && Gdx.input.isKeyPressed(Input.Keys.Z)) && !this.waterAbility.isUnderWater){
+		if (!this.waterAbility.isUnderWater){
 			this.velocity.y += (gravity*delta);
 		}
 	}
@@ -62,16 +63,14 @@ public class Hero extends LivingThing {
 
 	@Override
 	public void applyVerticalCollidingEffect(CollideBox collider, Hitbox hitbox){
-		
+
 		switch (hitbox) {
 		case CENTER:
 			break;
 		case BOTTOM:
-			if (!this.canClimbDown) {
-				this.resetJump();
-				this.stopV(collider.getY() + collider.getHeight());
-				this.setStateValue("ENVIRONMENT", State.GROUND);
-			}
+			this.resetJump();
+			this.stopV(collider.getY() + collider.getHeight());
+			this.setStateValue("ENVIRONMENT", SubState.GROUND);
 			break;
 		case TOP:
 			if (!this.canClimbUp && this.isMovingUp()) {
@@ -85,11 +84,11 @@ public class Hero extends LivingThing {
 
 	@Override
 	public void updateDecision() {
-		this.setDecisionValue("RIGHT", Input.Keys.D);
-		this.setDecisionValue("LEFT", Input.Keys.Q);
-		this.setDecisionValue("TOP", Input.Keys.Z);
-		this.setDecisionValue("DOWN", Input.Keys.S);
-		this.setDecisionValue("JUMP", Input.Keys.SPACE);
+		this.setDecisionValue(Decision.RIGHT, Input.Keys.D);
+		this.setDecisionValue(Decision.LEFT, Input.Keys.Q);
+		this.setDecisionValue(Decision.TOP, Input.Keys.Z);
+		this.setDecisionValue(Decision.DOWN, Input.Keys.S);
+		this.setDecisionValue(Decision.JUMP, Input.Keys.SPACE);
 	}
 
 }

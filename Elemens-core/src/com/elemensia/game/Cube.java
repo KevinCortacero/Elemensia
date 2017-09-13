@@ -1,14 +1,16 @@
 package com.elemensia.game;
 
+import com.elemensia.api.GlobalState;
 import com.elemensia.api.SpriteAnimation;
-import com.elemensia.api.State;
+import com.elemensia.api.SubState;
 import com.elemensia.api.gameobjects.Creature;
+import com.elemensia.api.gameobjects.Decision;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.Hitbox;
 
 public class Cube extends Creature{
 
-	public static State STATES[] = {State.MOVE, State.IDLE, State.EAT, State.JUMP};
+	public static GlobalState STATES[] = {GlobalState.WALK, GlobalState.IDLE, GlobalState.EAT, GlobalState.JUMP};
 	public static int WIDTH = 64;
 	public static int HEIGHT = 64;
 
@@ -19,28 +21,25 @@ public class Cube extends Creature{
 
 	@Override
 	public void updateDecision() {
-		this.setDecisionValue("JUMP", false);
+		this.setDecisionValue(Decision.JUMP, false);
 		if (Math.random() < 0.005){
 			if (Math.random() < 0.5){
-				if (this.getState("DIRECTIONH") == State.RIGHT){
-					this.setDecisionValue("RIGHT", false);
-					this.setDecisionValue("LEFT", true);
-					
-					System.out.println("LEFT !");
+				if (this.getState("DIRECTIONH") == SubState.RIGHT || this.getState("DIRECTIONH") == SubState.NONE){
+					this.setDecisionValue(Decision.RIGHT, false);
+					this.setDecisionValue(Decision.LEFT, true);
 				}
-				else if (this.getState("DIRECTIONH") == State.LEFT){
-					this.setDecisionValue("RIGHT", true);
-					this.setDecisionValue("LEFT", false);
-					System.out.println("RIGHT !");
+				else if (this.getState("DIRECTIONH") == SubState.LEFT){
+					this.setDecisionValue(Decision.RIGHT, true);
+					this.setDecisionValue(Decision.LEFT, false);
 				}
+		
 				if (Math.random() < 0.5) {
-					this.setDecisionValue("JUMP", true);
+					this.setDecisionValue(Decision.JUMP, true);
 				}
 			}
 			else if (Math.random() < 0.5){
-				this.setDecisionValue("RIGHT", false);
-				this.setDecisionValue("LEFT", false);
-				System.out.println("STOP !");
+				this.setDecisionValue(Decision.RIGHT, false);
+				this.setDecisionValue(Decision.LEFT, false);
 			}
 			
 		}
@@ -78,7 +77,7 @@ public class Cube extends Creature{
 		case BOTTOM:
 			this.resetJump();
 			this.stopV(collider.getY() + collider.getHeight());
-			this.setStateValue("ENVIRONMENT", State.GROUND);
+			this.setStateValue("ENVIRONMENT", SubState.GROUND);
 
 			break;
 		case TOP:

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.elemensia.api.Animation;
-import com.elemensia.api.State;
+import com.elemensia.api.SubState;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.CollideManager;
 import com.elemensia.api.physics.Hitbox;
@@ -108,11 +108,11 @@ public abstract class DynamicGameObject extends InteractiveGameObject{
 	}
 
 	public void moveRight(float delta) {
-		this.setX(this.getX() + 200 * delta);
+		this.setX(this.getX() + 400 * delta);
 	}
 
 	public void moveLeft(float delta) {
-		this.setX(this.getX() - 200 * delta);
+		this.setX(this.getX() - 400 * delta);
 	}
 
 	public void climbUp() {
@@ -125,7 +125,7 @@ public abstract class DynamicGameObject extends InteractiveGameObject{
 
 	public void jump() {
 		if (this.jumpCount > 0) {
-			this.velocity.y = 5;
+			this.velocity.y = 8;
 			this.jumpCount--;
 		}
 	}

@@ -11,19 +11,19 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class SpriteAnimation extends com.elemensia.api.Animation{
 	
-	private Map<State, Animation<TextureRegion>> animations;
+	private Map<GlobalState, Animation<TextureRegion>> animations;
 	private Texture sprite;
 	private TextureRegion currentTexture;
-	private State state;
+	private GlobalState state;
 	private float x;
 	private float y;
 	private float timer;
 	
-	public SpriteAnimation(int width, int height, State[] states, String spritePath) {
+	public SpriteAnimation(int width, int height, GlobalState[] states, String spritePath) {
 		this.sprite = Utility.getTextureAsset(spritePath);
 		TextureRegion[][] tmp = TextureRegion.split(this.sprite, width, height);
 
-		this.animations = new HashMap<State, Animation<TextureRegion>>();
+		this.animations = new HashMap<GlobalState, Animation<TextureRegion>>();
 		for (int j = 0; j < states.length; j++){
 			TextureRegion[] animation = new TextureRegion[tmp[0].length];
 			for (int i = 0; i < tmp[0].length; i++) {
@@ -50,13 +50,13 @@ public class SpriteAnimation extends com.elemensia.api.Animation{
 	}
 
 	@Override
-	public void setAnimation(State state, boolean loop) {
+	public void setAnimation(GlobalState state, boolean loop) {
 		this.currentTexture = this.animations.get(state).getKeyFrame(this.timer, loop);
 		this.state = state;
 	}
 
 	@Override
-	public void update(float x, float y, float delta, State direction) {
+	public void update(float x, float y, float delta, SubState direction) {
 		this.x = x - 32;
 		this.y = y;
 		this.timer += delta;

@@ -1,51 +1,66 @@
 package com.elemensia.api;
 
+import com.elemensia.api.gameobjects.Decision;
 import com.elemensia.api.gameobjects.LivingThing;
 
 public class StateMachine {
 
-	public State getDirectionH(LivingThing livingThing, Status status){
-		State next = status.getState("DIRECTIONH");
+	public SubState getDirectionH(LivingThing livingThing, Status status){
+		SubState next = status.getState("DIRECTIONH");
 		// BLOC F
 		switch(status.getState("DIRECTIONH")){
 		case LEFT :
-			if (livingThing.getDecisionValue("RIGHT")){
-				next = State.RIGHT;
+			if (!livingThing.getDecisionValue(Decision.RIGHT) && !livingThing.getDecisionValue(Decision.LEFT)){
+				next = SubState.NONE;
+			}else if (livingThing.getDecisionValue(Decision.RIGHT)){
+				next = SubState.RIGHT;
 			}
+
 			break;
 
 		case RIGHT :
-			if (livingThing.getDecisionValue("LEFT")){
-				next = State.LEFT;
+			if (!livingThing.getDecisionValue(Decision.RIGHT) && !livingThing.getDecisionValue(Decision.LEFT)){
+				next = SubState.NONE;
+			}else if (livingThing.getDecisionValue(Decision.LEFT)){
+				next = SubState.LEFT;
+			}
+			break;
+
+		case NONE :
+			if (livingThing.getDecisionValue(Decision.RIGHT)){
+				next = SubState.RIGHT;
+			}else if (livingThing.getDecisionValue(Decision.LEFT)){
+				next = SubState.LEFT;
 			}
 			break;
 		}
 
+
 		return next;
 	}
 
-	public State getDirectionV(LivingThing livingThing, Status status){
-		State next = status.getState("DIRECTIONV");
+	public SubState getDirectionV(LivingThing livingThing, Status status){
+		SubState next = status.getState("DIRECTIONV");
 		// BLOC F
 		switch(status.getState("DIRECTIONV")){
 		case NONE :
-			if (livingThing.getDecisionValue("TOP") && status.getState("ACTION") == State.CLIMB){
-				next = State.TOP;
+			if (livingThing.getDecisionValue(Decision.TOP) && status.getState("ACTION") == SubState.CLIMB){
+				next = SubState.TOP;
 			}
-			if (livingThing.getDecisionValue("DOWN") && status.getState("ACTION") == State.CLIMB){
-				next = State.DOWN;
+			if (livingThing.getDecisionValue(Decision.TOP) && status.getState("ACTION") == SubState.CLIMB){
+				next = SubState.DOWN;
 			}
 			break;
 
 		case TOP :
-			if (!livingThing.getDecisionValue("TOP")){
-				next = State.NONE;
+			if (!livingThing.getDecisionValue(Decision.TOP)){
+				next = SubState.NONE;
 			}
 			break;
 
 		case DOWN :
-			if (!livingThing.getDecisionValue("DOWN")){
-				next = State.NONE;
+			if (!livingThing.getDecisionValue(Decision.TOP)){
+				next = SubState.NONE;
 			}
 			break;
 		}
@@ -53,62 +68,62 @@ public class StateMachine {
 		return next;
 	}
 
-	public State getAction(LivingThing livingThing, Status status){
-		State next = status.getState("ACTION");
+	public SubState getAction(LivingThing livingThing, Status status){
+		SubState next = status.getState("ACTION");
 		// BLOC F
 		switch(status.getState("ACTION")){
 		case NONE :
-			if (livingThing.getDecisionValue("ATTACK") /*TODO : isAvailble()*/){
-				next = State.ATTACK;
+			if (livingThing.getDecisionValue(Decision.ATTACK) /*TODO : isAvailble()*/){
+				next = SubState.ATTACK;
 			}
-			else if  (livingThing.getDecisionValue("EAT")){
-				next = State.EAT;
+			else if  (livingThing.getDecisionValue(Decision.EAT)){
+				next = SubState.EAT;
 			}
-			else if  (livingThing.getDecisionValue("SLEEP") && status.getState("MOVEMENT") == State.IDLE){
-				next = State.SLEEP;
+			else if  (livingThing.getDecisionValue(Decision.SLEEP) && status.getState("DIRECTION") == SubState.NONE){
+				next = SubState.SLEEP;
 			}
-			else if  (livingThing.getDecisionValue("CLIMB") /*TODO : isEchelle()*/){
-				next = State.CLIMB;
+			else if  (livingThing.getDecisionValue(Decision.CLIMB) /*TODO : isEchelle()*/){
+				next = SubState.CLIMB;
 			}
 			else if  (!livingThing.isAlive()){
-				next = State.DEAD;
+				next = SubState.DEAD;
 			}
 			break;
 
 		case ATTACK :
 			if (true/*TODO : isAvailble()*/){
-				next = State.NONE;
+				next = SubState.NONE;
 			}else if  (!livingThing.isAlive()){
-				next = State.DEAD;
+				next = SubState.DEAD;
 			}
 			break;
 
 		case EAT :
 			if (true/*TODO : isAvailble()*/){
-				next = State.NONE;
+				next = SubState.NONE;
 			}else if  (!livingThing.isAlive()){
-				next = State.DEAD;
+				next = SubState.DEAD;
 			}
 			break;
 
 		case SLEEP :
-			if (livingThing.getDecisionValue("SLEEP")){
-				next = State.NONE;
+			if (livingThing.getDecisionValue(Decision.SLEEP)){
+				next = SubState.NONE;
 			}else if  (!livingThing.isAlive()){
-				next = State.DEAD;
+				next = SubState.DEAD;
 			}
 			break;
 
 		case CLIMB :
-			if (livingThing.getDecisionValue("JUMP") || livingThing.getDecisionValue("CLIMB") /*TODO  || contactGround() */){
-				next = State.NONE;
+			if (livingThing.getDecisionValue(Decision.JUMP) || livingThing.getDecisionValue(Decision.CLIMB) /*TODO  || contactGround() */){
+				next = SubState.NONE;
 			}else if  (!livingThing.isAlive()){
-				next = State.DEAD;
+				next = SubState.DEAD;
 			}
 			break;
 		case DEAD :
-			if (livingThing.getDecisionValue("DOWN")){
-				next = State.DEAD;
+			if (livingThing.getDecisionValue(Decision.TOP)){
+				next = SubState.DEAD;
 			}
 			break;
 		}
@@ -116,63 +131,43 @@ public class StateMachine {
 		return next;
 	}
 
-	public State getMovement(LivingThing livingThing, Status status){
-		State newState = status.getState("MOVEMENT");
+	public SubState getMovement(LivingThing livingThing, Status status){
+		SubState newState = status.getState("MOVEMENT");
 		// BLOC F
 		switch(status.getState("MOVEMENT")){
-		case IDLE :
-			if (livingThing.getDecisionValue("JUMP")){
-				newState = State.JUMP;
+		case NONE :
+			if (livingThing.getDecisionValue(Decision.JUMP)){
+				newState = SubState.JUMP;
 			}
-			else if  (status.getState("ENVIRONMENT") == State.AIR){
-				newState = State.FALL;
-			}
-			else if  (livingThing.getDecisionValue("RIGHT") || livingThing.getDecisionValue("LEFT")){
-				newState = State.MOVE;
-			}
-			break;
-		case MOVE :
-			if (livingThing.getDecisionValue("JUMP")){
-				newState = State.JUMP;
-			}
-			else if (!livingThing.getDecisionValue("RIGHT") && !livingThing.getDecisionValue("LEFT")){
-				newState = State.IDLE;
-			}
-			else if  (status.getState("ENVIRONMENT") == State.AIR){
-				newState = State.FALL;
-			}
-			else if  (status.getState("ENVIRONMENT")== State.WATER){
-				newState = State.IDLE;
+			else if  (status.getState("ENVIRONMENT") == SubState.AIR){
+				newState = SubState.FALL;
 			}
 			break;
 		case FALL :
-			if (status.getState("ENVIRONMENT") == State.GROUND){
-				newState = State.IDLE;
+			if (status.getState("ENVIRONMENT") == SubState.GROUND){
+				newState = SubState.NONE;
 			}
-			else if  (status.getState("ENVIRONMENT") == State.GROUND && (livingThing.getDecisionValue("RIGHT") || livingThing.getDecisionValue("LEFT"))){
-				newState = State.MOVE;
+			else if  (status.getState("ENVIRONMENT")==SubState.WATER){
+				newState = SubState.NONE;
 			}
-			else if  (status.getState("ENVIRONMENT")==State.WATER){
-				newState = State.IDLE;
-			}
-			else if  (livingThing.getDecisionValue("JUMP")/*TODO: && jumpAvailable()*/){
-				newState = State.JUMP;
+			else if  (livingThing.getDecisionValue(Decision.JUMP)/*TODO: && jumpAvailable()*/){
+				newState = SubState.JUMP;
 			}
 			break;
 		case JUMP :
-			if (! livingThing.isMovingUp()){
-				newState = State.IDLE;
+			if (!livingThing.isMovingUp()){
+				newState = SubState.FALL;
 			}
-			else if  (status.getState("ENVIRONMENT")==State.WATER){
-				newState = State.IDLE;
+			else if  (status.getState("ENVIRONMENT")==SubState.WATER){
+				newState = SubState.NONE;
 			}
-			else if  (livingThing.getDecisionValue("JUMP")/*TODO: && jumpAvailable()*/){
-				newState = State.JUMP;
+			else if  (livingThing.getDecisionValue(Decision.JUMP)/*TODO: && jumpAvailable()*/){
+				newState = SubState.JUMP;
 			}
 			break;
 
 		}
-		
+
 		return newState;
 	}
 

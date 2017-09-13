@@ -4,8 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.elemensia.api.Animation;
+import com.elemensia.api.GlobalState;
 import com.elemensia.api.Organism;
-import com.elemensia.api.State;
+import com.elemensia.api.SubState;
 import com.elemensia.api.StatusManager;
 import com.elemensia.game.World;
 
@@ -55,7 +56,7 @@ public abstract class LivingThing extends DynamicGameObject {
 		super.update(gravity, delta);
 		World.updateColliding(this);
 		if (this.waterAbility.isOnWater){
-			this.setStateValue("ENVIRONMENT", State.WATER);
+			this.setStateValue("ENVIRONMENT", SubState.WATER);
 		}
 		this.updateDecision();
 	
@@ -73,22 +74,24 @@ public abstract class LivingThing extends DynamicGameObject {
 		this.statusManager.updateStatus(this);
 	}
 	
-	public void setStateValue(String string, State ground) {
+	public void setStateValue(String string, SubState ground) {
 		this.statusManager.setState(string, ground);
 	}
 
 	private void act(float delta) {
-		// System.out.println(this.statusManager);
-		if (this.statusManager.getState("MOVEMENT") == State.MOVE) {
-			this.animations.setAnimation(State.MOVE, true);
-			if (statusManager.getState("DIRECTIONH") == State.RIGHT) {
+		if (this.statusManager.getState("DIRECTIONH") != SubState.NONE) {
+			this.animations.setAnimation(GlobalState.WALK, true);
+			if (statusManager.getState("DIRECTIONH") == SubState.RIGHT) {
 				this.moveRight(delta);
-			} else if (statusManager.getState("DIRECTIONH") == State.LEFT) {
+			} else if (statusManager.getState("DIRECTIONH") == SubState.LEFT) {
 				this.moveLeft(delta);
 			}
-		} else if (this.statusManager.getState("MOVEMENT") == State.IDLE) {
-			this.animations.setAnimation(State.IDLE, true);
-		} else if (this.statusManager.getState("MOVEMENT") == State.JUMP) {
+		} 
+		
+		else if (this.statusManager.getState("DIRECTIONH") == SubState.NONE) {
+			this.animations.setAnimation(GlobalState.IDLE, true);
+		} 
+		if (this.statusManager.getState("MOVEMENT") == SubState.JUMP) {
 			this.jump();
 		}
 	}
@@ -99,19 +102,19 @@ public abstract class LivingThing extends DynamicGameObject {
 		return true;
 	}
 
-	public boolean getDecisionValue(String inputName) {
-		return this.decisionManager.getDecisionValue(inputName);
+	public boolean getDecisionValue(Decision decisionName) {
+		return this.decisionManager.getDecisionValue(decisionName);
 	}
 
-	public void setDecisionValue(String inputName, boolean value) {
-		this.decisionManager.setDecisionValue(inputName, value);
+	public void setDecisionValue(Decision decisionName, boolean value) {
+		this.decisionManager.setDecisionValue(decisionName, value);
 	}
 
-	public void setDecisionValue(String inputName, int keyPressed) {
-		this.decisionManager.setDecisionValue(inputName, keyPressed);
+	public void setDecisionValue(Decision decisionName, int keyPressed) {
+		this.decisionManager.setDecisionValue(decisionName, keyPressed);
 	}
 
-	public State getState(String stateName) {
+	public SubState getState(String stateName) {
 		return this.statusManager.getState(stateName);
 	}
 

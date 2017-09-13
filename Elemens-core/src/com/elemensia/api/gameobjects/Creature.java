@@ -1,7 +1,7 @@
 package com.elemensia.api.gameobjects;
 
 import com.elemensia.api.Animation;
-import com.elemensia.api.State;
+import com.elemensia.api.GlobalState;
 
 public abstract class Creature extends LivingThing{
 
@@ -10,6 +10,6 @@ public abstract class Creature extends LivingThing{
 	}
 	
 	public void eat(){
-		this.animations.setAnimation(State.EAT, false);
+		this.animations.setAnimation(GlobalState.EAT, false);
 	}
 }

@@ -17,7 +17,7 @@ public class SplineAnimations extends Animation{
 	private AnimationState animationState;
 	private Skeleton skeleton;
 	private SkeletonRenderer skeletonRenderer;
-	private State state;
+	private GlobalState state;
 	private SkeletonRendererDebug debugRenderer;
 
 	
@@ -41,18 +41,18 @@ public class SplineAnimations extends Animation{
 		this.animationState = new AnimationState(playerAnimationData);
 		
 		this.animationState.setTimeScale(0.4f); // Slow all animations down to 40% speed.
-		this.setAnimation(State.IDLE, true);
+		this.setAnimation(GlobalState.IDLE, true);
 	}
 	
-	public void update(float x, float y, float delta, State direction){
+	public void update(float x, float y, float delta, SubState direction){
 		this.animationState.update(delta);
 		this.animationState.apply(this.skeleton);
 		this.skeleton.setPosition(x, y);
 		
-		if (direction == State.LEFT){
+		if (direction == SubState.LEFT){
 			this.skeleton.setFlipX(true);
 		}
-		else if (direction == State.RIGHT){
+		else if (direction == SubState.RIGHT){
 			this.skeleton.setFlipX(false);
 		}
 			
@@ -70,7 +70,7 @@ public class SplineAnimations extends Animation{
 	}
 
 	@Override
-	public void setAnimation(State state, boolean loop) {
+	public void setAnimation(GlobalState state, boolean loop) {
 		if (!(this.state == state)){
 			this.state = state;
 			this.animationState.setAnimation(0, this.state.toString(), loop); // trackIndex, name, loop

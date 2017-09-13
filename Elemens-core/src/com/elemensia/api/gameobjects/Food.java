@@ -1,14 +1,13 @@
 package com.elemensia.api.gameobjects;
 
+import com.elemensia.api.GlobalState;
 import com.elemensia.api.SpriteAnimation;
-import com.elemensia.api.State;
-import com.elemensia.api.Status;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.Hitbox;
 
 public class Food extends DynamicGameObject {
 	
-	public static State[] STATES = {State.IDLE};
+	public static GlobalState[] STATES = {GlobalState.IDLE};
 
 	public Food(int x, int y) {
 		super(x, y, 64, 64, new SpriteAnimation(64, 64, STATES, "apple.png"));

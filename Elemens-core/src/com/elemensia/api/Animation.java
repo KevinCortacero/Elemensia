@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public abstract class Animation {
 
-	public abstract void setAnimation(State state, boolean loop);
+	public abstract void setAnimation(GlobalState state, boolean loop);
 
-	public abstract void update(float x, float y, float delta, State direction);
+	public abstract void update(float x, float y, float delta, SubState direction);
 
 	public abstract void draw(SpriteBatch batch);
 	
