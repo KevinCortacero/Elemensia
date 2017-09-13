@@ -3,6 +3,7 @@ package com.elemensia.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.elemensia.api.SplineAnimations;
+import com.elemensia.api.State;
 import com.elemensia.api.gameobjects.LivingThing;
 import com.elemensia.api.physics.CollideBox;
 import com.elemensia.api.physics.Hitbox;
@@ -27,11 +28,12 @@ public class Hero extends LivingThing {
 	@Override
 	public void update(float gravity, float delta){
 		super.update(gravity, delta);
-
+		/*
 		// CLIMB
 		World.updateClimbing(this);
 
 		World.updateColliding(this);
+		*/
 
 	}
 
@@ -41,18 +43,6 @@ public class Hero extends LivingThing {
 			this.velocity.y += (gravity*delta);
 		}
 	}
-
-	/*
-	public void updateInput() {
-		if (Gdx.input.isKeyPressed(Input.Keys.Z) && this.canClimbUp) {
-			this.climbUp();
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.S) && this.canClimbDown) {
-			this.climbDown();
-		}
-	}
-
-	 */
 
 	@Override
 	public void applyHorizontalCollidingEffect(CollideBox collider, Hitbox hitbox){
@@ -72,17 +62,19 @@ public class Hero extends LivingThing {
 
 	@Override
 	public void applyVerticalCollidingEffect(CollideBox collider, Hitbox hitbox){
+		
 		switch (hitbox) {
 		case CENTER:
 			break;
 		case BOTTOM:
-			if (! (this.canClimbDown && Gdx.input.isKeyPressed(Input.Keys.S))) {
+			if (!this.canClimbDown) {
 				this.resetJump();
 				this.stopV(collider.getY() + collider.getHeight());
+				this.setStateValue("ENVIRONMENT", State.GROUND);
 			}
 			break;
 		case TOP:
-			if (! (this.canClimbUp && Gdx.input.isKeyPressed(Input.Keys.Z)) && this.isMovingUp()) {
+			if (!this.canClimbUp && this.isMovingUp()) {
 				this.stopV(collider.getY() - this.getHeight());
 			}
 			break;
@@ -95,6 +87,8 @@ public class Hero extends LivingThing {
 	public void updateDecision() {
 		this.setDecisionValue("RIGHT", Input.Keys.D);
 		this.setDecisionValue("LEFT", Input.Keys.Q);
+		this.setDecisionValue("TOP", Input.Keys.Z);
+		this.setDecisionValue("DOWN", Input.Keys.S);
 		this.setDecisionValue("JUMP", Input.Keys.SPACE);
 	}
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.elemensia.api.gameobjects.Creature;
 import com.elemensia.api.gameobjects.DynamicGameObject;
 import com.elemensia.api.gameobjects.Ladder;
+import com.elemensia.api.gameobjects.LivingThing;
 import com.elemensia.api.gameobjects.Solid;
 import com.elemensia.api.physics.Hitbox;
 import com.elemensia.game.Hero;
@@ -49,7 +50,8 @@ public class Ecosystem {
 		this.hero.draw(sr);
 	}
 
-	public void updateColliding(DynamicGameObject dynamicGameObject) {
+	public void updateColliding(LivingThing dynamicGameObject) {
+		
 		for (Solid s : this.env.solids) {
 			// HORIZONTAL COLLIDING
 			Hitbox hitboxH = dynamicGameObject.isCollapsingHorizontal(s.getBody());
@@ -58,6 +60,9 @@ public class Ecosystem {
 			// VERTICAL COLLIDING
 			Hitbox hitboxV = dynamicGameObject.isCollapsingVertical(s.getBody());
 			dynamicGameObject.applyVerticalCollidingEffect(s.getBody(), hitboxV);
+		}
+		if (dynamicGameObject.velocity.y != 0){
+			dynamicGameObject.setStateValue("ENVIRONMENT", State.AIR);
 		}
 	}
 

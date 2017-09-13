@@ -1,7 +1,9 @@
 package com.elemensia.api.gameobjects;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.elemensia.api.Animation;
-import com.elemensia.api.Life;
 import com.elemensia.api.Organism;
 import com.elemensia.api.State;
 import com.elemensia.api.StatusManager;
@@ -15,11 +17,16 @@ public abstract class LivingThing extends DynamicGameObject {
 	private StatusManager statusManager;
 	private Organism organism;
 
+	private static BitmapFont font = new BitmapFont();
+	static {
+		font.setColor(Color.BLACK);
+	}
+
 	public LivingThing(int x, int y, int width, int height, int health, Animation animations) {
 		super(x, y, width, height, animations);
 		// this.life = new Life(health);
 		// For now, temporary
-		this.organism = new Organism(health, (float) 0.001, 100, (float) 0.001, 100);
+		this.organism = new Organism(health, 0.001f, 100, 0.001f, 100);
 		this.decisionManager = new DecisionManager();
 		this.statusManager = new StatusManager();
 		this.alive = new Thread(new Runnable() {
@@ -29,12 +36,8 @@ public abstract class LivingThing extends DynamicGameObject {
 
 				float delta = 1 / 60.0f;
 				int delay = (int) (delta * 1000);
-				System.out.println(delta + " " + delay);
 				do {
 					LivingThing.this.update(-9.8f, delta);
-
-					LivingThing.this.organism.live();
-					System.out.println(LivingThing.this.organism);
 					try {
 						Thread.sleep(delay);
 					} catch (InterruptedException e) {
@@ -51,15 +54,27 @@ public abstract class LivingThing extends DynamicGameObject {
 	public void update(float gravity, float delta) {
 		super.update(gravity, delta);
 		World.updateColliding(this);
+		if (this.waterAbility.isOnWater){
+			this.setStateValue("ENVIRONMENT", State.WATER);
+		}
 		this.updateDecision();
+	
+		// STATE
 		this.updateState();
 		// ANIMATION
 		this.animations.update(this.getCenterX(), this.getY(), delta, this.statusManager.getState("DIRECTIONH"));
+		// ACTION
 		this.act(delta);
+		// ORGANISM
+		this.organism.live();
 	}
 
 	public void updateState() {
 		this.statusManager.updateStatus(this);
+	}
+	
+	public void setStateValue(String string, State ground) {
+		this.statusManager.setState(string, ground);
 	}
 
 	private void act(float delta) {
@@ -99,12 +114,15 @@ public abstract class LivingThing extends DynamicGameObject {
 	public State getState(String stateName) {
 		return this.statusManager.getState(stateName);
 	}
-	/*
-	 * public void updateInputs() { this.decisionManager.updateInputs();
-	 * StateManager.updateState(this); }
-	 */
 
 	public void live() {
 		this.alive.start();
 	}
+	
+	@Override
+	public void draw(SpriteBatch batch, float delta) {
+		super.draw(batch, delta);
+		this.font.draw(batch, this.statusManager.getValue(), this.getX() - 50, this.getY() + this.getHeight() + 20);
+	}
+
 }

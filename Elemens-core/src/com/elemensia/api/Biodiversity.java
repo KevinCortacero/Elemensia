@@ -57,7 +57,7 @@ public class Biodiversity {
 	public void update(float gravity, float delta) {
 		for (Food f : this.foods){
 			f.update(gravity, delta);
-			World.updateColliding(f);
+			//World.updateColliding(f);
 		}
 	}
 

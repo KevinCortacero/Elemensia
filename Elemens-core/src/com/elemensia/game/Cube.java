@@ -19,29 +19,28 @@ public class Cube extends Creature{
 
 	@Override
 	public void updateDecision() {
+		this.setDecisionValue("JUMP", false);
 		if (Math.random() < 0.005){
 			if (Math.random() < 0.5){
 				if (this.getState("DIRECTIONH") == State.RIGHT){
 					this.setDecisionValue("RIGHT", false);
 					this.setDecisionValue("LEFT", true);
-					this.setDecisionValue("JUMP", false);
+					
 					System.out.println("LEFT !");
 				}
 				else if (this.getState("DIRECTIONH") == State.LEFT){
 					this.setDecisionValue("RIGHT", true);
 					this.setDecisionValue("LEFT", false);
-					this.setDecisionValue("JUMP", false);
 					System.out.println("RIGHT !");
+				}
+				if (Math.random() < 0.5) {
+					this.setDecisionValue("JUMP", true);
 				}
 			}
 			else if (Math.random() < 0.5){
 				this.setDecisionValue("RIGHT", false);
 				this.setDecisionValue("LEFT", false);
-				this.setDecisionValue("JUMP", false);
 				System.out.println("STOP !");
-			}
-			else {
-				this.setDecisionValue("JUMP", true);
 			}
 			
 		}
@@ -50,7 +49,9 @@ public class Cube extends Creature{
 
 	@Override
 	public void applyGravity(float gravity, float delta) {
-		this.velocity.y += (gravity * delta);
+		if (!this.waterAbility.isUnderWater){
+			this.velocity.y += (gravity*delta);
+		}
 	}
 
 	@Override
@@ -77,6 +78,7 @@ public class Cube extends Creature{
 		case BOTTOM:
 			this.resetJump();
 			this.stopV(collider.getY() + collider.getHeight());
+			this.setStateValue("ENVIRONMENT", State.GROUND);
 
 			break;
 		case TOP:

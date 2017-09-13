@@ -43,4 +43,12 @@ public class StatusManager {
 		//TODO: set animation
 	}
 
+	public String getValue() {
+		return this.getState("ENVIRONMENT").name() + " " + this.getState("MOVEMENT").name() + " " + this.getState("ACTION").name() + " " + this.getState("DIRECTIONH").name();
+	}
+
+	public void setState(String stateName, State state) {
+		this.status.setState(stateName, state);
+	}
+
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.elemensia.api.Ecosystem;
 import com.elemensia.api.gameobjects.DynamicGameObject;
+import com.elemensia.api.gameobjects.LivingThing;
 
 public class World {
 
@@ -53,7 +54,7 @@ public class World {
 		return world.ecosystem.isUnderWater(obj);
 	}
 
-	public static void updateColliding(DynamicGameObject dynamicGameObject) {
+	public static void updateColliding(LivingThing dynamicGameObject) {
 		world.ecosystem.updateColliding(dynamicGameObject);
 	}
 

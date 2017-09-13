@@ -16,7 +16,7 @@ public abstract class DynamicGameObject extends InteractiveGameObject{
 
 	private CollideManager collideManager;
 	protected WaterAbility waterAbility;
-	protected Vector2 velocity;
+	public Vector2 velocity;
 	private int jumpCount;
 	protected Animation animations;
 	
