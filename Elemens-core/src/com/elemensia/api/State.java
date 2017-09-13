@@ -7,7 +7,7 @@ public enum State {
 	
 	GROUND,	WATER, AIR,
 	
-	IDLE, WALK,	JUMP, CLIMB, FALL,
+	IDLE, MOVE,	JUMP, CLIMB, FALL,
 	
 	SLEEP, EAT,	ATTACK,	DEAD
 }

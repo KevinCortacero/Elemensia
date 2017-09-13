@@ -79,8 +79,8 @@ public abstract class LivingThing extends DynamicGameObject {
 
 	private void act(float delta) {
 		// System.out.println(this.statusManager);
-		if (this.statusManager.getState("MOVEMENT") == State.WALK) {
-			this.animations.setAnimation(State.WALK, true);
+		if (this.statusManager.getState("MOVEMENT") == State.MOVE) {
+			this.animations.setAnimation(State.MOVE, true);
 			if (statusManager.getState("DIRECTIONH") == State.RIGHT) {
 				this.moveRight(delta);
 			} else if (statusManager.getState("DIRECTIONH") == State.LEFT) {

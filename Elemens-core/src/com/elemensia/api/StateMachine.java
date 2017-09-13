@@ -128,10 +128,10 @@ public class StateMachine {
 				newState = State.FALL;
 			}
 			else if  (livingThing.getDecisionValue("RIGHT") || livingThing.getDecisionValue("LEFT")){
-				newState = State.WALK;
+				newState = State.MOVE;
 			}
 			break;
-		case WALK :
+		case MOVE :
 			if (livingThing.getDecisionValue("JUMP")){
 				newState = State.JUMP;
 			}
@@ -150,7 +150,7 @@ public class StateMachine {
 				newState = State.IDLE;
 			}
 			else if  (status.getState("ENVIRONMENT") == State.GROUND && (livingThing.getDecisionValue("RIGHT") || livingThing.getDecisionValue("LEFT"))){
-				newState = State.WALK;
+				newState = State.MOVE;
 			}
 			else if  (status.getState("ENVIRONMENT")==State.WATER){
 				newState = State.IDLE;

@@ -12,7 +12,7 @@ public class Status {
 		this.states.put("DIRECTIONV", State.NONE);
 		this.states.put("DIRECTIONH", State.RIGHT);
 		this.states.put("ENVIRONMENT", State.GROUND);
-		this.states.put("MOVEMENT", State.WALK);
+		this.states.put("MOVEMENT", State.MOVE);
 		this.states.put("ACTION", State.NONE);
 	}
 

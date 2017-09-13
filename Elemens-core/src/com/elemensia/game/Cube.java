@@ -8,7 +8,7 @@ import com.elemensia.api.physics.Hitbox;
 
 public class Cube extends Creature{
 
-	public static State STATES[] = {State.WALK, State.IDLE, State.EAT, State.JUMP};
+	public static State STATES[] = {State.MOVE, State.IDLE, State.EAT, State.JUMP};
 	public static int WIDTH = 64;
 	public static int HEIGHT = 64;
 
